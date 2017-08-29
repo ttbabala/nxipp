@@ -26,7 +26,7 @@
                       <td align="left"><!--{$article['article_photo']}--></td>
                       <td align="left">{$article['article_title']}</td>
                       <td align="left">{$article['article_author']}</td>
-                      <td align="left">{$article['article_comment']=1? '视频作品' : '文字作品'}</td>
+                      <td align="left">{$article['cname'][0]}</td>
                       <td align="left">{$article['article_keywords']}</td>
                       <td align="left">{$article['article_pid']}</td>
                       <td align="left">{$article['article_date']}</td>
@@ -42,16 +42,14 @@
                       </td>
                       <td align="center">
                           <a href="{:url('Article/editArticle',['aid' => $article['aid']])}" class="tab_a_link edit_btn">修改</a>
-                          <a class="tab_a_link del_btn btn-danger-a" href="javascript:;" articleid="{$article['aid']}"><i class="fa fa-share-square-o">删除</i></a>
+                          <a class="tab_a_link del_btn btn-danger-a" href="javascript:;" aid="{$article['aid']}"><i class="fa fa-share-square-o">删除</i></a>
                       </td>
                  </tr>
                  {/volist}
                 </table>
         </div>
-        <div class="pagination-out pagination-goods">
-            <div style="float: right">
-                {$ArticleListData.page}
-            </div>
+        <div class="pagelist">
+                {$page}
         </div>
     </div>
  </div>
@@ -63,7 +61,7 @@
                 $('.btn-danger-a').on('click',function(){
                     var del =  confirm('确认要删除么？');
                     if (del) {
-                        var userid =$(this).attr('userid');
+                        var aid =$(this).attr('aid');
                         $.post('{:url("Article/delArticle")}',{aid : aid}, function(data){
                            if (data.status) {
                                 layer.msg(data.msg, {icon: 1,time: 1500},function(){

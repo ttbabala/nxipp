@@ -1,50 +1,31 @@
 <?php
 namespace app\admin\Controller;
-use think\Controller;
+use app\common\Controller\Adminbase;
 use think\Request;
 use app\admin\Model\Article as tArticle;
+use app\admin\Model\Cats;
 
-class Article extends Controller{
+class Article extends Adminbase{
     public function articleList(){ 
         $article = Model('Article');
         $ResultArray = $article -> select();   //查询用户总记录数
         $count = count($ResultArray);  //统计查询结果条目
-        $Page = new \think\Page($count,10);
-        $Page -> setConfig('prev','← Previous');
-        $Page -> setConfig('next','Next →');
-        $articlelist = $article -> limit($Page->firstRow,$Page->listRows) -> order('aid','asc') -> select();
-        $show = $Page -> show();
-        $ArticleListData = array(
-            'list' => $articlelist,
-            'page' => $show,
-            'count'=> $count
-        );
+        $articlelist = $article -> order('aid','asc') -> paginate(10);
+        $page = $articlelist->render();
+        $cats = new Cats();
         $columnName = '作品列表';
+        for($i=0;$i<count($articlelist);$i++){
+           $articlelist[$i]['cname'] = $cats -> where('catid',$articlelist[$i]['cid']) -> column('catname');       
+        }
         $this -> assign('articlelist',$articlelist);
         $this -> assign('columnName',$columnName);
-        $this -> assign('ArticleListData',$ArticleListData);
+        $this -> assign('page',$page);
         return $this -> fetch();    
-    }
-    
-    public function articleCatList(){ 
-        //作品分类列表
-    }
-    
-    public function addArticleCat(){
-        //添加作品分类
-    }
-    
-    public function editArticleCat(){
-        //编辑作品分类
-    }
-    
-    public function delArticleCat(){
-        //删除作品分类
     }
     
     public function addArticle(){
         //添加作品
-         $Request = Request::instance();      
+        $Request = Request::instance();      
         if($Request -> isAjax()){
             $article = new tArticle();
             $Result = $article ->addData();
@@ -53,15 +34,47 @@ class Article extends Controller{
             }
             return json(['status'=>0,'msg'=>'添加失败哦^_^']);
         }
+        $cats = new Cats();
+        $catslist = $cats -> getCatData(); 
+        $this -> assign('catslist',$catslist);
         return $this -> fetch();  
     }
     
     public function editArticle(){
         //编辑作品
+        $Request = Request::instance();
+        $aid = input('aid');
+        $article = new tArticle();
+        if($Request -> isAjax()){
+            $articleId = input('post.aid');
+            $article = new tArticle();
+            $Result = $article ->editData($articleId);
+            if($Result){
+                return json(['status'=>1,'msg'=>'编辑成功^_^','url'=>url('Article/articleList')]);
+            }
+            return json(['status'=>0,'msg'=>'编辑失败哦^_^']);
+        }
+        $articleData = $article -> where('aid',$aid) -> find();
+        $cats = new Cats();
+        $catslist = $cats -> getCatData(); 
+        $this -> assign('catslist',$catslist);
+        $this -> assign('articleData',$articleData);
+        return $this -> fetch();
     }
     
     public function delArticle(){
         //删除作品
+       $Request = Request::instance();
+       $aid = input('post.aid');     
+       if($Request -> isAjax()){
+            $article = new tArticle();
+            $Result = $article ->delData($aid);
+            if($Result) {
+                return json(['status'=>1,'msg'=>'删除成功^_^']);
+            }
+            return json(['status'=>0,'msg'=>'删除失败哦^_^']);
+        }
+        return json(['status'=>0,'msg'=>'数据异常请重试哦^_^']);  
     }
     
        

@@ -1,0 +1,57 @@
+<div id="dcMain">
+    <!-- 当前位置 -->
+    <div id="urHere">管理中心<b>></b><strong>添加子分类</strong> </div>
+    <div class="mainBox" style="height:auto!important;height:550px;min-height:550px;">
+        <h3><a href="{:url('Cats/index')}" class="actionBtn">作品分类</a>添加子分类</h3>
+        <form id="submitcategory">
+            <table width="100%" border="0" cellpadding="8" cellspacing="0" class="tableBasic">
+                <tr>
+                    <td width="80" align="right">分类名称</td>
+                    <td><input type="text" name="catname" value="" size="40" class="inpMain" /></td>
+                </tr>
+                <tr>
+                    <td align="right">是否显示</td>
+                    <td>
+                        <input style="width: 20px;height: 20px;" type="checkbox" name="isshow" value="1" size="5" class="idDisplay" />
+                    </td>
+
+                </tr>
+                <tr>
+                    <td align="right">排序</td>
+                    <td><input type="text" name="catsort" value="0" size="5" class="inpMain" /></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>
+                        <input type="hidden" name="catid" value="{$catid}">
+                        <input name="submit" class="btn" type="submit" value="添加" />
+                    </td>
+                </tr>
+            </table>
+        </form>
+        <!--引入js-->
+            <script type="text/javascript" src="__admin__/plugins/jquery-1.8.3.min.js"></script>
+            <script type="text/javascript" src="__admin__/plugins/js/jquery.uploadify.js"></script>
+            <script src="__admin__/plugins/layer/layer.min.js"></script>
+        <!--引入js结束-->
+        <script type="text/javascript">
+            $(function(){
+                $("#submitcategory").submit(function(){
+                    var datas = $("#submitcategory").serialize();
+                    $.post('{:url("Cats/categoryData")}',datas,function(data){
+                        if (data.status) {
+                            layer.msg(data.msg, {icon: 1,time: 1500},function(){
+                                window.location.href = data.url;
+                            });
+                        }else {
+                            layer.msg(data.msg, {icon: 2,time: 1500});
+                        }
+
+                    },'json');
+                    //阻止表单刷新提
+                    return false;
+                });
+            });
+        </script>
+    </div>
+</div>

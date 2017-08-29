@@ -2,6 +2,7 @@
 namespace app\admin\Controller;
 use think\Controller;
 use think\Model;
+use think\Session;
 
 
 class Login extends Controller{
@@ -39,5 +40,11 @@ class Login extends Controller{
           //$this->ajaxReturn($rv);
         session('userid', $result['id']);
         echo json_encode(array('status' => 1, 'msg' => '登陆成功^_^','url' => url('Index/index')));exit();
+    }
+    
+    //用户退出控制器
+    public function logout(){
+        session('userid',null);
+        $this ->redirect('Login/index');
     }
 }

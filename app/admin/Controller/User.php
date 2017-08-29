@@ -1,37 +1,29 @@
 <?php
 namespace app\admin\Controller;
-use think\Controller;
+use app\common\Controller\Adminbase;
 use think\Model;
 use think\Request;
 use app\admin\Model\User as tUser;  //定义别名，防止和控制器名一致而引发冲突
-/* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-class User extends Controller{
+use app\admin\Model\Auth_group as Part;
+
+class User extends Adminbase{
     public function _initialize() {
         parent::_initialize();
     }
     
     public function userList(){
         $User = Model('User');
-        $ResultArray = $User -> select();   //查询用户总记录数
-        $count = count($ResultArray);  //统计查询结果条目
-        $Page = new \think\Page($count,10);
-        $Page -> setConfig('prev','← Previous');
-        $Page -> setConfig('next','Next →');
-        $userlist = $User -> limit($Page->firstRow,$Page->listRows) -> order('authorization','asc') -> select();
-        $show = $Page -> show();
-        $UserListData = array(
-            'list' => $userlist,
-            'page' => $show,
-            'count'=> $count
-        );
+        $userArray = $User -> select();   //查询用户总记录数
+        $count = count($userArray);  //统计查询结果条目
+        $userlistData = $User -> order('authorization','asc') -> paginate(10);
+        $page = $userlistData -> render();
+        $part = new Part();
+        $partData = $part -> select();   
         $columnName = '用户列表';
-        $this -> assign('userlist',$userlist);
+        $this -> assign('page',$page);
+        $this -> assign('partData',$partData);
+        $this -> assign('userlist',$userlistData);
         $this -> assign('columnName',$columnName);
-        $this -> assign('UserListData',$UserListData);
         return $this -> fetch();    
     }
     
@@ -45,6 +37,9 @@ class User extends Controller{
             }
             return json(['status'=>0,'msg'=>'添加失败哦^_^']);
         }
+        $part = new Part();
+        $partData = $part -> select();   
+        $this -> assign('partData',$partData);
         return $this -> fetch();    
     }
     
@@ -75,6 +70,9 @@ class User extends Controller{
             return json(['status'=>0,'msg'=>'编辑失败哦^_^']);
         }
         $userData = $user -> where('id',$uid) -> find();
+        $part = new Part();
+        $partData = $part -> select();
+        $this -> assign('partData',$partData);
         $this -> assign('userData',$userData);
         return $this -> fetch();     
     }

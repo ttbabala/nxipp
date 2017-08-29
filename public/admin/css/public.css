@@ -584,6 +584,7 @@ select {
  font-size: 13px;
  font-weight: bold;
 }
+
 .mainBox h3 .add {
  background: #28B779 url(../images/action_btn.gif) no-repeat 20px 50%;
  padding-left: 40px;
@@ -1599,14 +1600,15 @@ input[type="password"]:focus {
 }
 
 /*分页css样式*/
-.pagination-out {
+
+/* .pagination-out {
  text-align: center;
  margin: 0 auto;
- /*float: right;*/
+ float: right;
  clear: both;
  line-height: 36px;
  display: block;
- /*background: #60BBFF;*/
+ background: #60BBFF;
  width: 600px;
  height: 50px;
 }
@@ -1652,7 +1654,7 @@ input[type="password"]:focus {
  color: #fff;
  cursor: default;
 }
-.pagination-goods{margin-top: 50px}
+.pagination-goods{margin-top: 50px}*/
 
 /*分页css样式结束*/
 

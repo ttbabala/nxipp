@@ -27,6 +27,12 @@ function bcryptVerfy($rowpw,$storedHash){
     return crypt($rowpw,$storedHash) == $storedHash;
 }
 
+//会员密码加密函数
+function encryption($pass){
+    $salt = 'www.nxipp.com';
+    return md5(md5($pass).$salt);
+}
+
 //获取IP
 function getIP(){
     global $ip;
@@ -38,5 +44,46 @@ function getIP(){
         $ip = getenv("REMOTE_ADDR");
     else $ip = "Unknow IP";
     return $ip;
+}
+
+//返回数组维度
+
+function arrayLevel($arr){
+    $al = array(0);
+    function aL($arr,&$al,$level=0){
+        if(is_array($arr)){
+            $level++;
+            $al[] = $level;
+            foreach($arr as $v){
+                aL($v,$al,$level);
+            }
+        }
+    }
+    aL($arr,$al);
+    return max($al);
+}
+
+//返回模块及方法中文
+function lang($name){
+     $cnArray = [
+        '后台管理首页' => 'Index-index',
+        '系统设置' => 'System-index',
+        '公告管理' => 'Notice','公告管理首页' => 'Notice-index','添加公告' => 'Notice-addNotice','编辑公告' => 'Notice-editNotice','删除公告' => 'Notice-delNotice',
+        '用户管理' => 'User','用户管理首页' => 'User-userList','添加用户' => 'User-addUser','编辑用户' => 'User-editUser','删除用户' => 'User-delUser',
+        '角色管理' => 'Part','角色管理首页' => 'Part-index','添加角色' => 'Part-addPart','编辑角色' => 'Part-editPart','删除角色' => 'Part-delPart',
+        '规则管理' => 'Rule','规则管理首页' => 'Rule-index','逐条添加规则' => 'Rule-addRule','逐条编辑规则' => 'Rule-editRule','删除规则' => 'Rule-delRule','批量添加规则' => 'Rule-addRules',
+        '作品管理' => 'Article','作品管理首页' => 'Article-articleList','添加作品' => 'Article-addArticle','编辑作品' => 'Article-editArticle','删除作品' => 'Article-delArticle',
+        '作品分类管理' => 'Cats','作品分类管理首页' => 'Cats-index','添加作品分类' => 'Cats-addCategory','编辑作品分类' => 'Cats-editCategory','删除作品分类' => 'Cats-delCategory','添加作品子分类' => 'Cats-addSubclassification',
+        '模块管理' => 'Columns','模块管理首页' => 'Columns-index','添加模块' => 'Columns-addColumn','编辑模块' => 'Columns-editColumn','删除模块' => 'Columns-delColumn'
+    ]; 
+     //判断包含几个字符串字段
+    if(substr_count($name,"|") >0){
+        $nameArray = explode("|",$name);
+        for($i=0;$i<count($nameArray);$i++){
+            $endata[$i] = array_search($nameArray[$i],$cnArray);
+        }
+        return $endata;      
+    }
+    return null;
 }
 

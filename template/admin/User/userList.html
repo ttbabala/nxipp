@@ -26,13 +26,11 @@
                       <td align="left">{$user['last_logintime']}</td>
                       <td align="left">{$user['last_ip']}</td>
                       <td align="left">
-                          {if condition="$user['authorization'] eq 1"}
-                                  超级管理员
-                            {elseif condition="$user['authorization'] eq 2" /}
-                                  高级管理员
-                            {elseif condition="$user['authorization'] eq 3" /}
-                                  普通管理员
-                              {/if}
+                          {volist name="partData" id="vo"}
+                            {if condition="$user['authorization'] eq $vo['id']"}
+                                   {$vo['title']}
+                            {/if}
+                           {/volist}
                       </td>
                       <td align="left">
                           {$user['status']=1? '正常' : '锁定'}
@@ -45,10 +43,8 @@
                  {/volist}
                 </table>
         </div>
-        <div class="pagination-out pagination-goods">
-            <div style="float: right">
-                {$UserListData.page}
-            </div>
+        <div class="pagelist">
+            {$page}
         </div>
     </div>
  </div>

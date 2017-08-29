@@ -1,0 +1,58 @@
+
+<div id="dcMain">
+     <div id="urHere">管理中心<b>></b><strong>角色管理</strong> </div>
+     <div class="mainBox" style="height:auto!important;height:550px;min-height:550px;">
+         <h3><a href="{:url('Part/addPart')}" class="actionBtn add">添加角色</a>角色管理</h3>
+          <div id="list">
+                <table width="100%" border="0" cellpadding="8" cellspacing="0" class="tableBasic">
+                 <tr>
+                      <th width="20" align="left">角色ID</th>
+                      <th width="50" align="left">角色名称</th>
+                      <th width="30" align="left">角色状态</th>
+                      <th width="320" align="center">赋权的栏目及操作</th>
+                      <th width="80" align="center">操作</th>
+                 </tr>
+                 {volist name="aglistData" id="vo"}
+                    <tr>
+                         <td align="left">{$vo.id}</td>
+                         <td align="left">{$vo.title}</td>
+                         <td align="left">{$vo.status==1 ? '正常':'禁用'}</td>
+                         <td align="left">{$vo['ruletitle']}</td>
+                         <td align="center">
+                             <a href="{:url('Part/editPart',['id' => $vo['id']])}" class="tab_a_link edit_btn">编辑</a>
+                             <a class="tab_a_link del_btn btn-danger-a" href="javascript:;" id="{$vo.id}"><i class="fa fa-share-square-o">删除</i></a>
+                         </td>
+                    </tr>
+                  {/volist}
+                </table>
+        </div>
+        <div class="pagelist">
+            {$page}
+        </div>
+     </div>
+</div>
+        <!--引入js-->
+        <script type="text/javascript" src="__admin__/plugins/jquery-1.8.3.min.js"></script>
+        <script type="text/javascript" src="__admin__/plugins/js/jquery.uploadify.js"></script>
+        <script src="__admin__/plugins/layer/layer.min.js"></script>
+        <script type="text/javascript">   
+            $(function(){
+                $('.btn-danger-a').on('click',function(){
+                    var del =  confirm('确认要删除么？');
+                    if (del) {
+                        var id =$(this).attr('id');
+                        $.post('{:url("Part/delPart")}',{id : id}, function(data){
+                           if (data.status) {
+                                layer.msg(data.msg, {icon: 1,time: 1500},function(){
+                                    window.location.reload();
+                                });
+                            }else {
+                                layer.msg(data.msg,{icon : 2,time : 2000});
+                            }
+
+                        },'json');
+                    }
+
+                });
+            });
+        </script>

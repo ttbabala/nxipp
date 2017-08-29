@@ -101,10 +101,6 @@ class User extends Model{
 
     }
     
-    public function testData($uid){
-        if(implode($this -> where('id',$uid) -> column('upass')) == '$2a$08$LfZLAg/Oc2ushRT8QH1sC.SI9X3QpOhc.tXuC58KplqD389nSN6FS')
-        return implode($this -> where('id',$uid) -> column('upass'));
-    }
     
 }
 

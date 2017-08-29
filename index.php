@@ -22,5 +22,8 @@ define('PUBLIC_PATH', 'http://localhost/nxipp/public/');
 //定义模板文件目录
 define('TMPL_PATH', __DIR__ . '/template/');
 
+//定义第三方扩展类库文件目录
+define('EXTEND_PATH', __DIR__ . '/extend/');
+
 // 加载框架引导文件
 require __DIR__ . './thinkphp/start.php';

@@ -1,0 +1,104 @@
+
+<div id="dcMain">
+     <div id="urHere">管理中心<b>></b><strong>编辑规则</strong> </div>
+     <div class="mainBox" style="height:auto!important;height:550px;min-height:550px;">
+         <h3><a href="{:url('Rule/index')}" class="actionBtn">规则管理</a>编辑规则</h3>
+          <form id="formeditRule"   enctype="multipart/form-data">
+               <table width="100%" border="0" cellpadding="8" cellspacing="0" class="tableBasic">
+                   <tr>
+                       <td width="90" align="right">规则名称</td>
+                       <td><input type="text" name="title" size="30" class="inpMain" value="{$ruleData['title']}"/></td>
+                   </tr>
+                   <tr>
+                       <td width="90" align="right">应用规则</td>
+                       <td><select name="controller" id="controller">
+                            {volist name="dataArray" id="vo"}
+                            <option value="{$vo[0]}" {if condition="$ruleData['name'] eq $vo[0].'-'.$vo[1]"}selected{/if}>{$vo[0]}</option>
+                            {/volist}
+                           </select>-<span id="function"><select id="area" name="function"></select> </span>
+                           <span id="function1"><select id="area" name="function1">{volist name="dataArray" id="vo"}<option value="" {if condition="$ruleData['name'] eq $vo[0].'-'.$vo[1]"}selected{/if}>{$vo[1]}</option>{/volist}</select> </span>
+                       <span style="color: red;margin-left: 20px">格式如：栏目英文名称-操作名</span></td>
+                   </tr>
+                   <tr>
+                      <td width="90" align="right">类 型</td>
+                      <td>
+                          <select name="type">
+                            <option value="1" {if condition="$ruleData['type'] eq 1"}selected{/if}>正常</option>
+                            <option value="0" {if condition="$ruleData['type'] eq 0"}selected{/if}>异常</option>
+                          </select>
+                      </td>
+                   </tr>
+                   <tr>
+                      <td width="90" align="right">状 态</td>
+                      <td><select name="status">
+                            <option value="nal">-请选择-</option>
+                            <option value="1" {if condition="$ruleData['status'] eq 1"}selected{/if}>正常</option>
+                            <option value="0" {if condition="$ruleData['status'] eq 0"}selected{/if}>禁用</option> 
+                          </select>
+                      </td>
+                   </tr>
+                   <tr>
+                       <td width="90" align="right">自定义规则</td>
+                       <td><input type="text" name="condition" size="50" class="inpMain" /></td>
+                   </tr>                 
+                   <tr>
+                       <td></td>
+                       <td>
+                           <input type="hidden" name="token" value="21307217" />
+                           <input name="submit" class="btn" type="submit" value="提交" />
+                       </td>
+                   </tr>
+               </table>
+          </form>
+     </div>
+</div>
+        <!--引入js-->
+        <script type="text/javascript" src="__admin__/plugins/jquery-1.8.3.min.js"></script>
+        <script type="text/javascript" src="__admin__/plugins/js/jquery.uploadify.js"></script>
+        <script src="__admin__/plugins/layer/layer.min.js"></script>
+        <script type="text/javascript">
+            $(function(){
+                $("#formaddRule").submit(function(){
+                    var datas = $("#formaddRule").serialize();
+                    $.post('{:url("Rule/addRule")}',datas,function(data){
+                        if (data.status) {
+                            layer.msg(data.msg, {icon: 1,time: 1500},function(){
+                                window.location.href = data.url;
+                            });
+                        }else {
+                            layer.msg(data.msg, {icon: 2,time: 1500});
+                        }
+
+                    },'json');
+                    //阻止表单刷新提
+                    return false;
+                });
+                
+            $("#function").hide(); //初始化的时候第二个下拉列表隐藏 
+                $("#controller").change(function(){ //当第一个下拉列表变动内容时第二个下拉列表将会显示
+                $('#function1').hide();
+                var cname=$("#controller").val(); 
+                if(null!= cname && ""!=cname){ 
+                    $.get('{:url("Rule/editRule")}',{controllerName:cname},function(data){ 
+                        if(data.status){
+                            var options=""; 
+                            if(data.msg.length>0){    
+                                options+="<option value='nal'>-请选择操作-</option>"; 
+                                for(var i=0;i<data.msg.length;i++){ 
+                                    options+="<option value="+data.msg[i]+">"+data.msg[i]+"</option>"; 
+                                } 
+                                $("#area").html(options); 
+                                $("#function").show(); 
+                            } 
+                            else if(data.msg.length<=0){ 
+                            $("#function").hide(); 
+                            }
+                        }
+                    }); 
+                } 
+                else{ 
+                $("#function").hide(); 
+                } 
+            });  
+}); 
+        </script>

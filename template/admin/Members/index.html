@@ -1,0 +1,68 @@
+
+<div id="dcMain">
+   <!-- 当前位置 -->
+    <div id="urHere">管理中心<b>></b><strong>会员列表</strong></div>
+    <div class="mainBox" style="height:auto!important;height:550px;min-height:550px;">
+        <h3><a href="{:url('Members/addMember')}" class="actionBtn add">添加会员</a>会员列表</h3>
+        <div id="list">
+                <table width="100%" border="0" cellpadding="8" cellspacing="0" class="tableBasic">
+                 <tr>
+                      <th width="50" align="left">会员ID</th>
+                      <th width="50" align="left">会员头像</th>
+                      <th width="50" align="left">会员名称</th>
+                      <th width="50" align="left">会员邮箱</th>
+                      <th width="50" align="left">注册时间</th>
+                      <th width="60" align="left">最后一次登陆时间</th>
+                      <th width="60" align="left">最后一次登陆IP</th>
+                      <th width="60" align="left">状态</th>
+                      <th width="120" align="center">操作</th>
+                 </tr>
+                 {volist name='membersData' id='vo'}
+                 <tr>
+                      <td align="left">{$vo['mid']}</td>
+                      <td align="left"><img src="{$vo['headpic']}" width="40px" height="40px"/></td>
+                      <td align="left">{$vo['mname']}</td>
+                      <td align="left">{$vo['email']}</td>
+                      <td align="left">{$vo['register_time']}</td>
+                      <td align="left">{$vo['gmt_time']}</td>
+                      <td align="left">{$vo['gmt_ip']}</td>
+                      <td align="left">
+                          {$vo['status']=1? '正常' : '锁定'}
+                      </td>
+                      <td align="center">
+                          <a href="{:url('Members/editMember',['mid' => $vo['mid']])}" class="tab_a_link edit_btn">修改</a>
+                          <a class="tab_a_link del_btn btn-danger-a" href="javascript:;" mid="{$vo['mid']}"><i class="fa fa-share-square-o">删除</i></a>
+                      </td>
+                 </tr>
+                 {/volist}
+                </table>
+        </div>
+        <div class="pagelist">
+            {$page}
+        </div>
+    </div>
+ </div>
+        <!--引入js-->
+        <script type="text/javascript" src="__admin__/plugins/jquery-1.8.3.min.js"></script>
+        <script src="__admin__/plugins/layer/layer.min.js"></script>
+        <script type="text/javascript">
+            $(function(){
+                $('.btn-danger-a').on('click',function(){
+                    var del =  confirm('确认要删除么？');
+                    if (del) {
+                        var mid =$(this).attr('mid');
+                        $.post('{:url("Members/delMember")}',{mid : mid}, function(data){
+                           if (data.status) {
+                                layer.msg(data.msg, {icon: 1,time: 1500},function(){
+                                    window.location.reload();
+                                });
+                            }else {
+                                layer.msg(data.msg,{icon : 2,time : 2000});
+                            }
+
+                        },'json');
+                    }
+
+                });
+            });
+        </script>

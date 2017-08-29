@@ -22,9 +22,14 @@
                        <td><input type="password" name="user_confirm_password" value="" size="40" class="inpMain" /><span style="color: red;margin-left: 20px"></span></td>
                    </tr>
                    <tr>
-                       <td align="right">用户权限</td>
+                       <td align="right">用户角色</td>
                        <td>
-                          
+                          <select name="user_authorization">
+                            <option value="0">-请选择-</option>   
+                            {volist name="partData" id="vo"}
+                            <option value="{$vo['id']}">{$vo['title']}</option> 
+                            {/volist}
+                          </select>
                        </td>
                    </tr>
                    <tr>

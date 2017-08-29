@@ -22,11 +22,11 @@
                        <td><input type="password" name="user_confirm_password" value="{$userData['upass']}" size="40" class="inpMain" /><span style="color: red;margin-left: 20px"></span></td>
                    </tr>
                    <tr>
-                       <td align="right">用户权限</td>
+                       <td align="right">用户角色</td>
                        <td>
-                           <input type='radio' name ='user_auth' value='1' {if condition="$userData['authorization'] eq 1"}checked{/if} > 超级管理员
-                           <input type='radio' name ='user_auth' value='2' {if condition="$userData['authorization'] eq 2"}checked{/if} > 高级管理员
-                           <input type='radio' name ='user_auth' value='3' {if condition="$userData['authorization'] eq 3"}checked{/if} > 普通管理员
+                           {volist name="partData" id="vo"}
+                           <input type='radio' name ='user_auth' value="{$vo['id']}" {if condition="$userData['authorization'] eq $vo['id']"}checked{/if} > {$vo['title']}
+                           {/volist}
                        </td>
                    </tr>
                    <tr>
@@ -42,7 +42,7 @@
                        <td></td>
                        <td>
                            <input type="hidden" name="token" value="21307217" />
-                           <input type="hidden" name="userid" value="{$userData['id']}">
+                           <input type="hidden" name="userid" value="{$userData['id']}" />
                            <input name="submit" class="btn" type="submit" value="提交" />
                        </td>
                    </tr>

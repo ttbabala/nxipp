@@ -22,8 +22,9 @@
                        <td>
                            <select name="article_cat">
                                 <option value="0">-请选择-</option>
-                                <option value="1">视频作品</option>
-                                <option value="2">文字作品</option>
+                                {volist name="catslist" id="vo"}
+                                    <option value="{$vo['catid']}">{$vo['_name']}</option>
+                                {/volist}
                            </select>
                        </td>
                    </tr>
