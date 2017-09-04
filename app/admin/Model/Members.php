@@ -28,7 +28,7 @@ class Members extends Model{
         if($data['status'] == '2'){
             exit(json_encode(array('status'=>0,'msg'=>'必须选择会员状态哦^_^')));
         }
-        $imgurl = 'http://'.str_replace("\\","/",$_SERVER['HTTP_HOST'].$data['headPic']);
+        $imgurl = 'http://'.str_replace("\\","/",$_SERVER['HTTP_HOST'].$data['imgUrl']);
         $this -> data([
             'headpic' => $imgurl,
             'mname' => $data['mname'],
@@ -63,8 +63,8 @@ class Members extends Model{
                 exit(json_encode(array('status'=>0,'msg'=>'两次输入的密码不一致哦^_^')));
             }
         }
-        if($data['headPic'] !== ''){
-            $imgurl = 'http://'.str_replace("\\","/",$_SERVER['HTTP_HOST'].$data['headPic']);   //得到图片完整路径
+        if($data['imgUrl'] !== ''){
+            $imgurl = 'http://'.str_replace("\\","/",$_SERVER['HTTP_HOST'].$data['imgUrl']);   //得到图片完整路径
         }else{
             $imgurl = $data['showpic'];
         }  

@@ -87,3 +87,35 @@ function lang($name){
     return null;
 }
 
+//获取某个作品分类类的儿子、孙子的id
+function getCatGrandson($cid){
+    $GLOBALS['catGrandson'] = array();
+    $GLOBALS['category_id_arr'] = array();
+    $GLOBALS['catGrandson'][] = $cid; // 先把自己的id 保存起来
+    $cat = Model('Cats');
+    $GLOBALS['category_id_arr'] = $cat -> column('catid','parentid'); //把整张表找出来
+    $son_id_arr = $cat -> where('parentid',$cid) -> column('catid');  //先把所有儿子找出来
+    foreach($son_id_arr as $k => $v)
+    {
+        getCatGrandson2($v);
+    }
+    return $GLOBALS['catGrandson'];
+}
+
+/**
+ * 递归调用找到 重子重孙
+ * @param type $cat_id
+ */
+function getCatGrandson2($cid)
+{
+    $GLOBALS['catGrandson'][] = $cid;
+    foreach($GLOBALS['category_id_arr'] as $k => $v)
+    {
+        // 找到孙子
+        if($v == $cid)
+        {
+            getCatGrandson2($k); // 继续找孙子
+        }
+    }
+}
+

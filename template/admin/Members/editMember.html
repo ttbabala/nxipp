@@ -49,7 +49,7 @@
                        <td>
                            <input type="hidden" name="token" value="21307217" />
                            <input type="hidden" name="mid" value="{$memberData['mid']}">
-                           <input type="hidden" name="headPic" value="" />
+                           <input type="hidden" name="imgUrl" value="" />
                            <input name="submit" class="btn" type="submit" value="提交" />
                        </td>
                    </tr>
@@ -95,12 +95,15 @@
                         'auto'            : false,
                         'method'          : 'Post',
                         'wmode'           : 'transparent',
+                        'formData'       : {
+				'urlfrom' : 'Member',
+                        },
                         'onUploadSuccess' : function(file,data,response) {  
                          if(response){ 
                                 var obj =JSON.parse(data);
                                 $("#upload_org_code_img").attr("src",obj.src);  
                                 $("#file_upload_image").attr("value",obj.src);
-                                $("input[name='headPic']").attr("value",obj.src)
+                                $("input[name='imgUrl']").attr("value",obj.src)
                                 $("input[name='showpic']").attr("value",'')
                                 $("#upload_org_code_img").show();  
                             } 

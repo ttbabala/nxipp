@@ -1,0 +1,232 @@
+
+<div id="dcMain">
+   <!-- 当前位置 -->
+    <div id="urHere">管理中心<b>></b><strong>评论列表</strong> </div>
+    <div class="mainBox" style="height:auto!important;height:550px;min-height:550px;">
+        <h3><a href="{:url('comments/reviewComments')}" class="actionBtn add">评论审核</a>评论列表</h3>
+        <div class="filter">
+            <form id="formfilter" action="{:url('Comments/index')}" method="get">
+                 <select name="cat_id">
+                        <option value="0">筛选条件</option>
+                        <option value="members_uid">评论发布者ID</option>
+                        <option value="comments_aid">评论作品ID</option>
+                        <option value="comments_time">评论发布时间</option>
+                        <option value="pass">审核通过</option>
+                        <option value="nopass">审核不通过</option>
+                        <option value="waitpass">待审核</option>
+                  </select>
+                <input type="text" name="timearea" id="time" size="37" placeholder="请选择日期范围" class="inpMain" style="display:none"/>
+                  <input name="article_name" id="article_name" type="text" class="inpMain" value="" size="20" style="display:none"/>
+                  <input class="btnGray" type="submit" value="筛选" />
+            </form>
+            <span>
+                <a class="btnGray" href="#">更新评论</a>
+                <a class="btnGray" href="#">开始筛选评论</a>
+            </span>
+        </div>
+        <div id="list">
+            <form name="action" id="formaction" method="post" action="#">
+                <table width="100%" border="0" cellpadding="8" cellspacing="0" class="tableBasic">
+                 <tr>
+                      <th width="22" align="center"><input name='chkall' type='checkbox' id='chkall' onclick='selectcheckbox(this.form)' value='check'></th>
+                      <th width="30" align="left">评论ID</th>
+                      <th width="30" align="left">作品ID</th>
+                      <th width="50" align="left">作品标题</th>
+                      <th width="50" align="left">评论内容</th>
+                      <th width="60" align="left">评论发布者</th>
+                      <th width="60" align="left">评论发布者ip</th>
+                      <th width="60" align="left">发布时间</th>
+                      <th width="60" align="left">回复评论数</th>
+                      <th width="60" align="left">评论状态</th>
+                      <th width="60" align="left">审核状态</th>
+                      <th width="120" align="center">操作</th>
+                 </tr>
+                 {volist name='commentsData' id='vo'}
+                 <tr>
+                      <td align="center"><input type="checkbox" name="checkbox[]" value="{$vo['cid']}" /></td>
+                      <td align="left">{$vo['cid']}</td>
+                      <td align="left">{$vo['aid']}</td>
+                      <td align="left">{$vo['ctitle'][0]}</td>
+                      <td align="left">{$vo['ctext']}</td>
+                      <td align="left">{$vo['mname'][0]}</td>
+                      <td align="left">{$vo['mip']}</td>
+                      <td align="left">{$vo['date']}</td>
+                      <td align="left"><a href="{:url('Replycomments/listReply',['cid' => $vo['cid'],'mname' => $vo['mname'][0]])}">
+                           <span style='color:red;font-weight:bold'>{$vo['rnums']}</span>{if condition="$vo['rnums']>0"}&nbsp;(查看评论下的回复){/if}</a></td>
+                      <td align="left">
+                          {$vo['status']=1? '可见' : '隐藏'}
+                      </td>
+                      <td align="left">
+                          {if condition="$vo['review'] eq 1"}<span style="color:green">通过</span>{/if}{if condition="$vo['review'] eq 0"}<span style="color:red">未通过</span>{/if}{if condition="$vo['review'] eq 2"}<span style="color:blue">待审核</span>{/if}
+                      </td>
+                      <td align="center">
+                          <a href="#" id="{$vo['cid']}" class="tab_a_link edit_btn">审核</a>
+                          <a class="tab_a_link del_btn btn-danger-a" href="javascript:;" id="{$vo['cid']}"><i class="fa fa-share-square-o">删除</i></a>
+                      </td>
+                 </tr>
+                 {/volist}
+                </table>
+            <div class="action">
+                     <select name="action" id="action" onchange="douAction()">
+                          <option value="0">请选择...</option>
+                          <option value="del_all">删除</option>
+                          <option value="pass">审核通过</option>
+                     </select>
+                     <input name="submit" class="btn" type="submit" value="执行" />
+            </div>
+            </form>
+        </div>
+        <div class="pagelist">
+            {$page}
+        </div>
+    </div>
+ </div>
+        <!--引入js-->
+        <script type="text/javascript" src="__admin__/plugins/jquery-1.8.3.min.js"></script>
+        <script src="__admin__/plugins/layer/layer.min.js"></script>
+        <script type="text/javascript">
+            $(function(){
+                $('.btn-danger-a').on('click',function(){
+                    var del =  confirm('确认要删除么？');
+                    if (del) {
+                        var id =$(this).attr('cid');
+                        $.post('{:url("Comments/delComments")}',{id : id}, function(data){
+                           if (data.status) {
+                                layer.msg(data.msg, {icon: 1,time: 1500},function(){
+                                    window.location.reload();
+                                });
+                            }else {
+                                layer.msg(data.msg,{icon : 2,time : 2000});
+                            }
+
+                        },'json');
+                    }
+
+                });
+            });
+
+         $(function(){
+            $('.edit_btn').on('click',function(){
+                    var id =$(this).attr('id');
+                    layer.confirm('审核通过吗？', {
+                        btn: ['通过','不通过'] //按钮
+                      }, function(){
+                            var type = 1;
+                            var sensArray = new Array(id,type);
+                            var sensString = sensArray.toString();
+                            $.post('{:url("Comments/reviewComments")}',{sensid: sensString}, function(data){
+                               if (data.status) {
+                                    layer.msg(data.msg, {icon: 1,time: 1500},function(){
+                                        window.location.reload();
+                                  });
+                                }else {
+                                    layer.msg(data.msg,{icon : 2,time : 2000});
+                                }
+                         },'json');
+                      }, function(){
+                            var type = 0;
+                            var sensArray = new Array(id,type);
+                            var sensString = sensArray.toString();
+                            $.post('{:url("Comments/reviewComments")}',{sensid : sensString}, function(data){
+                               if (data.status) {
+                                    layer.msg(data.msg, {icon: 1,time: 1500},function(){
+                                        window.location.reload();
+                                  });
+                                }else {
+                                    layer.msg(data.msg,{icon : 2,time : 2000});
+                                }
+                         },'json');
+                      });
+                });  
+          });
+          
+          $(function(){
+                $("select[name='cat_id']") .change(function(){
+                    $(this).each(function(){
+                            var arr = ['comments_time'];
+                            if(arr.indexOf($(this).val()) !== -1){
+                                  $("#time").show();
+                                  $("#time").attr('name','timearea'); //为time添加name属性便于提交
+                                  $("#article_name").hide();
+                                  $("#article_name").removeAttr('name')
+                                  laydate.render({ 
+                                     elem: '#time'
+                                    ,type: 'datetime'
+                                    ,range: '|' //或 range: '~' 来自定义分割字符
+                                  });
+                            }else{
+                                  $("#time").hide();
+                                  $('#time').removeAttr('name');    //去掉文本框time的name属性，从而不提交该表单元素内容
+                                  $("#article_name").show();
+                                  $("#article_name").attr('name','article_name');
+                            }
+                            if($(this).val() === '0'){
+                                $("time").hide();
+                                $("time").removeAttr('name');
+                                $("#article_name").hide();
+                                $("#article_name").removeAttr('name');
+                            }
+                            if($(this).val() === 'pass' || $(this).val() === 'nopass' || $(this).val() === 'waitpass'){
+                                 $("#time").hide();
+                                 $('#time').removeAttr('name');    //去掉文本框time的name属性，从而不提交该表单元素内容
+                                 $("#article_name").hide();
+                                 $("#article_name").removeAttr('name');
+                            }
+                });
+            });
+        });  
+        
+        $(function(){
+                $("#formfilter").submit(function(){
+                    var datas = $("#formfilter").serialize();
+                    //alter('hello');exit();
+                    $.post('{:url("Comments/index")}',datas,function(data){
+                       if (data.status) {
+                           layer.msg(data.msg, {icon: 1,time: 1500},function(){
+                              window.location.href = data.url;
+                           });
+                       }else {
+                           layer.msg(data.msg, {icon: 2,time: 1500});
+                        }
+
+                    },'json');
+                    //阻止表单刷新提
+                    return false;
+                });
+            });
+        
+        
+         $(function(){   //异步批量删除、审核
+                 $("#formaction").submit(function(){
+                     var chkarray =[]; 
+                     var post_str = '';
+                     $("input[name='checkbox[]']:checked").each(function(){ 
+                        chkarray.push($(this).val()); 
+                     });
+                     if(chkarray.length < 1 ){      //checkbox数组长度小于1
+                         layer.msg('没有选择评论',{icon: 2,time: 5000});
+                         exit();
+                     }
+                     var action = $("#action").val();
+                     if( action === 'pass'){
+                        var pass = confirm('确认审核通过么？');
+                        
+                     }
+                     if( action === 'del_all'){
+                         var del = confirm('确认要删除评论么？');
+                     }
+                     if(del===true || pass===true){
+                         post_str = action +'|'+ chkarray.toString(); 
+                         $.post('{:url("Comments/clComments")}',{post_str : post_str}, function(data){
+                           if (data.status) {
+                                layer.msg(data.msg, {icon: 1,time: 5000},function(){
+                                    window.location.reload();
+                                });
+                            }else {
+                                layer.msg(data.msg,{icon : 2,time : 5000});
+                            }
+                        },'json');
+                     }    
+                 });
+        });
+        </script>

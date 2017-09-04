@@ -26,7 +26,13 @@ class Adminbase extends Controller{
         /*if(!$auth->check($controller . '-' . $action, session('userid'))){
             $this->error('你没有权限访问');
         }*/
-        $this->assign('admin_name',$admin_name['uname']);
+        
+        //首页评论处理数据
+      $commentsData = Model('Comments') -> where('review',2) -> where('isshow',1) -> select();
+      $comments_amount = count($commentsData);
+      
+      $this->assign('comments_amount',$comments_amount);
+      $this->assign('admin_name',$admin_name['uname']);
     }
     //获取所有控制器名称
     protected function getController($module = 'admin'){
@@ -65,9 +71,5 @@ class Adminbase extends Controller{
         }
     }
     
-    //文件上传类
-    /*protected function upload(){
-        
-    }*/
 }
 

@@ -1,0 +1,104 @@
+
+<div id="dcMain">
+   <!-- 当前位置 -->
+    <div id="urHere">管理中心<b>></b><strong>评论回复列表</strong> </div>
+    <div class="mainBox" style="height:auto!important;height:550px;min-height:550px;">
+        <h3><a href="{:url('comments/reviewComments')}" class="actionBtn add">评论回复审核</a>针对于&nbsp;{$mname}&nbsp;发表评论的回复</h3>
+        <div id="list">
+                <table width="100%" border="0" cellpadding="8" cellspacing="0" class="tableBasic">
+                 <tr>
+                      <th width="50" align="left">ID</th>
+                      <th width="50" align="left">回复者</th>    
+                      <th width="50" align="left">回复者ip</th>
+                      <th width="150" align="left">内容</th>
+                      <th width="50" align="left">被回复者</th>
+                      <th width="60" align="left">被回复者ip</th>
+                      <th width="60" align="left">时间</th>
+                      <th width="60" align="left">状态</th>
+                      <th width="60" align="left">审核状态</th>
+                      <th width="120" align="center">操作</th>
+                 </tr>
+                 {volist name='replyData' id='vo'}
+                 <tr>
+                      <td align="left">{$vo['rid']}</td>
+                      <td align="left">{if condition="isset($vo['fromname'][0]) eq false"}该会员已被删除{else/}{$vo['fromname'][0]}{/if}</td>
+                      <td align="left">{$vo['fromUserip']}</td>
+                      <td align="left">{$vo['reply_text']}</td>
+                      <td align="left">{if condition="isset($vo['toname'][0]) eq false"}该会员已被删除{else/}{$vo['toname'][0]}{/if}</td>
+                      <td align="left">{$vo['toUserip']}</td>
+                      <td align="left">{$vo['replyTime']}</td>
+                      <td align="left">{$vo['isshow']=1? '可见' : '隐藏'}</td>
+                      <td align="left">{if condition="$vo['review'] eq 1"}<span style="color:green">通过</span>{/if}{if condition="$vo['review'] eq 0"}<span style="color:red">未通过</span>{/if}{if condition="$vo['review'] eq 2"}<span style="color:blue">待审核</span>{/if}</td>
+                      <td align="center">
+                          <a href="#" id="{$vo['rid']}" class="tab_a_link edit_btn">审核</a>
+                          <a class="tab_a_link del_btn btn-danger-a" href="javascript:;" id="{$vo['rid']}"><i class="fa fa-share-square-o">删除</i></a>
+                      </td>
+                 </tr>
+                 {/volist}
+                </table>
+        </div>
+        <div class="pagelist">
+            {$page}
+        </div>
+    </div>
+ </div>
+        <!--引入js-->
+        <script type="text/javascript" src="__admin__/plugins/jquery-1.8.3.min.js"></script>
+        <script src="__admin__/plugins/layer/layer.min.js"></script>
+        <script type="text/javascript">
+            $(function(){
+                $('.btn-danger-a').on('click',function(){
+                    var del =  confirm('确认要删除么？');
+                    if (del) {
+                        var id =$(this).attr('id');
+                        $.post('{:url("Replycomments/delReply")}',{id : id}, function(data){
+                           if (data.status) {
+                                layer.msg(data.msg, {icon: 1,time: 1500},function(){
+                                    window.location.reload();
+                                });
+                            }else {
+                                layer.msg(data.msg,{icon : 2,time : 2000});
+                            }
+
+                        },'json');
+                    }
+
+                });
+            });
+            
+           $(function(){
+                $('.edit_btn').on('click',function(){
+                    var id =$(this).attr('id');
+                    //layer.msg(id);exit();
+                    layer.confirm('审核通过吗？', {
+                        btn: ['通过','不通过'] //按钮
+                      }, function(){
+                            var type = 1;
+                            var sensArray = new Array(id,type);
+                            var sensString = sensArray.toString();
+                            $.post('{:url("Replycomments/reviewReply")}',{sensid: sensString}, function(data){
+                               if (data.status) {
+                                    layer.msg(data.msg, {icon: 1,time: 1500},function(){
+                                        window.location.reload();
+                                  });
+                                }else {
+                                    layer.msg(data.msg,{icon : 2,time : 2000});
+                                }
+                         },'json');
+                      }, function(){
+                            var type = 0;
+                            var sensArray = new Array(id,type);
+                            var sensString = sensArray.toString();
+                            $.post('{:url("Replycomments/reviewReply")}',{sensid : sensString}, function(data){
+                               if (data.status) {
+                                    layer.msg(data.msg, {icon: 1,time: 1500},function(){
+                                        window.location.reload();
+                                  });
+                                }else {
+                                    layer.msg(data.msg,{icon : 2,time : 2000});
+                                }
+                         },'json');
+                      });
+                });  
+            });
+        </script>

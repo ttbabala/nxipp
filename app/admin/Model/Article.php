@@ -21,6 +21,7 @@ class Article extends Model{
         if (!$data['article_excerpt']){
             exit(json_encode(array('status'=>0,'msg'=>'摘要必须填写^_^')));
         }
+       $imgurl = 'http://'.str_replace("\\","/",$_SERVER['HTTP_HOST'].$data['imgUrl']);
        $this ->data = ([
             'article_author' => $data['article_author'],
             'article_keywords' => $data['article_keywords'],
@@ -32,7 +33,7 @@ class Article extends Model{
             'article_status'  => $data['article_status'],
             'article_comment' => $data['article_comment'],
             'cid' => $data['article_cat'],
-            'article_photo' => 'http://127.0.0.1/upload/img/2017/08/12/test.jpg',
+            'article_photo' => $imgurl,
             'comment_count' => '20',
             'article_pid' => 1
         ]);
@@ -58,6 +59,11 @@ class Article extends Model{
         if (!$data['article_excerpt']){
             exit(json_encode(array('status'=>0,'msg'=>'摘要必须填写^_^')));
         }
+        if($data['imgUrl'] !== ''){
+            $imgurl = 'http://'.str_replace("\\","/",$_SERVER['HTTP_HOST'].$data['imgUrl']);   //得到图片完整路径
+        }else{
+            $imgurl = $data['showpic'];
+        }
         $datas = [
             'article_author' => $data['article_author'],
             'article_keywords' => $data['article_keywords'],
@@ -68,7 +74,7 @@ class Article extends Model{
             'article_status'  => $data['article_status'],
             'article_comment' => $data['article_comment'],
             'cid' => $data['article_cat'],
-            'article_photo' => 'http://127.0.0.1/upload/img/2017/08/12/test.jpg',
+            'article_photo' => $imgurl,
             'comment_count' => '20',
             'article_pid' => 1  //发布者id
         ];

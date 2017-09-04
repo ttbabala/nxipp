@@ -38,16 +38,15 @@
                    <tr>
                        <td align="right">代表图片</td>
                        <td>
-                           <span style="margin: 30%;color: red">只能上传一张300*300图片,大小不得超过10M</span>
-                           <input id="first-upload"  style="float: left;width: 20%;" type="file" name="goods_first" size="38" class="inpFlie" />
-                           <p class="img-ul-p" style="display: inline-block"></p>
-                           <ul class="img-ul-li">
-                               <li class="img-goods-first" style="visibility:hidden;float: left;margin: 2px 5px">
-                                   <img class="first-img" style="display: block;" src="" alt="">
-                                   <a class="img-del"  href="javascript:void(0);">删除</a>
-                                   <input class="goods-first" type="hidden" name="goods_first" value="">
-                               </li>
-                           </ul>
+                          <div id="file_upload_image"><img id="upload_org_code_img" width="80px" height="80px" style="margin-bottom: 10px;" src="{$articleData['article_photo']}"/></div>
+                          <input type="hidden" name="showpic" value="{$articleData['article_photo']}" />
+                          <div class="uploadify">
+                                <input id="uploadify" type="file" multiple="true" value="" class='uploadify-button' />
+                                <a href="javascript:$('#uploadify').uploadify('upload')" >现在上传</a> |
+                                <a href="javascript:$('#uploadify').uploadify('cancel')" >取消上传</a> 
+                                <span style="color: red;margin-left: 20px">支持.gif .jpg .png图像格式，文件大小不能超过2M</span>
+                          </div>
+                          <div id="displayMsg"></div>
                        </td>
                    </tr>
                    <tr>
@@ -74,6 +73,7 @@
                            <input type="hidden" name="token" value="21307217" />
                            <input id="temp" type="hidden" value='{$articleData["article_content"]}' />
                            <input type="hidden" name="aid" value="{$articleData['aid']}" />
+                           <input type="hidden" name="imgUrl" value="" />
                            <input name="submit" class="btn" type="submit" value="提交" />
                        </td>
                    </tr>
@@ -205,7 +205,7 @@
     }
 </script>
 <script type="text/javascript" src="__admin__/plugins/jquery-1.8.3.min.js"></script>
-<script type="text/javascript" src="__admin__/plugins/js/jquery.uploadify.js"></script>
+{load href="__admin__/plugins/uploadify/js/jquery.uploadify.min.js" /} 
 <script src="__admin__/plugins/layer/layer.min.js"></script>
  <script type="text/javascript">
             $(function(){
@@ -226,5 +226,35 @@
                     //layer.msg(datas);
                     return false;
                 });
+            });
+            
+            $(function(){
+                    //swfobject.embedSWF('__admin__/plugins/uploadify/swf/uploadify.swf', "sd_file", "120", "30", "#666");
+                    $("#uploadify").uploadify({
+                        'swf'           :  '__admin__/plugins/uploadify/swf/uploadify.swf',
+                        'uploader'        : '{:url("api/Image/upload")}',
+                        'buttonText'      : '选择图像',  
+                        'fileTypeDesc'    : '请选择图像',  
+                        'fileTypeExts'    : '*.gif; *.jpg; *.png',     
+                        'fileObjName'     : 'file',
+                        'width'           : 80,
+                        'height'          : 25,
+                        'auto'            : false,
+                        'method'          : 'Post',
+                        'wmode'           : 'transparent',
+                        'formData'       : {
+				'urlfrom' : 'Article',
+                        },
+                        'onUploadSuccess' : function(file,data,response) {  
+                         if(response){ 
+                                var obj =JSON.parse(data);
+                                $("#upload_org_code_img").attr("src",obj.src);  
+                                $("#file_upload_image").attr("value",obj.src);
+                                $("input[name='imgUrl']").attr("value",obj.src)
+                                $("input[name='showpic']").attr("value",'')
+                                $("#upload_org_code_img").show(); 
+                            } 
+                        }
+                    });     
             });
 </script>

@@ -4,10 +4,30 @@
     <div id="urHere">管理中心<b>></b><strong>会员列表</strong></div>
     <div class="mainBox" style="height:auto!important;height:550px;min-height:550px;">
         <h3><a href="{:url('Members/addMember')}" class="actionBtn add">添加会员</a>会员列表</h3>
+        <div class="filter">
+            <form id="formfilter" action="{:url('Members/index')}" method="get">
+                 <select name="cat_id">
+                        <option value="0">筛选条件</option>
+                        <option value="user_id">会员ID</option>
+                        <option value="user_name">会员名称</option>
+                        <option value="register_time">注册时间</option>
+                        <option value="gmt_time">最后一次登陆时间</option>
+                  </select>
+                <input type="text" name="timearea" id="time" size="37" placeholder="请选择日期范围" class="inpMain" style="display:none"/>
+                  <input name="article_name" id="article_name" type="text" class="inpMain" value="" size="20" style="display:none"/>
+                  <input class="btnGray" type="submit" value="筛选" />
+            </form>
+            <span>
+                <a class="btnGray" href="#">更新会员头像</a>
+                <a class="btnGray" href="#">开始筛选会员</a>
+            </span>
+        </div>
         <div id="list">
+            <form name="action" id="formaction" method="post" action="#">
                 <table width="100%" border="0" cellpadding="8" cellspacing="0" class="tableBasic">
                  <tr>
-                      <th width="50" align="left">会员ID</th>
+                      <th width="22" align="center"><input name='chkall' type='checkbox' id='chkall' onclick='selectcheckbox(this.form)' value='check'></th>
+                      <th width="30" align="left">会员ID</th>
                       <th width="50" align="left">会员头像</th>
                       <th width="50" align="left">会员名称</th>
                       <th width="50" align="left">会员邮箱</th>
@@ -19,8 +39,9 @@
                  </tr>
                  {volist name='membersData' id='vo'}
                  <tr>
+                     <td align="center"><input type="checkbox" name="checkbox[]" value="{$vo['mid']}" /></td>
                       <td align="left">{$vo['mid']}</td>
-                      <td align="left"><img src="{$vo['headpic']}" width="40px" height="40px"/></td>
+                      <td align="left"><img src="{$vo['headpic']}" width="40px" height="40px" class="img"/></td>
                       <td align="left">{$vo['mname']}</td>
                       <td align="left">{$vo['email']}</td>
                       <td align="left">{$vo['register_time']}</td>
@@ -36,6 +57,15 @@
                  </tr>
                  {/volist}
                 </table>
+                <div class="action">
+                     <select name="action" id="action" onchange="douAction()">
+                          <option value="0">请选择...</option>
+                          <option value="del_all">删除</option>
+                          <option value="blacklist">黑名单</option>
+                     </select>
+                     <input name="submit" class="btn" type="submit" value="执行" />
+                </div>
+            </form>
         </div>
         <div class="pagelist">
             {$page}
@@ -45,6 +75,7 @@
         <!--引入js-->
         <script type="text/javascript" src="__admin__/plugins/jquery-1.8.3.min.js"></script>
         <script src="__admin__/plugins/layer/layer.min.js"></script>
+        <script type="text/javascript" src="__admin__/plugins/laydate/laydate.js"></script>
         <script type="text/javascript">
             $(function(){
                 $('.btn-danger-a').on('click',function(){
@@ -65,4 +96,106 @@
 
                 });
             });
+            
+         $(function(){
+                $("#formfilter").submit(function(){
+                    var datas = $("#formfilter").serialize();
+                    $.post('{:url("Members/index")}',datas,function(data){
+                       if (data.status) {
+                           layer.msg(data.msg, {icon: 1,time: 1500},function(){
+                              window.location.href = data.url;
+                           });
+                       }else {
+                           layer.msg(data.msg, {icon: 2,time: 1500});
+                        }
+
+                    },'json');
+                    //阻止表单刷新提
+                    return false;
+                });
+            });
+            
+            $(function(){
+                $('.img').on('click',function(){
+                   var popimg = $(this)[0].src;
+                   layer.open({
+                        type: 1,
+                        title: false,
+                        closeBtn: 0,
+                        area: '300px',
+                        skin: 'layui-layer-nobg', //没有背景色
+                        shadeClose: true,
+                        content: "<img src="+popimg+" />"
+                      });
+                });
+            });
+            
+            $(function(){
+                $("select[name='cat_id']") .change(function(){
+                    $(this).each(function(){
+                            var arr = ['register_time','gmt_time'];
+                            if(arr.indexOf($(this).val()) !== -1){
+                                  $("#time").show();
+                                  $("#time").attr('name','timearea'); //为time添加name属性便于提交
+                                  $("#article_name").hide();
+                                  $("#article_name").removeAttr('name')
+                                  laydate.render({ 
+                                     elem: '#time'
+                                    ,type: 'datetime'
+                                    ,range: '|' //或 range: '~' 来自定义分割字符
+                                  });
+                            }else{
+                                  $("#time").hide();
+                                  $('#time').removeAttr('name');    //去掉文本框time的name属性，从而不提交该表单元素内容
+                                  $("#article_name").show();
+                                  $("#article_name").attr('name','article_name');
+                            }
+                            if($(this).val() === '0'){
+                                $("time").hide();
+                                $("time").removeAttr('name');
+                                $("#article_name").hide();
+                                $("#article_name").removeAttr('name');
+                            }
+                });
+            });
+        });  
+        
+         $(function(){   //异步批量删除
+                 $("#formaction").submit(function(){
+                     var chkarray =[]; 
+                     var post_str = '';
+                     $("input[name='checkbox[]']:checked").each(function(){ 
+                        chkarray.push($(this).val()); 
+                     });
+                     if(chkarray.length < 1 ){      //checkbox数组长度小于1
+                         layer.msg('没有选择会员',{icon: 2,time: 5000});
+                         exit();
+                     }
+                     var action = $("#action").val();
+                     if( action === 'blacklist'){
+                        var blacklist = confirm('确认要把会员加入到黑名单么？');
+                        var toblacklist = 'yes';
+                        if(blacklist){
+                          post_str = action +'|'+ chkarray.toString() + '|'+ toblacklist;   
+                        }else{
+                            exit();
+                        }
+                     }
+                        var del = confirm('确认要删除会员么？');
+                        if(del){
+                           post_str = action +'|'+ chkarray.toString(); 
+                        }else{
+                            exit();
+                        }
+                        $.post('{:url("Members/clMembers")}',{post_str : post_str}, function(data){
+                           if (data.status) {
+                                layer.msg(data.msg, {icon: 1,time: 5000},function(){
+                                    window.location.reload();
+                                });
+                            }else {
+                                layer.msg(data.msg,{icon : 2,time : 5000});
+                            }
+                        },'json');             
+                 });
+        });
         </script>
