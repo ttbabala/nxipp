@@ -3,6 +3,7 @@ namespace app\admin\Controller;
 use app\common\Controller\Adminbase;
 use app\admin\Model\System as tSystem;
 use think\Request;
+use think\Db;
 class System extends Adminbase{
     public function index(){
         $Request = Request::instance();
@@ -50,5 +51,19 @@ class System extends Adminbase{
             $this -> assign('linkarray',$linkarray);
         }
         return $this ->fetch();
+    }
+    
+    public function delLink(){
+        $link = input('link');
+        $st = new tSystem();
+        $linkIdArray = explode('|',$link);              //包含ID的数组
+        /*if($linkIdArray[1] == 'null,null'){}*/        //判断‘网址,logo'组合是否为空
+        $where = "update system set link=REPLACE(link,'".$linkIdArray[2]."','null,null')";  //sql原生替换，将'网址,logo'的组合，替换为'null,null',意为清空
+        //$where = "update system set link=REPLACE(link,'www.nxipp.com,http://localhost/nxipp/public/uploads/logo/20170907/e6b0cb9d82b93842da0887bc7b6a9859.gif','null,null')";
+        $Result = Db::execute($where);          
+        if($Result){
+           return json(['status'=>1,'msg'=>'清空成功^_^']); 
+        }
+        return json(['status'=>0,'msg'=>'清空失败哦^_^']); 
     }
 }

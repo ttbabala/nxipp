@@ -59,11 +59,12 @@
                         <table>
                             <tr>
                                 {volist name="linkarray" id="vo" key="k"}
-                                    <td><div id="file_upload_logo{$k-1}"><img id="upload_org_code_logo{$k-1}" src="{$vo[1]}" width="150px" height="50px" style="margin-bottom: 10px;" /></div>
-                                        <div class="uploadifylogo{$k-1}">
-                                         <input class="uploadifylogo" id="uploadifylogo{$k-1}" type="file" multiple="true" value="" />
-                                        </div>网址：<input type="text" name="linktxt{$k-1}" value="{$vo[0]}" size="40" class="inpMain" style="border-bottom: 1px dotted #778899;"/>&nbsp;
-                                    </td>
+                                        <div style="float:left;margin-left:5px;border-right: 1px dotted #C4C4C4;width:310px;">
+                                            <div id="file_upload_logo{$k-1}"><img id="upload_org_code_logo{$k-1}" src="{$vo[1]}" width="150px" height="50px" style="margin-bottom: 10px;" /></div>
+                                            <div class="uploadifylogo{$k-1}"><input class="uploadifylogo" id="uploadifylogo{$k-1}" type="file" multiple="true" value="" /></div>
+                                            网址：<input type="text" name="linktxt{$k-1}" value="{$vo[0]}" size="40" class="inpMain" style="border-bottom: 1px dotted #C4C4C4;"/>
+                                            <div class="close" value="{$vo[0]}" style='float:right;margin-top:-125px;margin-right:10px;'><a href="javascript:;" value="{$systemData['id']}|{$k-1}|{$vo[0]},{$vo[1]}" style="color:red">×清空</a></div>
+                                        </div>
                                 {/volist}
                             </tr>
                         </table>
@@ -94,15 +95,15 @@
             $(function(){
                 $("#formaddSystem").submit(function(){
                     var datas = $("#formaddSystem").serialize();
+                    //layer.msg(datas, {icon: 2,time: 50000});
                     $.post('{:url("System/index")}',datas,function(data){
                         if (data.status) {
                             layer.msg(data.msg, {icon: 1,time: 1500},function(){
                                 window.location.href = data.url;
                             });
                         }else {
-                            layer.msg(data.msg, {icon: 2,time: 50000});
+                            layer.msg(data.msg, {icon: 2,time: 1500});
                         }
-
                     },'json');
                     //阻止表单刷新提交
                     return false;
@@ -188,5 +189,24 @@
                     
                 });
             });
-           
+            
+            $(function(){
+                $('.close').children('a').click(function(){
+                    var del =  confirm('确认要清空此项么？');
+                    if(del){
+                        var link = $(this).attr("value");
+                        //alert(link);exit();
+                        $.post('{:url("System/delLink")}',{'link':link},function(data){
+                            if (data.status) {
+                                layer.msg(data.msg, {icon: 1,time: 1500},function(){
+                                    window.location.reload();
+                                });
+                            }else {
+                                layer.msg(data.msg, {icon: 2,time: 50000});
+                            }
+
+                        },'json');
+                    };
+                 });
+            });
         </script>

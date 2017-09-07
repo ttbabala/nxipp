@@ -1,0 +1,49 @@
+<div id="dcMain">
+   <!-- 当前位置 -->
+        <div id="urHere">管理中心<b>></b><strong>数据备份</strong></div>
+        <div class="mainBox" style="height:auto!important;height:550px;min-height:550px;">
+            <h3><a href="javascript:;" class="actionBtn add" onclick="handle('backup')">添加备份</a>数据备份</h3>
+            <table width="100%" border="0" cellpadding="8" cellspacing="0" class="tableBasic">
+                  <tr>
+                        <th width="150" align="left" style="font-size: 15px">序号</th>
+                        <th width="500" align="center" style="font-size: 15px">备份名称</th>
+                        <th width="150" align="center" style="font-size: 15px">备份时间</th>
+                        <th width="150" align="center" style="font-size: 15px">备份大小</th>
+                        <th width="340" align="center" style="font-size: 15px">操作</th>
+                  </tr>
+                  {volist name="list" id="vo"}
+                  <tr>
+                        <td align="left">{$key}</td>
+                        <td align="center">{$vo.name}</td>
+                        <td align="center">{$vo.time}</td>
+                        <td align="center">{$vo.size}</td>
+                        <td align="center">
+                            <a href="{:url('bak',['tp'=>'dowonload','name'=>$vo.name])}" class="btn-aa btn-primary-a" >下载</a>
+                            <a onclick="handle('restore','{$vo.name}')" class="btn-aa btn-warning-a" >还原</a>
+                            <a onclick="handle('del','{$vo.name}')" class="btn-aa btn-danger-a">删除</a>
+                        </td>
+                  </tr>
+                  {/volist}
+            </table>
+        </div>
+          <!--引入js-->
+         <script type="text/javascript" src="__admin__/plugins/jquery-1.8.3.min.js"></script>
+         <script type="text/javascript" src="__admin__/plugins/js/jquery.uploadify.js"></script>
+         <script src="__admin__/plugins/layer/layer.min.js"></script>
+        <script type="text/javascript">
+                function handle(tp,name=''){ 
+                    if (tp){
+                        $.post("{:url('bak')}",{tp:tp,name:name},function(response){
+                            if (response){
+                               layer.msg(response, {icon: 1,time: 1500},function(){
+                                   window.location.reload();
+                                });
+                            }
+                            else{
+                                layer.msg('操作失败，请重试！',{iocn : 2,time : 2000});
+                            }
+                        },'json');
+                    }
+                }
+        </script>
+ </div>

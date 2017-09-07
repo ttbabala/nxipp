@@ -28,18 +28,15 @@ class System extends Model{
                     }
         }
         
-        for($i=0;$i<4;$i++){            //处理友情链接logo图片路径
-                    if($data["linktxt$i"] == ''){
-                        $data["linktxt$i"] == 'null';
-                    }
-                    if($data["linkimg$i"] == ''){
-                        $linkArrayimg[$i] == 'null';
-                    }           
-                    
-                    if(strstr($data["linkimg$i"],$_SERVER['HTTP_HOST'])){
-                        $linkArrayimg[$i] = str_replace("\\","/",$data["linkimg$i"]);
+        for($i=0;$i<4;$i++){            //处理友情链接logo图片路径      
+                    if($data["linkimg$i"] !== 'null'){
+                         if(strstr($data["linkimg$i"],$_SERVER['HTTP_HOST'])){
+                            $linkArrayimg[$i] = str_replace("\\","/",$data["linkimg$i"]);
+                         }else{
+                            $linkArrayimg[$i] = 'http://'.str_replace("\\","/",$_SERVER['HTTP_HOST'].$data["linkimg$i"]); 
+                         }
                     }else{
-                       $linkArrayimg[$i] = 'http://'.str_replace("\\","/",$_SERVER['HTTP_HOST'].$data["linkimg$i"]); 
+                        $linkArrayimg[$i] = $data["linkimg$i"];;
                     }
                     $linkArray[$i] = $data["linktxt$i"].",".$linkArrayimg[$i];
         }
