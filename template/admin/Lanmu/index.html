@@ -1,0 +1,76 @@
+
+ <div id="dcMain">
+   <!-- 当前位置 -->
+
+        <div id="urHere">管理中心<b>></b><strong>栏目列表</strong></div>
+
+        <div class="mainBox" style="height:auto!important;height:550px;min-height:550px;">
+            <h3><a href="{:url('Lanmu/addLanmu')}" class="actionBtn add">添加栏目</a>栏目列表</h3>
+            <table width="100%" border="0" cellpadding="8" cellspacing="0" class="tableBasic">
+                  <tr>
+                        <th width="200" align="left" style="font-size: 15px">栏目名称</th>
+                        <th width="150" align="left" style="font-size: 15px">别名</th>
+                        <th width="250" align="left" style="font-size: 15px">链接</th>
+                        <th width="150" align="center" style="font-size: 15px">排序号</th>
+                        <th width="150" align="center" style="font-size: 15px">是否显示</th>
+                        <th width="" align="center" style="font-size: 15px">操作</th>
+                  </tr>
+                  {volist name="data" id="vo"}
+                  <tr>
+                        <td align="left"> <a href="" style="font-size: 14px">{$vo['_name']}</a></td>
+                        <td align="left" class="td-catsort" >{$vo.aliasname}</td>
+                        <td align="left" class="td-catsort" >{$vo.link}</td>
+                        <td align="center" class="td-catsort" sort ={$vo.sort} >{$vo.sort}</td>
+                        <td align="center">
+
+                            {if condition="$vo.isshow"}
+                                <span class="label-aa label-success-a">是</span>
+                            {else}
+                                <span class="label-aa label-success-a">否</span>
+                            {/if}
+
+                        </td>
+                        <td align="center">
+                            <a href="{:url('Lanmu/addSubLanmu',array('id' => $vo['id']))}" class="btn-aa btn-primary-a" style="width:80px">添加子栏目</a>
+                            <a href="{:url('Lanmu/editLanmu',array('id' => $vo['id']))}" class="btn-aa btn-warning-a">编辑</a>
+                            <a href="javascript:;" id="{$vo['id']}" class="btn-aa btn-danger-a">删除</a>
+                        </td>
+                  </tr>
+                  {/volist}
+            </table>
+        </div>
+          <!--引入js-->
+         <script type="text/javascript" src="__admin__/plugins/jquery-1.8.3.min.js"></script>
+         <script type="text/javascript" src="__admin__/plugins/js/jquery.uploadify.js"></script>
+         <script src="__admin__/plugins/layer/layer.min.js"></script>
+        <div class="catsort-a atsort-aa">排序</div>
+        <script type="text/javascript">
+            $(function(){
+                $('.btn-danger-a').on('click',function(){
+                  var del =  confirm('确认要删除么？');
+                    if (del) {
+                        var id =$(this).attr('id');
+                        $.post('{:url("Lanmu/delLanmu")}',{id : id}, function(data){
+                            if (data.status) {
+                                layer.msg(data.msg, {icon: 1,time: 1500},function(){
+                                    window.location.reload();
+                                });
+                            }else {
+                                layer.msg(data.msg,{iocn : 2,time : 2000});
+                            }
+
+                        },'json');
+                    }
+
+                    });
+
+                //排序
+                $('.catsort-a').on('click',function(){
+                    var catsort = $('.td-catsort').attr('catsort');
+                    console.log(catsort);
+                });
+
+
+            });
+        </script>
+ </div>

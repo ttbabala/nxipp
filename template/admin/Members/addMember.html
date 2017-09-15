@@ -64,7 +64,6 @@
         <script type="text/javascript">
             $(function(){
                 $("#formaddMember").submit(function(){
-                           console.log('hello');
                            var datas = $("#formaddMember").serialize();
                            $.post('{:url("Members/addMember")}',datas,function(data){
                                if (data.status) {

@@ -1,0 +1,176 @@
+ <!-- footer
+   ================================================== -->
+   <footer>
+
+   	<div class="footer-main">
+
+   		<div class="row">  
+
+	      	<div class="col-four tab-full mob-full footer-info">            
+
+	            <h4>关于我们</h4>
+
+	               <p>
+		          	宁夏大学（Ningxia University），简称“宁大”，学校坐落于贺兰山下有着“塞上湖城”美誉的历史文化名城银川市，是教育部与宁夏回族自治区人民政府共建的以文、理、工、农为主体的综合性大学，国家“211工程”重点建设大学，“中西部高校综合实力提升工程”高校，是国家“卓越工程师教育培养计划”、“卓越农林人才教育培养计划”“国家大学生创新性实验计划”和“国家建设高水平大学公派研究生项目”实施高校，是国家教育部首批批准的招收留学生和中国政府奖学金来华留学生培养高校。
+		          	</p>
+
+		      </div> <!-- end footer-info -->
+
+	      	<div class="col-two tab-1-3 mob-1-2 site-links">
+
+	      		<h4>网站栏目</h4>
+
+	      		<ul>
+	      			<li><a href="#">About Us</a></li>
+						<li><a href="#">Blog</a></li>
+						<li><a href="#">FAQ</a></li>
+						<li><a href="#">Terms</a></li>
+						<li><a href="#">Privacy Policy</a></li>
+					</ul>
+
+	      	</div> <!-- end site-links -->  
+
+	      	<div class="col-two tab-1-3 mob-1-2 social-links">
+
+	      		<h4>友情链接</h4>
+
+	      		<ul>
+	      			<li><a href="#">Twitter</a></li>
+						<li><a href="#">Facebook</a></li>
+						<li><a href="#">Dribbble</a></li>
+						<li><a href="#">Google+</a></li>
+						<li><a href="#">Instagram</a></li>
+					</ul>
+	      	           	
+	      	</div> <!-- end social links --> 
+
+	      	<div class="col-four tab-1-3 mob-full footer-subscribe">
+
+	      		<h4>问题反馈</h4>
+
+	      		<p>Keep yourself updated. Subscribe to our newsletter.</p>
+
+	      		<div class="subscribe-form">
+	      	
+	      			<form id="mc-form" class="group" novalidate="true">
+
+							<input type="email" value="" name="dEmail" class="email" id="mc-email" placeholder="Type &amp; press enter" required=""> 
+	   		
+			   			<input type="submit" name="subscribe" >
+		   	
+		   				<label for="mc-email" class="subscribe-message"></label>
+                                                
+                                                <input type="hidden" name="mid" value="{$mid}" >
+			
+						</form>
+
+	      		</div>	      		
+	      	           	
+	      	</div> <!-- end subscribe -->         
+
+	      </div> <!-- end row -->
+
+   	</div> <!-- end footer-main -->
+
+      <div class="footer-bottom">
+      	<div class="row">
+
+      		<div class="col-twelve">
+	      		<div class="copyright">
+		         	<span>© Copyright Abstract styleshout 2016</span> 
+		         	<span>More Templates <a href="http://www.cssmoban.com/" target="_blank" title="模板之家">模板之家</a> - Collect from <a href="http://www.cssmoban.com/" title="网页模板" target="_blank">网页模板</a></span>		         	
+		         </div>
+
+		         <div id="go-top">
+		            <a class="smoothscroll" title="Back to Top" href="#top"><i class="icon icon-arrow-up"></i></a>
+		         </div>         
+	      	</div>
+
+      	</div> 
+      </div> <!-- end footer-bottom -->  
+
+   </footer>  
+
+   <div id="preloader"> 
+    	<div id="loader"></div>
+   </div> 
+
+   <!-- Java Script
+   ================================================== --> 
+   <script src="__home__/js/jquery-2.1.3.min.js"></script>
+   <script src="__home__/js/plugins.js"></script>
+   <script src="__home__/js/jquery.appear.js"></script>
+   <script src="__home__/js/main.js"></script>
+   <script type="text/javascript">
+       var UserRegisterUrl = "{:url('Register/index')}";
+       var UserLoginUrl = "{:url('Login/index')}";
+       var UserReplyUrl = "{:url('Reply/index')}"; 
+         $(function(){
+             $('.register').on('click',function(){
+                 layer.open({  
+                     type: 2,  
+                     title: '会员注册',  
+                     maxmin: true,  
+                     skin: 'layui-layer-lan',  
+                     shadeClose: true, //点击遮罩关闭层  
+                     area : ['400px' , '380px'],  
+                     content:UserRegisterUrl//弹框显示的url  
+                 }); 
+             });
+         });
+
+         $(function(){
+             $('.login').on('click',function(){
+                 layer.open({  
+                     type: 2,  
+                     title: '会员登陆',  
+                     maxmin: true,  
+                     skin: 'layui-layer-lan',  
+                     shadeClose: true, //点击遮罩关闭层  
+                     area : ['410px' , '220px'],  
+                     content:UserLoginUrl//弹框显示的url  
+                 }); 
+             });
+         });
+         
+        $(function(){
+             $('.reply').on('click',function(){
+                 var mname = $(this).attr('value');
+                 var mid = $(this).attr('mid');
+                 var cid = $(this).attr('cid');
+                 layer.open({  
+                     type: 2,  
+                     title: '@&nbsp;'+mname+'&nbsp;的评论',  
+                     maxmin: true,  
+                     skin: 'layui-layer-lan',  
+                     shadeClose: true, //点击遮罩关闭层  
+                     area : ['400px' , '280px'],  
+                     content:UserReplyUrl+'?mid='+mid+'&cid='+cid //弹框显示的url  
+                 }); 
+             });
+         });
+         
+        $(function(){
+                $('.logout').on('click',function(){
+                    var mid =$('input[name="mid"]').val();
+                    layer.confirm('您确定要退出网站吗？', {
+                        btn: ['退出','再看看'] //按钮
+                      }, function(){
+                         $.post('{:url("Login/logout")}',{mid: mid}, function(data){
+                               if (data.status) {
+                                    layer.msg(data.msg, {icon: 1,time: 1500},function(){
+                                    window.location.reload();
+                                  });
+                                }else {
+                                    layer.msg(data.msg,{icon : 2,time : 2000});
+                               }
+                         },'json');
+                      }, function(){
+                         //什么也不做
+                      });
+                });  
+            });
+        
+   </script>
+</body>
+</html>

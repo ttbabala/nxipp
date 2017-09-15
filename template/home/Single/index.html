@@ -1,0 +1,200 @@
+ <!-- content
+   ================================================== -->
+   <section id="content-wrap" class="blog-single">
+   	<div class="row">
+   		<div class="col-twelve">
+
+   			<article class="format-standard">  
+
+   				<div class="content-media">
+						<div class="post-thumb">
+							<img src="{$articleData[0]['article_photo']}"> 
+						</div>  
+					</div>
+
+					<div class="primary-content">
+
+						<h1 class="page-title">{$articleData[0]['article_title']}</h1>	
+
+						<ul class="entry-meta">
+							<li class="date">{$articleData[0]['article_date']}</li>
+                                                        <li class="date">{$articleData[0]['article_author']}</li>	
+							<li class="cat"><?php $keywordsArray = explode(',',$articleData[0]['article_keywords']); for($i=0;$i<count($keywordsArray);$i++){ echo "<a href='#'>$keywordsArray[$i]</a>";}?></li>				
+						</ul>						
+
+						<p class="lead">{$articleData[0]['article_excerpt']}</p> 
+
+                                                <p>{$articleData[0]['article_content']}</p>
+	
+						<p class="tags">
+		  			     	<span>如果你喜欢这篇文章，快为它点赞:</span>
+		  				  	<a href="#">orci</a><a href="#">lectus</a><a href="#">varius</a><a href="#">turpis</a>
+                                                </p>
+                                                <div class="bdsharebuttonbox">  
+                                                    <a href="#" class="bds_more" data-cmd="more"></a>  
+                                                    <a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a>  
+                                                    <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>  
+                                                    <a href="#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博"></a>  
+                                                    <a href="#" class="bds_renren" data-cmd="renren" title="分享到人人网"></a>  
+                                                    <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>  
+                                                </div>  
+                                                <script>  
+                                                        window._bd_share_config={  
+                                                                "common":{  
+                                                                    "bdPopTitle":"您的自定义pop窗口标题",  
+                                                                    "bdSnsKey":{},  
+                                                                    "bdText":"此处填写自定义的分享内容",   
+                                                                    "bdMini":"2",  
+                                                                    "bdMiniList":false,  
+                                                                    "bdPic":"http://localhost/centlight/public/attachment/201410/24/14/5449ef39574f5_282x220.jpg", /* 此处填写要分享图片地址 */  
+                                                                    "bdStyle":"0",  
+                                                                    "bdSize":"16"  
+                                                                    },  
+                                                                "share":{}  
+                                                        };  
+                                                        with(document)0[  
+                                                                        (getElementsByTagName('head')[0]||body).  
+                                                                        appendChild(createElement('script')).  
+                                                                        src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)  
+                                                        ];  
+                                                </script>  
+					</div> <!-- end entry-primary -->		  			   
+
+	  			   <div class="pagenav group">
+		  			   <div class="prev-nav">
+		  			   	<a href="#" rel="prev">
+		  			   		<span>上一篇</span>
+		  			   		Tips on Minimalist Design 
+		  			   	</a>
+		  			   </div>
+		  				<div class="next-nav">
+		  					<a href="#" rel="next">
+		  						<span>下一篇</span>
+		  			   		Less Is More 
+		  					</a>
+		  				</div>  				   
+	  				</div>
+
+				</article>
+
+			</div> <!-- end col-twelve -->
+   	</div> <!-- end row -->
+		<div class="comments-wrap">
+			<div id="comments" class="row">
+				<div class="col-full">
+
+               <h3>{$commentsNums} 条评论</h3>
+
+               <!-- commentlist -->
+               {if condition="$commentsNums > 0 "}
+               <ol class="commentlist">
+                  {volist name="commentsData" id="vo" key="i"}
+                  <li class="thread-alt depth-1">
+
+                     <div class="avatar">
+                        <img width="50" height="50" class="avatar" src="{$vo['headpic'][0]}" alt="">
+                     </div>
+
+                     <div class="comment-content">
+
+	                     <div class="comment-info">
+	                        <cite>{$vo['mname'][0]}</cite>
+
+	                        <div class="comment-meta">
+	                           <time class="comment-time" datetime="2014-07-12T24:05">{$vo['date']}</time>
+                                   <span class="sep">/</span><a href="javascript:;" style="color:#ff0202" class="replyView" cid="{$vo['cid']}">{$vo['nums']}</a>&nbsp;<a class="reply" href="javascript:;" value="{$vo['mname'][0]}" mid="{$vo['mid']}" cid="{$vo['cid']}">回复</a>
+	                        </div>
+	                     </div>
+
+	                     <div class="comment-text">
+	                        <p>{$vo['ctext']}</p>                        
+	                     </div>
+	             </div>
+                      {if condition="$ReplyNums gt 0 "}
+                      <ul class="children" style="display:none" id="{$vo['cid']}">
+                        {foreach name="commentsData[$i-1]['reply']" id="rp" key="k"}
+                        <li class="depth-2">
+                            
+                           <div class="avatar-son">
+                              <img width="30" height="30" style="margin-left:120px;border-radius:50%;-webkit-border-radius:50%;-moz-border-radius:50%;" src="{$fromUserHp[$i-1][$k][0]}" alt="">
+                           </div>
+
+                           <div class="comment-content">
+
+	                           <div class="comment-info">
+	                              <cite>{$fromUserName[$i-1][$k][0]}</cite>
+
+	                              <div class="comment-meta">
+	                                 <time class="comment-time" datetime="2014-07-12T25:05">{$rp['replyTime']}</time>
+	                                 <span class="sep">/</span><a class="reply" href="#">回复</a>
+	                              </div>
+	                           </div>
+
+	                           <div class="comment-text">
+	                              <p>{$rp['reply_text']}</p>
+	                           </div>
+
+                           </div>
+                        </li>
+                        {/foreach}
+                    </ul>
+                    {/if}
+                  </li>
+                  {/volist}
+
+               </ol> <!-- Commentlist End -->					
+                {/if}
+               <!-- respond -->
+               <div class="respond">
+
+               	<h3>发表评论</h3>
+
+                  <form id="contactForm" enctype="multipart/form-data">
+  					   <fieldset>
+                     <div class="message form-field">
+                        <textarea name="cMessage" id="cMessage" class="full-width" placeholder="Your Message" ></textarea>
+                     </div>
+                     <input type='hidden' name='aid' value="{$aid}" />
+                     <button type="submit" class="submit button-primary">立即评论</button>
+
+  					   </fieldset>
+                 </form> <!-- Form End -->
+
+               </div> <!-- Respond End -->
+
+         	</div> <!-- end col-full -->
+         </div> <!-- end row comments -->
+		</div> <!-- end comments-wrap -->
+
+   </section> <!-- end content -->
+  <script type='text/javascript'>  
+    $(function(){
+                $("#contactForm").submit(function(){
+                    var datas = $("#contactForm").serialize();
+                    $.post('{:url("Comments/addComments")}',datas,function(data){
+                       if (data.status) {
+                           layer.msg(data.msg, {icon: 1,time: 1500},function(){
+                              window.location.reload();
+                           });
+                       }else {
+                           layer.msg(data.msg, {icon: 2,time: 1500});
+                        }
+
+                    },'json');
+                    //阻止表单刷新提
+                    return false;
+                });
+            });
+            
+      $(function(){
+                $(".replyView").on('click',function(){
+                    var id = $(this).attr('cid');
+                    if($('#'+id).css("display")=="none"){
+                      $('#'+id).show();
+                    }else{
+                      $('#'+id).hide();
+                    }
+                });
+            });
+            
+  </script>

@@ -1,8 +1,20 @@
 <?php
+namespace app\home\Controller;
+use app\common\Controller\Homebase;
+use app\admin\Model\System;
+use app\admin\Model\Article;
 
-/* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 
+class Index extends Homebase{
+    
+    public function index(){
+        $st = new System();         
+        $hddata = $st -> column('huandengimg');
+        $at = new Article();
+        $articleData = $at -> order('article_date','desc') -> select();
+        $hdData= explode(",",$hddata[0]);
+        $this -> assign('hdData',$hdData);
+        $this -> assign('articleData',$articleData);
+        return $this -> fetch();
+    }  
+}
