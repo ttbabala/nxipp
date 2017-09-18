@@ -21,6 +21,7 @@
    <link rel="stylesheet" href="__home__/css/vendor.css">  
    <link rel="stylesheet" href="__home__/css/main.css">
    <link rel="stylesheet" href="__home__/css/public.css">
+   <link rel="stylesheet" href="__home__/css/zan.css">
         
 
    <!-- script
@@ -54,7 +55,7 @@
 
 	   	<nav id="main-nav-wrap">
 				<ul class="main-navigation sf-menu">
-					<li class="current"><a href="index.html" title="">首页</a></li>	
+					<li class="current"><a href='{:url("Index/index")}' title="">首页</a></li>	
                                         {volist name="lanmuData" id="vo"}
 					<li class="has-children">
 						<a href='{$vo["link"]}' title="">{$vo['lname']}</a>

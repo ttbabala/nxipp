@@ -1,0 +1,91 @@
+<div id="dcMain">
+   <!-- 当前位置 -->
+    <div id="urHere">管理中心<b>></b><strong>点赞列表</strong> </div>
+    <div class="mainBox" style="height:auto!important;height:550px;min-height:550px;">
+        <h3><a href="javascript:;" class="actionBtn initAll">全部初始化</a>点赞列表</h3>
+        <div id="list">
+            <form name="fromZan" id="formZan" method="post" action="#">
+                <table width="100%" border="0" cellpadding="8" cellspacing="0" class="tableBasic">
+                 <tr>
+                      <th width="20" align="left">文章ID</th>
+                      <th width="90" align="left">文章标题</th>
+                      <th width="39" align="left">文章作者</th>
+                      <th width="40" align="left">发布时间</th>
+                      <th width="15" align="left">赞</th>
+                      <th width="20" align="left">赞所占比例</th>
+                      <th width="15" align="left">踩</th>
+                      <th width="20" align="left">踩所占比例</th>
+                      <th width="120" align="center">操作</th>
+                 </tr>
+                 {volist name="zanData" id="vo" key="k"}
+                 <tr>
+                      <td align="left">{$vo['id']}</td>
+                      <td align="left">{$vo['article_title'][0]}</td>
+                      <td align="left">{$vo['article_author'][0]}</td>
+                      <td align="left">{$vo['article_date'][0]}</td>
+                      <td align="left">{$vo['likes']}</td>
+                      <td align="left">{$vo['like_percent']}%</td>
+                      <td align="left">{$vo['unlikes']}</td>
+                      <td align="left">{$vo['unlike_percent']}%</td>
+                      <td align="center">
+                          <a href="javascript:;" class="tab_a_link init_btn" value="{$vo['id']}">初始化</a>
+                      </td>
+                 </tr>
+                 {/volist}
+                </table>
+                </form>
+        </div>
+        <div class="pagelist">
+                {$page}
+        </div>
+    </div>
+ </div>
+        <!--引入js-->
+        <script type="text/javascript" src="__admin__/plugins/jquery-1.8.3.min.js"></script>
+        <script src="__admin__/plugins/layer/layer.min.js"></script>
+        <script type="text/javascript">  
+            $(function(){   //单个初始化
+                $('.init_btn').on('click',function(){
+                    var init =  confirm('确认要初始化此条记录么？');
+                    if (init) {
+                        var type = 'single';
+                        var id = $(this).attr('value');
+                        var tiString = type+'|'+id; 
+                        $.post('{:url("Zan/initzan")}',{datas: tiString}, function(data){
+                           if (data.status) {
+                                layer.msg(data.msg, {icon: 1,time: 1500},function(){
+                                    window.location.href = data.url;
+                                });
+                            }else {
+                                layer.msg(data.msg,{icon : 2,time : 2000});
+                            }
+
+                        },'json');
+                    }
+
+                });
+            });
+            
+             $(function(){   //点赞全部初始化
+                $('.initAll').on('click',function(){
+                    var init =  confirm('确认要将站内所有作品点赞及被踩数全部初始化么？');
+                    if (init) {
+                        var type = 'all';
+                        $.post('{:url("Zan/initzan")}',{type : type}, function(data){
+                           if (data.status) {
+                                layer.msg(data.msg, {icon: 1,time: 1500},function(){
+                                      window.location.href = data.url;
+                                  });
+                            }else {
+                                layer.msg(data.msg,{icon : 2,time : 2000});
+                            }
+
+                        },'json');
+                    }
+
+                });
+            });
+            
+            
+
+        </script>

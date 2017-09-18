@@ -42,7 +42,7 @@
             <article class="brick entry format-standard animate-this">
 
                  <div class="entry-thumb">
-                    <a href="single-standard.html" class="thumb-link">
+                    <a href="{:url('Single/index',array('aid' => $vo['aid']))}" class="thumb-link">
                             <img src="{$vo['article_photo']}" alt="building">             
                     </a>
                  </div>
@@ -79,7 +79,7 @@
    	<div class="row">
    		
    		<nav class="pagination">
-		      <span class="page-numbers prev inactive">Prev</span>
+		      <!--<span class="page-numbers prev inactive">Prev</span>
 		   	<span class="page-numbers current">1</span>
 		   	<a href="#" class="page-numbers">2</a>
 		      <a href="#" class="page-numbers">3</a>
@@ -89,7 +89,8 @@
 		      <a href="#" class="page-numbers">7</a>
 		      <a href="#" class="page-numbers">8</a>
 		      <a href="#" class="page-numbers">9</a>
-		   	<a href="#" class="page-numbers next">Next</a>
+		   	<a href="#" class="page-numbers next">Next</a> -->
+                      {$page}
 	      </nav>
 
    	</div>

@@ -8,27 +8,39 @@
 
    				<div class="content-media">
 						<div class="post-thumb">
-							<img src="{$articleData[0]['article_photo']}"> 
+							<img src="{$articleData['article_photo']}"> 
 						</div>  
 					</div>
 
 					<div class="primary-content">
 
-						<h1 class="page-title">{$articleData[0]['article_title']}</h1>	
+						<h1 class="page-title">{$articleData['article_title']}</h1>	
 
 						<ul class="entry-meta">
-							<li class="date">{$articleData[0]['article_date']}</li>
-                                                        <li class="date">{$articleData[0]['article_author']}</li>	
-							<li class="cat"><?php $keywordsArray = explode(',',$articleData[0]['article_keywords']); for($i=0;$i<count($keywordsArray);$i++){ echo "<a href='#'>$keywordsArray[$i]</a>";}?></li>				
+							<li class="date">{$articleData['article_date']}</li>
+                                                        <li class="date">{$articleData['article_author']}</li>	
+							<li class="cat"><?php $keywordsArray = explode(',',$articleData['article_keywords']); for($i=0;$i<count($keywordsArray);$i++){ echo "<a href='#'>$keywordsArray[$i]</a>";}?></li>				
 						</ul>						
 
-						<p class="lead">{$articleData[0]['article_excerpt']}</p> 
+						<p class="lead">{$articleData['article_excerpt']}</p> 
 
-                                                <p>{$articleData[0]['article_content']}</p>
+                                                <p>{$articleData['article_content']}</p>
 	
 						<p class="tags">
 		  			     	<span>如果你喜欢这篇文章，快为它点赞:</span>
-		  				  	<a href="#">orci</a><a href="#">lectus</a><a href="#">varius</a><a href="#">turpis</a>
+		  				  	<div class="digg"> 
+                                                            <div id="dig_up" class="digup" aid="{$articleData['aid']}">
+                                                                    <span id="num_up">{$voteData['likes']}</span>
+                                                                    <p>赞</p>
+                                                                <div id="bar_up" class="bar"><span style="width:{$voteData['like_percent']}"></span><i></i></div>
+                                                            </div>
+                                                            <div id="dig_down" class="digdown" aid="{$articleData['aid']}">
+                                                                    <span id="num_down">{$voteData['unlikes']}</span>
+                                                                    <p>踩</p>
+                                                                <div id="bar_down" class="bar"><span style="width:{$voteData['unlike_percent']}"></span><i></i></div>
+                                                            </div>
+                                                            <div id="msg"></div>
+                                                       </div>
                                                 </p>
                                                 <div class="bdsharebuttonbox">  
                                                     <a href="#" class="bds_more" data-cmd="more"></a>  
@@ -62,16 +74,24 @@
 
 	  			   <div class="pagenav group">
 		  			   <div class="prev-nav">
-		  			   	<a href="#" rel="prev">
+                                               {if condition="empty($prvData) eq true"}
+                                               没有了
+                                               {else/}
+		  			   	<a href="{:url('Single/index',array('aid' => $prvData[0]['aid']))}" rel="prev">
 		  			   		<span>上一篇</span>
-		  			   		Tips on Minimalist Design 
+                                                        {$prvData[0]['article_title']}
 		  			   	</a>
+                                                {/if}
 		  			   </div>
 		  				<div class="next-nav">
-		  					<a href="#" rel="next">
-		  						<span>下一篇</span>
-		  			   		Less Is More 
-		  					</a>
+                                                    {if condition="empty($nextData) eq true"}
+                                                    没有了
+                                                    {else/}
+                                                    <a href="{:url('Single/index',array('aid' => $nextData[0]['aid']))}" rel="next">
+                                                        <span>下一篇</span>
+                                                        {$nextData[0]['article_title']}
+                                                     </a>
+                                                    {/if}
 		  				</div>  				   
 	  				</div>
 
@@ -167,6 +187,8 @@
 		</div> <!-- end comments-wrap -->
 
    </section> <!-- end content -->
+  <script src="__home__/js/jquery.min.js"></script>
+  <script src="__home__/plugins/layer/layer.min.js"></script>
   <script type='text/javascript'>  
     $(function(){
                 $("#contactForm").submit(function(){
@@ -195,6 +217,44 @@
                       $('#'+id).hide();
                     }
                 });
-            });
-            
+        });  
+  </script>
+  <script type='text/javascript'>  
+        $(function(){
+		$("#dig_up").hover(function(){
+			$(this).addClass("digup_on");
+		},function(){
+			$(this).removeClass("digup_on");
+		});
+		$("#dig_down").hover(function(){
+			$(this).addClass("digdown_on");
+		},function(){
+			$(this).removeClass("digdown_on");
+		});
+		
+		getdata("{:url('Single/zan')}",$(this).attr('aid'));
+			
+		$("#dig_up").click(function(){
+			getdata("{:url('Single/zan')}?action="+'likes',$(this).attr('aid'));
+		});
+		
+		$("#dig_down").click(function(){
+			getdata("{:url('Single/zan')}?action="+'unlike',$(this).attr('aid'));
+		});       
+    }); 
+    
+    function getdata(url,aid){
+	$.getJSON(url,{id:aid},function(data){
+		if(data.status){
+                        $("#num_up").html(data.like);
+			$("#bar_up span").css("width",data.like_percent);
+			$("#bar_up i").html(data.like_percent);
+			$("#num_down").html(data.unlike);
+			$("#bar_down span").css("width",data.unlike_percent);
+			$("#bar_down i").html(data.unlike_percent);
+		}else{
+			$("#msg").html(data.msg).show().css({'opacity':1,'top':'40px'}).animate({top:'-50px',opacity:0}, "slow");
+		}
+	});
+    };
   </script>
