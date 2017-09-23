@@ -19,4 +19,5 @@ class Index extends Homebase{
         $this -> assign('page',$page);
         return $this -> fetch();
     }  
+    
 }

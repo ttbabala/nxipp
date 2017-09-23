@@ -119,3 +119,84 @@ function getCatGrandson2($cid)
     }
 }
 
+//获取某个作品分类类的父亲的id
+function getCatParent($cid){
+    $GLOBALS['catparent'] = array();
+    $GLOBALS['category_id_arr'] = array();
+    $GLOBALS['catGrandson'][] = $cid; // 先把自己的id 保存起来
+    $cat = Model('Cats');
+    $GLOBALS['category_id_arr'] = $cat -> column('catid','parentid'); //把整张表找出来
+    $parent_id_arr = $cat -> where('catid',$cid) -> column('parentid');  //先把所有父亲找出来
+    foreach($parent_id_arr as $k => $v)
+    {
+        getCatParent2($v);
+    }
+    return $GLOBALS['catparent'];
+}
+
+/**
+ * 递归调用找到 爷爷、太爷爷
+ * @param type $cat_id
+ */
+function getCatParent2($cid)
+{
+    $GLOBALS['catparent'][] = $cid;
+    foreach($GLOBALS['category_id_arr'] as $k => $v)
+    {
+        // 找到孙子
+        if($v == $cid)
+        {
+            getCatParent2($k); // 继续找爷爷
+        }
+    }
+}
+
+/*
+ * 获取网站根目录URL
+ *  */
+function getRootUrl(){
+     $webname = Model('Admin/System') -> column('webname');
+     $url = 'http://'.$_SERVER['HTTP_HOST'].'/'.$webname[0].'/index.php';
+     return $url;
+}
+
+/**
+ * 过滤屏蔽词汇
+ */
+/*function fliterSensWords($text){
+   $senswords =  Model('System') -> column('senswords');
+   $sensStr= implode('|',$senswords);
+   $sensArr = explode('|',$sensStr);
+   $ctext = array();
+   foreach($sensArr as $key =>$itemWords){
+        $length[$key] = mb_strpos($text,$itemWords)+mb_strlen($itemWords);
+        if($key == 0){
+            $ctext[$key] = str_replace($itemWords,'**',mb_substr($text,0,$length[$key])); 
+        }
+        if($key > 0){
+            $ctext[$key] = str_replace($itemWords,'**',mb_substr($text,$length[$key-1],$length[$key])); 
+        }
+   } 
+   return $ctext;
+}*/
+
+/**
+ * 过滤屏蔽词汇
+ */
+function censor($content,$sensArr)
+{
+    if( is_array($sensArr) )
+    {
+        for($i = 0; $i < count($sensArr); $i++)
+        {   //应用For循环语句对敏感词进行判断
+            $content = preg_replace('/'.$sensArr[$i].'/','***', $content);
+            if( $i % 9 == 0 )
+            {
+                usleep(1000);
+            }
+        }
+    }
+    return $content;
+}
+
+

@@ -8,10 +8,13 @@ class Comments extends Model{
     public function addData($mid){
         $membersId = $mid;
         $datas = input('post.');
+        $senswords =  Model('System') -> column('senswords');
+        $sensStr= implode('|',$senswords);
+        $sensArr = explode('|',$sensStr);
         if(isset($datas) /*&& empty($datas) == false*/){
             $this -> data = ([
                 'aid' => $datas['aid'],
-                'ctext' => $datas['cMessage'],
+                'ctext' => censor($datas['cMessage'],$sensArr),     //过滤屏蔽词汇
                 'mid' => $membersId,
                 'mip' => getIP(),
                 'date' => date('Y-m-d H:i:s',time()),

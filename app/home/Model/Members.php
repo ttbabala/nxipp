@@ -3,12 +3,20 @@ namespace app\home\Model;
 use think\Model;
 use think\Session;
 use think\Request;
+use app\admin\Model\System;
 
 class Members extends Model{
     protected $pk = 'mid';
     
     public function addData(){  //添加注册会员
         $datas = input('post.');
+        $system = new System();
+        $ipData = $system -> column('filterips');
+        $ipStr = implode('|',$ipData);
+        $ipArr = explode('|',$ipStr);
+        if(in_array($datas['ip'],$ipArr)){
+            exit(json_encode(array('status'=>0,'msg'=>'您的ip已被管理员禁止访问，请联系管理员开通！^_^')));
+        }
         if(!$datas['username']){
             exit(json_encode(array('status'=>0,'msg'=>'会员名不能为空哦^_^')));
         }
@@ -57,6 +65,13 @@ class Members extends Model{
     
     public function checkData(){    //登陆验证
         $datas = input('post.');
+        $system = new System();
+        $ipData = $system -> column('filterips');
+        $ipStr = implode('|',$ipData);
+        $ipArr = explode('|',$ipStr);
+        if(in_array($datas['ip'],$ipArr)){
+            exit(json_encode(array('status'=>0,'msg'=>'您的ip已被管理员禁止访问，请联系管理员开通！^_^')));
+        }
         if(!$datas['username']){
             exit(json_encode(array('status'=>0,'msg'=>'会员名不能为空哦^_^')));
         }

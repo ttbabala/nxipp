@@ -15,7 +15,24 @@
                  </tr>
                  <tr>
                      <td width="80" align="right">链接</td>
-                     <td><input type="text" name="link" value="" size="50" class="inpMain" /></td>
+                     <td><input type="text" name="link" value="" size="50" class="inpMain" />&nbsp;
+                         &nbsp;<input style="width: 20px;height: 20px;" type="radio" class="radio" name="autolink" size="5" class="idDisplay" value="cat"/>套用分类模型自动生成链接
+                         &nbsp;<input style="width: 20px;height: 20px;" type="radio" class="radio" name="autolink" size="5" class="idDisplay" value="single"/>单页模型自动生成链接
+                         <p style="margin-top:10px;">
+                             <select name="cat" id="selCat" style="display:none">
+                                    <option value="0">—请选择分类模型—</option>
+                                    {volist name="catslist" id="vo"}
+                                    <option value="{$vo['catid']}">{$vo['_name']}</option>
+                                    {/volist}
+                             </select>
+                             <select name="single" id="selSingle" style="display:none">
+                                    <option value="0">—请选择单页模型—</option>
+                                    {volist name="singlelist" id="vo"}
+                                    <option value="{$vo['id']}">{$vo['singlename']}</option>
+                                    {/volist}
+                             </select>
+                         </p>
+                     </td>
                  </tr>
               <tr>
                <td align="right">是否显示</td>
@@ -56,6 +73,40 @@
                     },'json');
                     //阻止表单刷新提
                     return false;
+                });
+            });
+            
+            $(function(){
+               $('.radio').on('click',function(){
+                   var type = $(this).attr('value');
+                   if( type=='cat' ){
+                       $('#selCat').show();
+                       $('#selSingle').hide();
+                       $("input[name='link']").val('');
+                   }
+                   else if( type='single' ){
+                       $('#selSingle').show();
+                       $('#selCat').hide();
+                       $("input[name='link']").val('');
+                   }
+               })
+            });
+            
+            $(function(){
+                $('#selCat').change(function(){
+                    $(this).each(function(){
+                        var link = '/home/category/index/cid/'+$(this).val();
+                        $("input[name='link']").val(link);
+                    });
+                });
+            });
+            
+            $(function(){
+                $('#selSingle').change(function(){
+                    $(this).each(function(){
+                        var link = '/home/single/page/id/'+$(this).val();
+                        $("input[name='link']").val(link);
+                    });
                 });
             });
         </script>

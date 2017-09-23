@@ -3,6 +3,8 @@ namespace app\admin\Controller;
 use app\common\Controller\Adminbase;
 use think\Request;
 use app\admin\Model\Lanmu as tLanmu;
+use app\admin\Model\Cats;
+use app\admin\Model\Single;
 
 
 class Lanmu extends Adminbase{
@@ -16,6 +18,12 @@ class Lanmu extends Adminbase{
     
     public function addLanmu(){
         //载入视图
+        $cats = new Cats();
+        $catslist = $cats ->getCatData();       //载入分类
+        $single = new Single();
+        $singlelist = $single -> select();
+        $this -> assign('singlelist',$singlelist);
+        $this -> assign('catslist',$catslist);
         return $this -> fetch();
     }
     
@@ -37,6 +45,12 @@ class Lanmu extends Adminbase{
     public function addSubLanmu(){
         //添加子栏目
         $id = input('id');
+        $cats = new Cats();
+        $catslist = $cats ->getCatData();       //载入分类
+        $single = new Single();
+        $singlelist = $single -> select();
+        $this -> assign('singlelist',$singlelist);
+        $this -> assign('catslist',$catslist);
         $this -> assign('id',$id);
         return $this -> fetch();
     }
@@ -46,6 +60,10 @@ class Lanmu extends Adminbase{
         $Request = Request::instance();
         $id = input('id'); //用于渲染模板时用到的栏目ID
         $lm = new tLanmu();
+        $cats = new Cats();
+        $catslist = $cats ->getCatData();       //载入分类
+        $single = new Single();
+        $singlelist = $single -> select();
         if( $Request -> isAjax()){
             $id = input('id');  //模板渲染后通过表单post传递的栏目id
             $result = $lm ->editData($id);
@@ -56,6 +74,8 @@ class Lanmu extends Adminbase{
         }    
         $data = $lm -> where('id',$id) -> find();
         $this -> assign('data',$data);
+        $this -> assign('singlelist',$singlelist);
+        $this -> assign('catslist',$catslist);
         return $this -> fetch();
     }
     

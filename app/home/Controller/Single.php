@@ -4,6 +4,7 @@ use app\common\Controller\Homebase;
 use app\admin\Model\Article;
 use app\admin\Model\Comments;
 use app\admin\Model\Reply_comments as Reply;
+use app\admin\Model\Single as tSingle;
 use app\admin\Model\Members;
 use app\home\Model\Votes;
 use app\home\Model\Votes_ip;
@@ -167,6 +168,14 @@ class Single extends Homebase{
 	$arr['like_percent'] = $like_percent.'%';
 	$arr['unlike_percent'] = (100-$like_percent).'%';
 	return json_encode($arr);
+    }
+    
+    public function page(){
+        $id = input('id');
+        $single = new tSingle();
+        $singleData = $single -> where('id',$id) -> find();
+        $this -> assign('singleData',$singleData);
+        return $this -> fetch();
     }
 }
 

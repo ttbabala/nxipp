@@ -18,6 +18,8 @@ class Login extends Controller{
             }
             return json(['status'=>0,'msg'=>'用户名或密码错误哦^_^']);
         }
+        $MemberIp = getIP();                        //用于排查是否进入ip黑名单
+        $this -> assign('MemberIp',$MemberIp);      
         return $this -> fetch();
     }
     

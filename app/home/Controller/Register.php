@@ -16,6 +16,8 @@ class Register extends Controller{
             }
             return json(['status'=>0,'msg'=>'注册失败哦^_^']);
         }
+        $MemberIp = getIP();                        //用于排查是否进入ip黑名单
+        $this -> assign('MemberIp',$MemberIp);      
         return $this -> fetch();
         
     }

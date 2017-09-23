@@ -58,12 +58,13 @@
 					<li class="current"><a href='{:url("Index/index")}' title="">首页</a></li>	
                                         {volist name="lanmuData" id="vo"}
 					<li class="has-children">
-						<a href='{$vo["link"]}' title="">{$vo['lname']}</a>
+						<a href="{$rootUrl}/{$vo['link']}" title="">{$vo['lname']}</a>
                                                 <ul class="sub-menu">                       
                                                     <?php
                                                     $data = array_merge($vo['_data']);  //数组重新排列下标
                                                         for($i=0;$i<count($data);$i++){
-                                                            echo '<li><a href='.$data[$i]["link"].'>'.$data[$i]["lname"].'</a></li>';
+                                                            $linkurl = $rootUrl.$data[$i]["link"];
+                                                            echo '<li><a href='.$linkurl.'>'.$data[$i]["lname"].'</a></li>';
                                                         }
                                                     ?>
                                                 </ul>

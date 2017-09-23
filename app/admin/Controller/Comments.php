@@ -181,14 +181,7 @@ class Comments extends Adminbase{
         }
         
     }
-    
-    public function sensitiveWords(){
-        //屏蔽敏感词汇
-    }
-    
-    public function fliterIp(){
-        //ip过滤
-    }
+
     
 }
 

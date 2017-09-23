@@ -7,8 +7,8 @@
                     <div class="drop mTopad"><a href="{:url('Article/addArticle')}">作品</a> <a href="{:url('User/addUser')}">用户</a> <a href="{:url('Members/addMember')}">会员</a> <a href="{:url('Notice/addNotice')}">公告</a> <a href="{:url('Cats/addCategory')}">分类</a> <a href="{:url('Columns/addColumn')}">模块</a></div>
                 </li>
                 <li><a href="/" target="_blank">查看站点</a></li>
-                <li><a href="{:url('System/clear_cache')}">清除缓存</a></li>
-                <li><a href="JavaScript:;" target="_blank">帮助</a></li>
+                <li><a id="clear_cache" href="javascript:;">清除缓存</a></li>
+                <li><a id="help" href="JavaScript:;" >帮助</a></li>
                 <li class="noRight"><a href="#">Hqiot</a></li>
             </ul>
             <ul class="navRight">
@@ -23,6 +23,58 @@
         </div>
     </div>
 </div>
+<script type="text/javascript" src="__admin__/plugins/jquery-1.8.3.min.js"></script>
+<script src="__admin__/plugins/layer/layer.min.js"></script>
+<script type='text/javascript'>
+     $(function(){
+        $('#clear_cache').on('click',function(){
+
+            if(confirm('确定要删除全站缓存吗？')){
+               $.post('{:url("Clearcache/clearRuntime")}',{clearcache : 1},function(data){
+                               if (data.status) {
+                                   layer.msg(data.msg, {icon: 1,time: 1500},function(){
+                                      window.location.reload();
+                                   });
+                               }else {
+                                   layer.msg(data.msg, {icon: 2,time: 1500});
+                               }
+
+                           },'json');
+                           //阻止表单刷新提
+                    return false; 
+                }
+            });
+        });  
+    
+    $(function(){
+         $('#help').on('click',function(){
+          layer.open({
+                type: 1
+                ,title: false //不显示标题栏
+                ,closeBtn: false
+                ,area: '300px;'
+                ,shade: 0.8
+                ,id: 'LAY_layuipro' //设定一个id，防止重复弹出
+                ,resize: false
+                ,btn: ['查看接口文档', '关闭窗口']
+                ,btnAlign: 'c'
+                ,moveType: 1 //拖拽模式，0或者1
+                ,content: '<div style="padding: 50px; line-height: 22px; background-color: #393D49; color: #fff; font-weight: 300;">\n\
+                后台基于thinkphp5开发，服务器端采用LNMP架构，版本号为1.04；\n\
+                </br>linux（centos7.0）;</br>nginx(nginx1.3.2);</br>mysql(mysql5.6.37);</br>PHP(5.6.31);</br>对外接口规范及说明另附说明书</br>后台版权：宁夏大学新闻传播学院</div>'
+                ,success: function(layero){
+                  var btn = layero.find('.layui-layer-btn');
+                  btn.find('.layui-layer-btn0').attr({
+                    href: 'http://www.hq-smart.net'
+                    ,target: '_blank'
+                  });
+                }
+              });
+ 
+         });
+    });
+
+</script>
 </div>
 </div>
 </div>
