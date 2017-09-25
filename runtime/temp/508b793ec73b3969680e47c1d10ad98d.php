@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:6:{s:55:"E:\www\web\nxipp.\template/admin\cats\editcategory.html";i:1502963815;s:51:"E:\www\web\nxipp.\template/admin\Layout\common.html";i:1502168098;s:51:"E:\www\web\nxipp.\template/admin\Public\header.html";i:1503941668;s:48:"E:\www\web\nxipp.\template/admin\Public\nav.html";i:1506071735;s:49:"E:\www\web\nxipp.\template/admin\Public\menu.html";i:1506072849;s:51:"E:\www\web\nxipp.\template/admin\Public\footer.html";i:1506069188;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:6:{s:52:"E:\www\web\nxipp.\template/admin\lanmu\addlanmu.html";i:1505900578;s:51:"E:\www\web\nxipp.\template/admin\Layout\common.html";i:1502168098;s:51:"E:\www\web\nxipp.\template/admin\Public\header.html";i:1503941668;s:48:"E:\www\web\nxipp.\template/admin\Public\nav.html";i:1506242403;s:49:"E:\www\web\nxipp.\template/admin\Public\menu.html";i:1506072849;s:51:"E:\www\web\nxipp.\template/admin\Public\footer.html";i:1506242424;}*/ ?>
 <!--载入头部-->
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -174,36 +174,58 @@
 <!--内容主体 START-->
 <div id="dcMain">
    <!-- 当前位置 -->
-    <div id="urHere">管理中心<b>></b><strong>添加分类</strong> </div>
+    <div id="urHere">管理中心<b>></b><strong>添加栏目</strong> </div>
     <div class="mainBox" style="height:auto!important;height:550px;min-height:550px;">
-        <h3><a href="<?php echo url('Cats/index'); ?>" class="actionBtn">作品分类</a>编辑分类</h3>
-        <form id="submitcategory">
-            <?php if(is_array($data) || $data instanceof \think\Collection): $i = 0; $__LIST__ = $data;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$vo): $mod = ($i % 2 );++$i;?>
+        <h3><a href="<?php echo url('Lanmu/index'); ?>" class="actionBtn">栏目列表</a>添加栏目</h3>
+        <form id="submitLanmu">
              <table width="100%" border="0" cellpadding="8" cellspacing="0" class="tableBasic">
                  <tr>
-                     <td width="80" align="right">分类名称</td>
-                     <td><input type="text" name="catname" value="<?php echo $vo['catname']; ?>" size="40" class="inpMain" /></td>
+                     <td width="80" align="right">栏目名称</td>
+                     <td><input type="text" name="lname" value="" size="20" class="inpMain" /></td>
+                 </tr>
+                 <tr>
+                     <td width="80" align="right">栏目别名</td>
+                     <td><input type="text" name="aliasname" value="" size="20" class="inpMain" /></td>
+                 </tr>
+                 <tr>
+                     <td width="80" align="right">链接</td>
+                     <td><input type="text" name="link" value="" size="50" class="inpMain" />&nbsp;
+                         &nbsp;<input style="width: 20px;height: 20px;" type="radio" class="radio" name="autolink" size="5" class="idDisplay" value="cat"/>套用分类模型自动生成链接
+                         &nbsp;<input style="width: 20px;height: 20px;" type="radio" class="radio" name="autolink" size="5" class="idDisplay" value="single"/>单页模型自动生成链接
+                         <p style="margin-top:10px;">
+                             <select name="cat" id="selCat" style="display:none">
+                                    <option value="0">—请选择分类模型—</option>
+                                    <?php if(is_array($catslist) || $catslist instanceof \think\Collection): $i = 0; $__LIST__ = $catslist;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$vo): $mod = ($i % 2 );++$i;?>
+                                    <option value="<?php echo $vo['catid']; ?>"><?php echo $vo['_name']; ?></option>
+                                    <?php endforeach; endif; else: echo "" ;endif; ?>
+                             </select>
+                             <select name="single" id="selSingle" style="display:none">
+                                    <option value="0">—请选择单页模型—</option>
+                                    <?php if(is_array($singlelist) || $singlelist instanceof \think\Collection): $i = 0; $__LIST__ = $singlelist;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$vo): $mod = ($i % 2 );++$i;?>
+                                    <option value="<?php echo $vo['id']; ?>"><?php echo $vo['singlename']; ?></option>
+                                    <?php endforeach; endif; else: echo "" ;endif; ?>
+                             </select>
+                         </p>
+                     </td>
                  </tr>
               <tr>
                <td align="right">是否显示</td>
                <td>
-                <input style="width: 20px;height: 20px;" type="checkbox" <?php if($vo['isshow']): ?>checked="checked"<?php endif; ?> name="isshow" value="1" size="5" class="idDisplay" />
+                <input style="width: 20px;height: 20px;" type="checkbox" name="isshow" value="1" size="5" class="idDisplay" />
                </td>
 
               </tr>
                 <tr>
                      <td align="right">排序</td>
-                     <td><input type="text" name="catsort" value="<?php echo $vo['catsort']; ?>" size="5" class="inpMain" /></td>
+                     <td><input type="text" name="lanmusort" value="0" size="5" class="inpMain" /></td>
                 </tr>
                 <tr>
                      <td></td>
                      <td>
-                      <input type="hidden" name="catid" value="<?php echo $vo['catid']; ?>" />
-                      <input name="submit" class="btn" type="submit" value="提交" />
+                      <input name="submit" class="btn" type="submit" value="添加" />
                      </td>
                 </tr>
              </table>
-            <?php endforeach; endif; else: echo "" ;endif; ?>
         </form>
          <!--引入js-->
                  <script type="text/javascript" src="http://localhost/nxipp/public/admin/plugins/jquery-1.8.3.min.js"></script>
@@ -211,12 +233,12 @@
                  <script src="http://localhost/nxipp/public/admin/plugins/layer/layer.min.js"></script>
         <script type="text/javascript">
             $(function(){
-                $("#submitcategory").submit(function(){
-                    var datas = $("#submitcategory").serialize();
-                    $.post('<?php echo url("Cats/editCategory"); ?>',datas,function(data){
+                $("#submitLanmu").submit(function(){
+                    var datas = $("#submitLanmu").serialize();
+                    $.post('<?php echo url("Lanmu/lanmuData"); ?>',datas,function(data){
                         if (data.status) {
                             layer.msg(data.msg, {icon: 1,time: 1500},function(){
-                                window.location.href = '<?php echo url("Cats/index"); ?>';
+                                window.location.href = data.url;
                             });
                         }else {
                             layer.msg(data.msg, {icon: 2,time: 1500});
@@ -225,6 +247,40 @@
                     },'json');
                     //阻止表单刷新提
                     return false;
+                });
+            });
+            
+            $(function(){
+               $('.radio').on('click',function(){
+                   var type = $(this).attr('value');
+                   if( type=='cat' ){
+                       $('#selCat').show();
+                       $('#selSingle').hide();
+                       $("input[name='link']").val('');
+                   }
+                   else if( type='single' ){
+                       $('#selSingle').show();
+                       $('#selCat').hide();
+                       $("input[name='link']").val('');
+                   }
+               })
+            });
+            
+            $(function(){
+                $('#selCat').change(function(){
+                    $(this).each(function(){
+                        var link = '/home/category/index/cid/'+$(this).val();
+                        $("input[name='link']").val(link);
+                    });
+                });
+            });
+            
+            $(function(){
+                $('#selSingle').change(function(){
+                    $(this).each(function(){
+                        var link = '/home/single/page/id/'+$(this).val();
+                        $("input[name='link']").val(link);
+                    });
                 });
             });
         </script>
@@ -291,17 +347,12 @@
         <p class="te-al-ce"><a href="<?php echo url('Comments/index'); ?>" target='rightContent'><span>点击查看</span></a></p>
     </div>
 </div>
-<script type="text/javascript" src="http://localhost/nxipp/public/admin/plugins/jquery-1.8.3.min.js"></script>
-<script src="http://localhost/nxipp/public/admin/plugins/layer/layer.min.js"></script>
 <script type="text/javascript">
     function closes(){
         is_close = 1;
         document.getElementById('ordfoo').style.display = 'none';
     }
     
-    $('clear_cache').on('click',function(){
-        confirm('确定要删除全站缓存吗？');
-    })
 </script>
 
 </body>

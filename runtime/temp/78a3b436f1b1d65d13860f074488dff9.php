@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:6:{s:56:"E:\www\web\nxipp.\template/admin\article\addarticle.html";i:1504062357;s:51:"E:\www\web\nxipp.\template/admin\Layout\common.html";i:1502168098;s:51:"E:\www\web\nxipp.\template/admin\Public\header.html";i:1503941668;s:48:"E:\www\web\nxipp.\template/admin\Public\nav.html";i:1506071735;s:49:"E:\www\web\nxipp.\template/admin\Public\menu.html";i:1506072849;s:51:"E:\www\web\nxipp.\template/admin\Public\footer.html";i:1506069188;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:6:{s:50:"E:\www\web\nxipp.\template/admin\rule\addrule.html";i:1503721619;s:51:"E:\www\web\nxipp.\template/admin\Layout\common.html";i:1502168098;s:51:"E:\www\web\nxipp.\template/admin\Public\header.html";i:1503941668;s:48:"E:\www\web\nxipp.\template/admin\Public\nav.html";i:1506242403;s:49:"E:\www\web\nxipp.\template/admin\Public\menu.html";i:1506072849;s:51:"E:\www\web\nxipp.\template/admin\Public\footer.html";i:1506242424;}*/ ?>
 <!--载入头部-->
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -172,81 +172,52 @@
 </div>
 
 <!--内容主体 START-->
+
 <div id="dcMain">
-   <!-- 当前位置 -->
-     <div id="urHere">后台管理中心<b>></b><strong>添加作品</strong> </div>
+     <div id="urHere">管理中心<b>></b><strong>逐条添加规则</strong> </div>
      <div class="mainBox" style="height:auto!important;height:550px;min-height:550px;">
-         <h3><a href="<?php echo url('Article/articleList'); ?>" class="actionBtn">作品列表</a>添加作品</h3>
-          <form id="formaddArticle"   enctype="multipart/form-data">
+         <h3><a href="<?php echo url('Rule/index'); ?>" class="actionBtn">规则管理</a>逐条添加规则</h3>
+          <form id="formaddRule"   enctype="multipart/form-data">
                <table width="100%" border="0" cellpadding="8" cellspacing="0" class="tableBasic">
                    <tr>
-                      <td width="90" align="right">标 题</td>
-                      <td><input type="text" name="article_title" value="" size="80" class="inpMain" /></td>
+                       <td width="90" align="right">规则名称</td>
+                       <td><input type="text" name="title" size="30" class="inpMain" /></td>
                    </tr>
                    <tr>
-                      <td width="90" align="right">作 者</td>
-                      <td><input type="text" name="article_author" value="" size="20" class="inpMain" /></td>
-                   </tr>
-                    <tr>
-                      <td width="90" align="right">关键词</td>
-                      <td><input type="text" name="article_keywords" value="" size="40" class="inpMain" /><span style="color: red;margin-left: 20px">每个关键词最长为15个字符，关键词之间用","隔开</span></td>
-                   </tr>
-                   <tr>
-                       <td align="right">所属分类</td>
-                       <td>
-                           <select name="article_cat">
-                                <option value="0">-请选择-</option>
-                                <?php if(is_array($catslist) || $catslist instanceof \think\Collection): $i = 0; $__LIST__ = $catslist;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$vo): $mod = ($i % 2 );++$i;?>
-                                    <option value="<?php echo $vo['catid']; ?>"><?php echo $vo['_name']; ?></option>
-                                <?php endforeach; endif; else: echo "" ;endif; ?>
-                           </select>
-                       </td>
+                       <td width="90" align="right">应用规则</td>
+                       <td><select name="controller" id="controller">
+                            <option value="nal">-请选择栏目-</option>
+                            <?php if(is_array($controllersData) || $controllersData instanceof \think\Collection): if( count($controllersData)==0 ) : echo "" ;else: foreach($controllersData as $key=>$vo): ?>
+                            <option value="<?php echo $vo; ?>"><?php echo $vo; ?></option>
+                            <?php endforeach; endif; else: echo "" ;endif; ?>
+                           </select>-<span id="function"><select id="area" name="function"></select> </span>
+                       <span style="color: red;margin-left: 20px">格式如：栏目英文名称-操作名</span></td>
                    </tr>
                    <tr>
-                      <td width="90" align="right">详细内容</td>
-                      <td><script id="editor" name="article_content" type="text/plain" style="width:1000px;height:500px;"></script></td>
+                      <td width="90" align="right">类 型</td>
+                      <td>
+                          <select name="type">
+                            <option value="1">正常</option>
+                          </select>
+                      </td>
                    </tr>
                    <tr>
-                      <td width="90" align="right">摘 要</td>
-                      <td><textarea id="content" name="article_excerpt" style="width:380px;height:100px;" class="textArea"></textarea></td>
+                      <td width="90" align="right">状 态</td>
+                      <td><select name="status">
+                            <option value="nal">-请选择-</option>   
+                            <option value="1">正常</option>
+                            <option value="0">禁用</option> 
+                          </select>
+                      </td>
                    </tr>
                    <tr>
-                       <td align="right">代表图片</td>
-                       <td>
-                           <div id="file_upload_image"><img id="upload_org_code_img" width="80px" height="80px" style="display: none;margin-bottom: 10px;" /></div>
-                          <div class="uploadify">
-                                <input id="uploadify" type="file" multiple="true" value="" class='uploadify-button' />
-                                <a href="javascript:$('#uploadify').uploadify('upload')" >现在上传</a> |
-                                <a href="javascript:$('#uploadify').uploadify('cancel')" >取消上传</a> 
-                                <span style="color: red;margin-left: 20px">支持.gif .jpg .png图像格式，文件大小不能超过2M</span>
-                          </div>
-                          <div id="displayMsg"></div>
-                       </td>
-                   </tr>
-                   <tr>
-                       <td align="right">是否可见</td>
-                       <td>
-                           <select name="article_status">        
-                               <option value="1">可见</option>
-                               <option value="0">不可见</option>
-                           </select>
-                       </td>
-                   </tr>
-                   <tr>
-                       <td align="right">是否开启评论</td>
-                       <td>
-                          <select name="article_comment">         
-                               <option value="1">开启</option>
-                               <option value="0">不开启</option>
-                           </select>
-                       </td>
-                   </tr>
+                       <td width="90" align="right">自定义规则</td>
+                       <td><input type="text" name="condition" size="50" class="inpMain" /></td>
+                   </tr>                 
                    <tr>
                        <td></td>
                        <td>
                            <input type="hidden" name="token" value="21307217" />
-                           <!--<input type="hidden" name="id" value="">-->
-                           <input type="hidden" name="imgUrl" value="" />
                            <input name="submit" class="btn" type="submit" value="提交" />
                        </td>
                    </tr>
@@ -254,178 +225,55 @@
           </form>
      </div>
 </div>
-<script type="text/javascript" src="http://localhost/nxipp/public/admin/js/comment.js"></script>
-<script type="text/javascript" charset="utf-8" src="http://localhost/nxipp/public/admin/plugins/UEditor/ueditor.config.js"></script>
-<script type="text/javascript" charset="utf-8" src="http://localhost/nxipp/public/admin/plugins/UEditor/ueditor.all.min.js"> </script>
-          <!--建议手动加在语言，避免在ie下有时因为加载语言失败导致编辑器加载失败-->
-          <!--这里加载的语言文件会覆盖你在配置项目里添加的语言类型，比如你在配置项目里配置的是英文，这里加载的中文，那最后就是中文-->
-<script type="text/javascript" charset="utf-8" src="http://localhost/nxipp/public/admin/plugins/UEditor/lang/zh-cn/zh-cn.js"></script>
-<script type="text/javascript">
-
-    //实例化编辑器
-    //建议使用工厂方法getEditor创建和引用编辑器实例，如果在某个闭包下引用该编辑器，直接调用UE.getEditor('editor')就能拿到相关的实例
-    var ue = UE.getEditor('editor');
-
-
-    function isFocus(e){
-        alert(UE.getEditor('editor').isFocus());
-        UE.dom.domUtils.preventDefault(e)
-    }
-    function setblur(e){
-        UE.getEditor('editor').blur();
-        UE.dom.domUtils.preventDefault(e)
-    }
-    function insertHtml() {
-        var value = prompt('插入html代码', '');
-        UE.getEditor('editor').execCommand('insertHtml', value)
-    }
-    function createEditor() {
-        enableBtn();
-        UE.getEditor('editor');
-    }
-    function getAllHtml() {
-        alert(UE.getEditor('editor').getAllHtml())
-    }
-    function getContent() {
-        var arr = [];
-        arr.push("使用editor.getContent()方法可以获得编辑器的内容");
-        arr.push("内容为：");
-        arr.push(UE.getEditor('editor').getContent());
-        alert(arr.join("\n"));
-    }
-    function getPlainTxt() {
-        var arr = [];
-        arr.push("使用editor.getPlainTxt()方法可以获得编辑器的带格式的纯文本内容");
-        arr.push("内容为：");
-        arr.push(UE.getEditor('editor').getPlainTxt());
-        alert(arr.join('\n'))
-    }
-    function setContent(isAppendTo) {
-        var arr = [];
-        arr.push("使用editor.setContent('欢迎使用ueditor')方法可以设置编辑器的内容");
-        UE.getEditor('editor').setContent('欢迎使用ueditor', isAppendTo);
-        alert(arr.join("\n"));
-    }
-    function setDisabled() {
-        UE.getEditor('editor').setDisabled('fullscreen');
-        disableBtn("enable");
-    }
-
-    function setEnabled() {
-        UE.getEditor('editor').setEnabled();
-        enableBtn();
-    }
-
-    function getText() {
-        //当你点击按钮时编辑区域已经失去了焦点，如果直接用getText将不会得到内容，所以要在选回来，然后取得内容
-        var range = UE.getEditor('editor').selection.getRange();
-        range.select();
-        var txt = UE.getEditor('editor').selection.getText();
-        alert(txt)
-    }
-
-    function getContentTxt() {
-        var arr = [];
-        arr.push("使用editor.getContentTxt()方法可以获得编辑器的纯文本内容");
-        arr.push("编辑器的纯文本内容为：");
-        arr.push(UE.getEditor('editor').getContentTxt());
-        alert(arr.join("\n"));
-    }
-    function hasContent() {
-        var arr = [];
-        arr.push("使用editor.hasContents()方法判断编辑器里是否有内容");
-        arr.push("判断结果为：");
-        arr.push(UE.getEditor('editor').hasContents());
-        alert(arr.join("\n"));
-    }
-    function setFocus() {
-        UE.getEditor('editor').focus();
-    }
-    function deleteEditor() {
-        disableBtn();
-        UE.getEditor('editor').destroy();
-    }
-    function disableBtn(str) {
-        var div = document.getElementById('btns');
-        var btns = UE.dom.domUtils.getElementsByTagName(div, "button");
-        for (var i = 0, btn; btn = btns[i++];) {
-            if (btn.id == str) {
-                UE.dom.domUtils.removeAttributes(btn, ["disabled"]);
-            } else {
-                btn.setAttribute("disabled", "true");
-            }
-        }
-    }
-    function enableBtn() {
-        var div = document.getElementById('btns');
-        var btns = UE.dom.domUtils.getElementsByTagName(div, "button");
-        for (var i = 0, btn; btn = btns[i++];) {
-            UE.dom.domUtils.removeAttributes(btn, ["disabled"]);
-        }
-    }
-
-    function getLocalData () {
-        alert(UE.getEditor('editor').execCommand( "getlocaldata" ));
-    }
-
-    function clearLocalData () {
-        UE.getEditor('editor').execCommand( "clearlocaldata" );
-        alert("已清空草稿箱")
-    }
-</script>
-<script type="text/javascript" src="http://localhost/nxipp/public/admin/plugins/jquery-1.8.3.min.js"></script>
-<script type="text/javascript" src="http://localhost/nxipp/public/admin/plugins/uploadify/js/jquery.uploadify.min.js"></script> 
-<script src="http://localhost/nxipp/public/admin/plugins/layer/layer.min.js"></script>
- <script type="text/javascript">
+        <!--引入js-->
+        <script type="text/javascript" src="http://localhost/nxipp/public/admin/plugins/jquery-1.8.3.min.js"></script>
+        <script type="text/javascript" src="http://localhost/nxipp/public/admin/plugins/js/jquery.uploadify.js"></script>
+        <script src="http://localhost/nxipp/public/admin/plugins/layer/layer.min.js"></script>
+        <script type="text/javascript">
             $(function(){
-                $("#formaddArticle").submit(function(){
-                    var datas = $("#formaddArticle").serialize();
-                    $.post('<?php echo url("Article/addArticle"); ?>',datas,function(data){
-                       if (data.status) {
-                           layer.msg(data.msg, {icon: 1,time: 1500},function(){
-                              window.location.href = data.url;
-                           });
-                       }else {
-                           layer.msg(data.msg, {icon: 2,time: 1500});
+                $("#formaddRule").submit(function(){
+                    var datas = $("#formaddRule").serialize();
+                    $.post('<?php echo url("Rule/addRule"); ?>',datas,function(data){
+                        if (data.status) {
+                            layer.msg(data.msg, {icon: 1,time: 1500},function(){
+                                window.location.href = data.url;
+                            });
+                        }else {
+                            layer.msg(data.msg, {icon: 2,time: 1500});
                         }
-                      //layer.msg(datas);
 
                     },'json');
                     //阻止表单刷新提
-                    //layer.msg(datas);
                     return false;
                 });
-            });
-            
-             $(function(){
-                    //swfobject.embedSWF('http://localhost/nxipp/public/admin/plugins/uploadify/swf/uploadify.swf', "sd_file", "120", "30", "#666");
-                    $("#uploadify").uploadify({
-                        'swf'           :  'http://localhost/nxipp/public/admin/plugins/uploadify/swf/uploadify.swf',
-                        'uploader'        : '<?php echo url("api/Image/upload"); ?>',
-                        'buttonText'      : '选择图像',  
-                        'fileTypeDesc'    : '请选择图像',  
-                        'fileTypeExts'    : '*.gif; *.jpg; *.png',     
-                        'fileObjName'     : 'file',
-                        'width'           : 80,
-                        'height'          : 25,
-                        'auto'            : false,
-                        'method'          : 'Post',
-                        'wmode'           : 'transparent',
-                        'formData'       : {
-				'urlfrom' : 'Article',
-                        },
-                        'onUploadSuccess' : function(file,data,response) {  
-                         if(response){ 
-                                var obj =JSON.parse(data);
-                                $("#upload_org_code_img").attr("src",obj.src);  
-                                $("#file_upload_image").attr("value",obj.src);
-                                $("input[name='imgUrl']").attr("value",obj.src)
-                                $("#upload_org_code_img").show();  
+                
+            $("#function").hide(); //初始化的时候第二个下拉列表隐藏 
+                $("#controller").change(function(){ //当第一个下拉列表变动内容时第二个下拉列表将会显示 
+                var cname=$("#controller").val(); 
+                if(null!= cname && ""!=cname){ 
+                    $.get('<?php echo url("Rule/addRule"); ?>',{controllerName:cname},function(data){ 
+                        if(data.status){
+                            var options=""; 
+                            if(data.msg.length>0){    
+                                options+="<option value='nal'>-请选择操作-</option>"; 
+                                for(var i=0;i<data.msg.length;i++){ 
+                                    options+="<option value="+data.msg[i]+">"+data.msg[i]+"</option>"; 
+                                } 
+                                $("#area").html(options); 
+                                $("#function").show(); 
+                            } 
+                            else if(data.msg.length<=0){ 
+                            $("#function").hide(); 
                             } 
                         }
-                    });     
-            });
-</script>
+                    }); 
+                } 
+                else{ 
+                $("#function").hide(); 
+                } 
+            });  
+}); 
+        </script>
 
 
 
@@ -488,17 +336,12 @@
         <p class="te-al-ce"><a href="<?php echo url('Comments/index'); ?>" target='rightContent'><span>点击查看</span></a></p>
     </div>
 </div>
-<script type="text/javascript" src="http://localhost/nxipp/public/admin/plugins/jquery-1.8.3.min.js"></script>
-<script src="http://localhost/nxipp/public/admin/plugins/layer/layer.min.js"></script>
 <script type="text/javascript">
     function closes(){
         is_close = 1;
         document.getElementById('ordfoo').style.display = 'none';
     }
     
-    $('clear_cache').on('click',function(){
-        confirm('确定要删除全站缓存吗？');
-    })
 </script>
 
 </body>

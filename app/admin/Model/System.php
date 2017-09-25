@@ -14,6 +14,12 @@ class System extends Model{
         if(!$data['webname']){
              exit(json_encode(array('status'=>0,'msg'=>'站点名称不能为空哦^_^'))); 
         }
+        if(!$data['web_title']){
+             exit(json_encode(array('status'=>0,'msg'=>'站点标题不能为空哦^_^'))); 
+        }
+        if(!$data['web_description']){
+             exit(json_encode(array('status'=>0,'msg'=>'站点描述不能为空哦^_^'))); 
+        }
         if(!$data['senswords']){
              exit(json_encode(array('status'=>0,'msg'=>'屏蔽词汇不能为空哦^_^')));  
         }
@@ -44,6 +50,8 @@ class System extends Model{
         $datas = [
           'webname' => $data['webname'],
           'com' => $data['com'],
+          'web_title' => $data['web_title'],
+          'web_description' => $data['web_description'],
           'opencomments' => $data['opencomments'],
           'senswords' => $data['senswords'],
           'filterips' => $data['filterIp'],
@@ -64,6 +72,12 @@ class System extends Model{
         if(!$data['webname']){
              exit(json_encode(array('status'=>0,'msg'=>'站点名称不能为空哦^_^'))); 
         }
+        if(!$data['web_title']){
+             exit(json_encode(array('status'=>0,'msg'=>'站点标题不能为空哦^_^'))); 
+        }
+        if(!$data['web_description']){
+             exit(json_encode(array('status'=>0,'msg'=>'站点描述不能为空哦^_^'))); 
+        }
         if(!$data['senswords']){
              exit(json_encode(array('status'=>0,'msg'=>'屏蔽词汇不能为空哦^_^')));  
         }
@@ -77,6 +91,8 @@ class System extends Model{
         $this -> data = [
           'webname' => $data['webname'],
           'com' => $data['com'],
+          'web_title' => $data['web_title'],
+          'web_description' => $data['web_description'],
           'opencomments' => $data['opencomments'],
           'senswords' => $data['senswords'],
           'filterips' => $data['filterIp'],

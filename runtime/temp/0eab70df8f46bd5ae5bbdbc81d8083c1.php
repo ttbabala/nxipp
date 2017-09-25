@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:6:{s:50:"E:\www\web\nxipp.\template/admin\system\index.html";i:1504760531;s:51:"E:\www\web\nxipp.\template/admin\Layout\common.html";i:1502168098;s:51:"E:\www\web\nxipp.\template/admin\Public\header.html";i:1503941668;s:48:"E:\www\web\nxipp.\template/admin\Public\nav.html";i:1506071735;s:49:"E:\www\web\nxipp.\template/admin\Public\menu.html";i:1506072849;s:51:"E:\www\web\nxipp.\template/admin\Public\footer.html";i:1506069188;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:6:{s:50:"E:\www\web\nxipp.\template/admin\system\index.html";i:1506304863;s:51:"E:\www\web\nxipp.\template/admin\Layout\common.html";i:1502168098;s:51:"E:\www\web\nxipp.\template/admin\Public\header.html";i:1503941668;s:48:"E:\www\web\nxipp.\template/admin\Public\nav.html";i:1506242403;s:49:"E:\www\web\nxipp.\template/admin\Public\menu.html";i:1506072849;s:51:"E:\www\web\nxipp.\template/admin\Public\footer.html";i:1506242424;}*/ ?>
 <!--载入头部-->
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -188,6 +188,14 @@
                        <td><input type="text" name="com" size="30" class="inpMain" value="<?php if(isset($systemData['com'])): ?><?php echo $systemData['com']; endif; ?>"/></td>
                    </tr>
                    <tr>
+                       <td width="90" align="right">站点标题(Title)</td>
+                       <td><input type="text" name="web_title" size="45" class="inpMain" value="<?php if(isset($systemData['web_title'])): ?><?php echo $systemData['web_title']; endif; ?>"/></td>
+                   </tr>
+                   <tr>
+                       <td width="90" align="right">站点描述(Descrition)</td>
+                       <td><textarea name="web_description" rows="5" cols="50" class="inpMain"><?php if(isset($systemData['web_description'])): ?><?php echo $systemData['web_description']; endif; ?></textarea></td>
+                   </tr>
+                   <tr>
                        <td width="90" align="right">是否开启评论</td>
                        <td><select name="opencomments" id="commentsOn">
                             <option value="1">开启</option>
@@ -219,6 +227,12 @@
                                 <div style="margin-bottom:15px"><a href="javascript:$('#uploadify<?php echo $k-1; ?>').uploadify('upload')" >现在上传</a> |
                                     <a href="javascript:$('#uploadify<?php echo $k-1; ?>').uploadify('cancel')" >取消上传</a>
                                 <span style="color: red;margin-left: 20px">支持.gif .jpg .png图像格式，单张图片大小不能超过2M</span></div>
+                                <div style="margin-bottom:5px;">标题：<input type="text" name="" value="" size="50" class="inpMain" style="border-bottom: 1px dotted #C4C4C4;"/></div>
+                                <div style="margin-bottom:5px;">链接：<input type="text" name="" value="" size="40" class="inpMain" style="border-bottom: 1px dotted #C4C4C4;"/>
+                                    &nbsp;<input style="width: 20px;height: 20px;" type="radio" class="radio" name="autolink" size="5" class="idDisplay" value="article"/>选择作品自动生成链接
+                                    &nbsp;<input style="width: 20px;height: 20px;" type="radio" class="radio" name="autolink" size="5" class="idDisplay" value="single"/>选择单页自动生成链接
+                                </div>
+                                <div style="margin-bottom:5px;">时间：<input type="text" name="" value="" size="20" class="inpMain" style="border-bottom: 1px dotted #C4C4C4;"/></div>
                                 </div>
                            <?php endforeach; endif; else: echo "" ;endif; ?>
                           <div id="displayMsg"></div>
@@ -265,6 +279,8 @@
         <script type="text/javascript" src="http://localhost/nxipp/public/admin/plugins/uploadify/js/jquery.uploadify.min.js"></script> 
         <script src="http://localhost/nxipp/public/admin/plugins/layer/layer.min.js"></script>
         <script type="text/javascript">
+            var articleUrl = "<?php echo url('System/selSingelorArticle',['type','article']); ?>";
+            var singleUrl = "<?php echo url('System/selSingelorArticle',['type','single']); ?>";
             $(function(){
                 $("#formaddSystem").submit(function(){
                     var datas = $("#formaddSystem").serialize();
@@ -382,6 +398,33 @@
                     };
                  });
             });
+            
+            $(function(){
+               $('.radio').on('click',function(){
+                   var articleUrl = "<?php echo url('System/selSingelorArticle'); ?>?type=article";
+                   var singleUrl = "<?php echo url('System/selSingelorArticle'); ?>?type=singleUrl";
+                   var type = $(this).attr('value');
+                   if( type=='article' ){
+                        layer.open({  
+                            type: 2,  
+                            title: '选择文章',  
+                            maxmin: true,  
+                            skin: 'layui-layer-lan',  
+                            shadeClose: true, //点击遮罩关闭层  
+                            area : ['400px' , '380px'],  
+                            content:articleUrl
+                        }); 
+                   }
+                   else if( type='single' ){
+                       layer.open({
+                            type: 1,
+                            skin: 'layui-layer-rim', //加上边框
+                            area: ['420px', '240px'], //宽高
+                            content: singleUrl,
+                       });
+                   }
+               })
+            });
         </script>
 
 
@@ -445,17 +488,12 @@
         <p class="te-al-ce"><a href="<?php echo url('Comments/index'); ?>" target='rightContent'><span>点击查看</span></a></p>
     </div>
 </div>
-<script type="text/javascript" src="http://localhost/nxipp/public/admin/plugins/jquery-1.8.3.min.js"></script>
-<script src="http://localhost/nxipp/public/admin/plugins/layer/layer.min.js"></script>
 <script type="text/javascript">
     function closes(){
         is_close = 1;
         document.getElementById('ordfoo').style.display = 'none';
     }
     
-    $('clear_cache').on('click',function(){
-        confirm('确定要删除全站缓存吗？');
-    })
 </script>
 
 </body>

@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:6:{s:48:"E:\www\web\nxipp.\template/admin\rule\index.html";i:1503657534;s:51:"E:\www\web\nxipp.\template/admin\Layout\common.html";i:1502168098;s:51:"E:\www\web\nxipp.\template/admin\Public\header.html";i:1503941668;s:48:"E:\www\web\nxipp.\template/admin\Public\nav.html";i:1506071735;s:49:"E:\www\web\nxipp.\template/admin\Public\menu.html";i:1506072849;s:51:"E:\www\web\nxipp.\template/admin\Public\footer.html";i:1506069188;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:6:{s:48:"E:\www\web\nxipp.\template/admin\rule\index.html";i:1503657534;s:51:"E:\www\web\nxipp.\template/admin\Layout\common.html";i:1502168098;s:51:"E:\www\web\nxipp.\template/admin\Public\header.html";i:1503941668;s:48:"E:\www\web\nxipp.\template/admin\Public\nav.html";i:1506242403;s:49:"E:\www\web\nxipp.\template/admin\Public\menu.html";i:1506072849;s:51:"E:\www\web\nxipp.\template/admin\Public\footer.html";i:1506242424;}*/ ?>
 <!--载入头部-->
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -292,17 +292,12 @@
         <p class="te-al-ce"><a href="<?php echo url('Comments/index'); ?>" target='rightContent'><span>点击查看</span></a></p>
     </div>
 </div>
-<script type="text/javascript" src="http://localhost/nxipp/public/admin/plugins/jquery-1.8.3.min.js"></script>
-<script src="http://localhost/nxipp/public/admin/plugins/layer/layer.min.js"></script>
 <script type="text/javascript">
     function closes(){
         is_close = 1;
         document.getElementById('ordfoo').style.display = 'none';
     }
     
-    $('clear_cache').on('click',function(){
-        confirm('确定要删除全站缓存吗？');
-    })
 </script>
 
 </body>

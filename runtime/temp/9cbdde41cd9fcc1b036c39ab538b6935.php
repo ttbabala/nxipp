@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:6:{s:51:"E:\www\web\nxipp.\template/admin\columns\index.html";i:1503800309;s:51:"E:\www\web\nxipp.\template/admin\Layout\common.html";i:1502168098;s:51:"E:\www\web\nxipp.\template/admin\Public\header.html";i:1503941668;s:48:"E:\www\web\nxipp.\template/admin\Public\nav.html";i:1506242403;s:49:"E:\www\web\nxipp.\template/admin\Public\menu.html";i:1506072849;s:51:"E:\www\web\nxipp.\template/admin\Public\footer.html";i:1506242424;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:6:{s:55:"E:\www\web\nxipp.\template/admin\columns\addcolumn.html";i:1503800331;s:51:"E:\www\web\nxipp.\template/admin\Layout\common.html";i:1502168098;s:51:"E:\www\web\nxipp.\template/admin\Public\header.html";i:1503941668;s:48:"E:\www\web\nxipp.\template/admin\Public\nav.html";i:1506242403;s:49:"E:\www\web\nxipp.\template/admin\Public\menu.html";i:1506072849;s:51:"E:\www\web\nxipp.\template/admin\Public\footer.html";i:1506242424;}*/ ?>
 <!--载入头部-->
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -174,59 +174,58 @@
 <!--内容主体 START-->
 
 <div id="dcMain">
-   <!-- 当前位置 -->
-    <div id="urHere">管理中心<b>></b><strong>模块列表</strong> </div>
-    <div class="mainBox" style="height:auto!important;height:550px;min-height:550px;">
-        <h3><a href="<?php echo url('Columns/addColumn'); ?>" class="actionBtn add">添加模块</a>模块列表</h3>
-        <div id="list">
-                <table width="100%" border="0" cellpadding="8" cellspacing="0" class="tableBasic">
-                 <tr>
-                      <th width="50" align="left">模块ID</th>
-                      <th width="50" align="left">模块名</th>
-                      <th width="50" align="left">模块英文名</th>
-                      <th width="50" align="left">模块所属操作名</th>
-                      <th width="60" align="left">排序值</th>
-                      <th width="120" align="center">操作</th>
-                 </tr>
-                 <?php if(is_array($columnListData) || $columnListData instanceof \think\Collection): $i = 0; $__LIST__ = $columnListData;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$vo): $mod = ($i % 2 );++$i;?>
-                 <tr>
-                      <td align="left"><?php echo $vo['id']; ?></td>
-                      <td align="left"><?php echo $vo['name']; ?></td>
-                      <td align="left"><?php echo $vo['controllerName']; ?></td>
-                      <td align="left"><?php echo $vo['functionName']; ?></td>
-                      <td align="left"><?php echo $vo['sort']; ?></td>
-                      <td align="center">
-                          <a href="<?php echo url('Columns/editColumn',['id' => $vo['id']]); ?>" class="tab_a_link edit_btn">修改</a>
-                          <a class="tab_a_link del_btn btn-danger-a" href="javascript:;" id="<?php echo $vo['id']; ?>"><i class="fa fa-share-square-o">删除</i></a>
-                      </td>
-                 </tr>
-                 <?php endforeach; endif; else: echo "" ;endif; ?>
-                </table>
-        </div>
-        <div class="pagelist"><?php echo $page; ?></div>
-    </div>
- </div>
+     <div id="urHere">管理中心<b>></b><strong>添加模块</strong> </div>
+     <div class="mainBox" style="height:auto!important;height:550px;min-height:550px;">
+         <h3><a href="<?php echo url('Column/index'); ?>" class="actionBtn">模块列表</a>添加模块</h3>
+          <form id="formaddColumn"   enctype="multipart/form-data">
+               <table width="100%" border="0" cellpadding="8" cellspacing="0" class="tableBasic">
+                   <tr>
+                      <td width="90" align="right">模块名称</td>
+                      <td><input type="text" name="ColumnName" value="" size="40" class="inpMain" /></td>
+                   </tr>
+                   <tr>
+                       <td width="90" align="right">控制器名称</td>
+                       <td><input type="text" name="controllerName" value="" size="20" class="inpMain" /><span style="color: red;margin-left: 20px"></span></td>
+                   </tr>
+                    <tr>
+                       <td width="90" align="right">方法名称</td>
+                       <td><input type="text" name="functionName" value="" size="20" class="inpMain" /><span style="color: red;margin-left: 20px"></span></td>
+                   </tr>
+                    <tr>
+                       <td width="90" align="right">排序</td>
+                       <td><input type="text" name="sort" value="" size="6" class="inpMain" /><span style="color: red;margin-left: 20px"></span></td>
+                   </tr>
+                   <tr>
+                       <td></td>
+                       <td>
+                           <input type="hidden" name="token" value="21307217" />
+                           <input name="submit" class="btn" type="submit" value="提交" />
+                       </td>
+                   </tr>
+               </table>
+          </form>
+     </div>
+</div>
         <!--引入js-->
         <script type="text/javascript" src="http://localhost/nxipp/public/admin/plugins/jquery-1.8.3.min.js"></script>
+        <script type="text/javascript" src="http://localhost/nxipp/public/admin/plugins/js/jquery.uploadify.js"></script>
         <script src="http://localhost/nxipp/public/admin/plugins/layer/layer.min.js"></script>
         <script type="text/javascript">
             $(function(){
-                $('.btn-danger-a').on('click',function(){
-                    var del =  confirm('确认要删除么？');
-                    if (del) {
-                        var id =$(this).attr('id');
-                        $.post('<?php echo url("Columns/delColumn"); ?>',{id : id}, function(data){
-                           if (data.status) {
-                                layer.msg(data.msg, {icon: 1,time: 1500},function(){
-                                    window.location.reload();
-                                });
-                            }else {
-                                layer.msg(data.msg,{icon : 2,time : 2000});
-                            }
+                $("#formaddColumn").submit(function(){
+                    var datas = $("#formaddColumn").serialize();
+                    $.post('<?php echo url("Columns/addColumn"); ?>',datas,function(data){
+                        if (data.status) {
+                            layer.msg(data.msg, {icon: 1,time: 1500},function(){
+                                window.location.href = data.url;
+                            });
+                        }else {
+                            layer.msg(data.msg, {icon: 2,time: 1500});
+                        }
 
-                        },'json');
-                    }
-
+                    },'json');
+                    //阻止表单刷新提
+                    return false;
                 });
             });
         </script>

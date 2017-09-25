@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:6:{s:57:"E:\www\web\nxipp.\template/admin\article\editarticle.html";i:1504063505;s:51:"E:\www\web\nxipp.\template/admin\Layout\common.html";i:1502168098;s:51:"E:\www\web\nxipp.\template/admin\Public\header.html";i:1503941668;s:48:"E:\www\web\nxipp.\template/admin\Public\nav.html";i:1506071735;s:49:"E:\www\web\nxipp.\template/admin\Public\menu.html";i:1506072849;s:51:"E:\www\web\nxipp.\template/admin\Public\footer.html";i:1506069188;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:6:{s:55:"E:\www\web\nxipp.\template/admin\members\addmember.html";i:1505358876;s:51:"E:\www\web\nxipp.\template/admin\Layout\common.html";i:1502168098;s:51:"E:\www\web\nxipp.\template/admin\Public\header.html";i:1503941668;s:48:"E:\www\web\nxipp.\template/admin\Public\nav.html";i:1506242403;s:49:"E:\www\web\nxipp.\template/admin\Public\menu.html";i:1506072849;s:51:"E:\www\web\nxipp.\template/admin\Public\footer.html";i:1506242424;}*/ ?>
 <!--载入头部-->
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -173,47 +173,19 @@
 
 <!--内容主体 START-->
 <div id="dcMain">
-   <!-- 当前位置 -->
-     <div id="urHere">后台管理中心<b>></b><strong>编辑作品</strong> </div>
+     <div id="urHere">后台管理中心<b>></b><strong>添加会员</strong> </div>
      <div class="mainBox" style="height:auto!important;height:550px;min-height:550px;">
-         <h3><a href="<?php echo url('Article/articleList'); ?>" class="actionBtn">作品列表</a>编辑作品</h3>
-          <form id="formeditArticle"   enctype="multipart/form-data">
+         <h3><a href="<?php echo url('Members/index'); ?>" class="actionBtn">会员列表</a>添加会员</h3>
+          <form id="formaddMember" enctype="multipart/form-data">
                <table width="100%" border="0" cellpadding="8" cellspacing="0" class="tableBasic">
                    <tr>
-                      <td width="90" align="right">标 题</td>
-                      <td><input type="text" name="article_title" value="<?php echo $articleData['article_title']; ?>" size="80" class="inpMain" /></td>
+                      <td width="90" align="right">会员名称</td>
+                      <td><input type="text" name="mname" value="" size="30" class="inpMain" /></td>
                    </tr>
                    <tr>
-                      <td width="90" align="right">作 者</td>
-                      <td><input type="text" name="article_author" value="<?php echo $articleData['article_author']; ?>" size="20" class="inpMain" /></td>
-                   </tr>
-                    <tr>
-                      <td width="90" align="right">关键词</td>
-                      <td><input type="text" name="article_keywords" value="<?php echo $articleData['article_keywords']; ?>" size="40" class="inpMain" /><span style="color: red;margin-left: 20px">每个关键词最长为15个字符，关键词之间用","隔开</span></td>
-                   </tr>
-                   <tr>
-                       <td align="right">所属分类</td>
-                       <td>
-                           <select name="article_cat">
-                                <?php if(is_array($catslist) || $catslist instanceof \think\Collection): $i = 0; $__LIST__ = $catslist;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$vo): $mod = ($i % 2 );++$i;?>
-                                    <option value="<?php echo $vo['catid']; ?>" <?php if($articleData['cid'] == $vo['catid']): ?>selected<?php endif; ?>><?php echo $vo['_name']; ?></option>
-                                <?php endforeach; endif; else: echo "" ;endif; ?>
-                           </select>
-                       </td>
-                   </tr>
-                   <tr>
-                      <td width="90" align="right">详细内容</td>
-                      <td><script id="editor" name="article_content" type="text/plain" style="width:1000px;height:500px;"></script></td>
-                   </tr>
-                   <tr>
-                      <td width="90" align="right">摘 要</td>
-                      <td><textarea id="content" name="article_excerpt" style="width:380px;height:100px;" class="textArea"><?php echo $articleData['article_excerpt']; ?></textarea></td>
-                   </tr>
-                   <tr>
-                       <td align="right">代表图片</td>
-                       <td>
-                          <div id="file_upload_image"><img id="upload_org_code_img" width="80px" height="80px" style="margin-bottom: 10px;" src="<?php echo $articleData['article_photo']; ?>"/></div>
-                          <input type="hidden" name="showpic" value="<?php echo $articleData['article_photo']; ?>" />
+                      <td width="90" align="right">会员头像</td>
+                      <td>
+                          <div id="file_upload_image"><img id="upload_org_code_img" width="80px" height="80px" style="display: none;margin-bottom: 10px;" /></div>
                           <div class="uploadify">
                                 <input id="uploadify" type="file" multiple="true" value="" class='uploadify-button' />
                                 <a href="javascript:$('#uploadify').uploadify('upload')" >现在上传</a> |
@@ -221,32 +193,35 @@
                                 <span style="color: red;margin-left: 20px">支持.gif .jpg .png图像格式，文件大小不能超过2M</span>
                           </div>
                           <div id="displayMsg"></div>
-                       </td>
+                      </td>
                    </tr>
                    <tr>
-                       <td align="right">是否可见</td>
-                       <td>
-                           <select name="article_status">        
-                               <option value="1" <?php if($articleData['article_status'] == 1): ?>selected=selected<?php endif; ?>>可见</option>
-                               <option value="0" <?php if($articleData['article_status'] == 0): ?>selected=selected<?php endif; ?>>不可见</option>
-                           </select>
-                       </td>
+                       <td width="90" align="right">会员邮箱</td>
+                       <td><input type="text" name="email" value="" size="40" class="inpMain" /><span style="color: red;margin-left: 20px"></span></td>
+                   </tr>
+                    <tr>
+                       <td width="90" align="right">会员密码</td>
+                       <td><input type="password" name="pass" value="" size="40" class="inpMain" /><span style="color: red;margin-left: 20px"></span></td>
+                   </tr>
+                    <tr>
+                       <td width="90" align="right">确认密码</td>
+                       <td><input type="password" name="confirm_pass" value="" size="40" class="inpMain" /><span style="color: red;margin-left: 20px"></span></td>
                    </tr>
                    <tr>
-                       <td align="right">是否开启评论</td>
+                       <td align="right">会员状态</td>
                        <td>
-                          <select name="article_comment">         
-                               <option value="1" <?php if($articleData['article_comment'] == 1): ?>selected=selected<?php endif; ?>>开启</option>
-                               <option value="0" <?php if($articleData['article_comment'] == 0): ?>selected=selected<?php endif; ?>>不开启</option>
-                           </select>
+                             <select name="status">
+                                <option value="2">-请选择-</option>      
+                                <option value="1">正常</option>
+                                <option value="0">锁定</option>
+                              </select>
                        </td>
                    </tr>
                    <tr>
                        <td></td>
                        <td>
                            <input type="hidden" name="token" value="21307217" />
-                           <input id="temp" type="hidden" value='<?php echo $articleData["article_content"]; ?>' />
-                           <input type="hidden" name="aid" value="<?php echo $articleData['aid']; ?>" />
+                           <input type="hidden" name="mid" value="">
                            <input type="hidden" name="imgUrl" value="" />
                            <input name="submit" class="btn" type="submit" value="提交" />
                        </td>
@@ -255,150 +230,27 @@
           </form>
      </div>
 </div>
-<script type="text/javascript" src="http://localhost/nxipp/public/admin/js/comment.js"></script>
-<script type="text/javascript" charset="utf-8" src="http://localhost/nxipp/public/admin/plugins/UEditor/ueditor.config.js"></script>
-<script type="text/javascript" charset="utf-8" src="http://localhost/nxipp/public/admin/plugins/UEditor/ueditor.all.min.js"> </script>
-          <!--建议手动加在语言，避免在ie下有时因为加载语言失败导致编辑器加载失败-->
-          <!--这里加载的语言文件会覆盖你在配置项目里添加的语言类型，比如你在配置项目里配置的是英文，这里加载的中文，那最后就是中文-->
-<script type="text/javascript" charset="utf-8" src="http://localhost/nxipp/public/admin/plugins/UEditor/lang/zh-cn/zh-cn.js"></script>
-<script type="text/javascript">
-
-    //实例化编辑器
-    //建议使用工厂方法getEditor创建和引用编辑器实例，如果在某个闭包下引用该编辑器，直接调用UE.getEditor('editor')就能拿到相关的实例
-    var ue = UE.getEditor('editor');
-
-    ue.ready(function()         //内容回显
-     {
-        ue.setContent($("#temp").val());
-      });
-      
-    function isFocus(e){
-        alert(UE.getEditor('editor').isFocus());
-        UE.dom.domUtils.preventDefault(e)
-    }
-    function setblur(e){
-        UE.getEditor('editor').blur();
-        UE.dom.domUtils.preventDefault(e)
-    }
-    function insertHtml() {
-        var value = prompt('插入html代码', '');
-        UE.getEditor('editor').execCommand('insertHtml', value)
-    }
-    function createEditor() {
-        enableBtn();
-        UE.getEditor('editor');
-    }
-    function getAllHtml() {
-        alert(UE.getEditor('editor').getAllHtml())
-    }
-    function getContent() {
-        var arr = [];
-        arr.push("使用editor.getContent()方法可以获得编辑器的内容");
-        arr.push("内容为：");
-        arr.push(UE.getEditor('editor').getContent());
-        alert(arr.join("\n"));
-    }
-    function getPlainTxt() {
-        var arr = [];
-        arr.push("使用editor.getPlainTxt()方法可以获得编辑器的带格式的纯文本内容");
-        arr.push("内容为：");
-        arr.push(UE.getEditor('editor').getPlainTxt());
-        alert(arr.join('\n'))
-    }
-    function setContent(isAppendTo) {
-        var arr = [];
-        arr.push("使用editor.setContent('欢迎使用ueditor')方法可以设置编辑器的内容");
-        UE.getEditor('editor').setContent('欢迎使用ueditor', isAppendTo);
-        alert(arr.join("\n"));
-    }
-    function setDisabled() {
-        UE.getEditor('editor').setDisabled('fullscreen');
-        disableBtn("enable");
-    }
-
-    function setEnabled() {
-        UE.getEditor('editor').setEnabled();
-        enableBtn();
-    }
-
-    function getText() {
-        //当你点击按钮时编辑区域已经失去了焦点，如果直接用getText将不会得到内容，所以要在选回来，然后取得内容
-        var range = UE.getEditor('editor').selection.getRange();
-        range.select();
-        var txt = UE.getEditor('editor').selection.getText();
-        alert(txt)
-    }
-
-    function getContentTxt() {
-        var arr = [];
-        arr.push("使用editor.getContentTxt()方法可以获得编辑器的纯文本内容");
-        arr.push("编辑器的纯文本内容为：");
-        arr.push(UE.getEditor('editor').getContentTxt());
-        alert(arr.join("\n"));
-    }
-    function hasContent() {
-        var arr = [];
-        arr.push("使用editor.hasContents()方法判断编辑器里是否有内容");
-        arr.push("判断结果为：");
-        arr.push(UE.getEditor('editor').hasContents());
-        alert(arr.join("\n"));
-    }
-    function setFocus() {
-        UE.getEditor('editor').focus();
-    }
-    function deleteEditor() {
-        disableBtn();
-        UE.getEditor('editor').destroy();
-    }
-    function disableBtn(str) {
-        var div = document.getElementById('btns');
-        var btns = UE.dom.domUtils.getElementsByTagName(div, "button");
-        for (var i = 0, btn; btn = btns[i++];) {
-            if (btn.id == str) {
-                UE.dom.domUtils.removeAttributes(btn, ["disabled"]);
-            } else {
-                btn.setAttribute("disabled", "true");
-            }
-        }
-    }
-    function enableBtn() {
-        var div = document.getElementById('btns');
-        var btns = UE.dom.domUtils.getElementsByTagName(div, "button");
-        for (var i = 0, btn; btn = btns[i++];) {
-            UE.dom.domUtils.removeAttributes(btn, ["disabled"]);
-        }
-    }
-
-    function getLocalData () {
-        alert(UE.getEditor('editor').execCommand( "getlocaldata" ));
-    }
-
-    function clearLocalData () {
-        UE.getEditor('editor').execCommand( "clearlocaldata" );
-        alert("已清空草稿箱")
-    }
-</script>
-<script type="text/javascript" src="http://localhost/nxipp/public/admin/plugins/jquery-1.8.3.min.js"></script>
-<script type="text/javascript" src="http://localhost/nxipp/public/admin/plugins/uploadify/js/jquery.uploadify.min.js"></script> 
-<script src="http://localhost/nxipp/public/admin/plugins/layer/layer.min.js"></script>
- <script type="text/javascript">
+        <!--引入js-->
+        <script type="text/javascript" src="http://localhost/nxipp/public/admin/plugins/jquery-1.8.3.min.js"></script>
+        <script src="http://localhost/nxipp/public/admin/plugins/layer/layer.min.js"></script>
+        <script type="text/javascript" src="http://localhost/nxipp/public/admin/plugins/uploadify/js/jquery.uploadify.min.js"></script> 
+        <!-- <script type="text/javascript" src="http://localhost/nxipp/public/admin/js/swfobject.js"></script>  -->
+        <script type="text/javascript">
             $(function(){
-                $("#formeditArticle").submit(function(){
-                    var datas = $("#formeditArticle").serialize();
-                    $.post('<?php echo url("Article/editArticle"); ?>',datas,function(data){
-                       if (data.status) {
-                           layer.msg(data.msg, {icon: 1,time: 1500},function(){
-                              window.location.href = data.url;
-                           });
-                       }else {
-                           layer.msg(data.msg, {icon: 2,time: 1500});
-                        }
-                      //layer.msg(datas);
+                $("#formaddMember").submit(function(){
+                           var datas = $("#formaddMember").serialize();
+                           $.post('<?php echo url("Members/addMember"); ?>',datas,function(data){
+                               if (data.status) {
+                                   layer.msg(data.msg, {icon: 1,time: 1500},function(){
+                                       window.location.href = data.url;
+                                   });
+                               }else {
+                                   layer.msg(data.msg, {icon: 2,time: 1500});
+                               }
 
-                    },'json');
-                    //阻止表单刷新提
-                    //layer.msg(datas);
-                    return false;
+                           },'json');
+                           //阻止表单刷新提
+                           return false;
                 });
             });
             
@@ -407,7 +259,7 @@
                     $("#uploadify").uploadify({
                         'swf'           :  'http://localhost/nxipp/public/admin/plugins/uploadify/swf/uploadify.swf',
                         'uploader'        : '<?php echo url("api/Image/upload"); ?>',
-                        'buttonText'      : '选择图像',  
+                        'buttonText'      : '选择头像',  
                         'fileTypeDesc'    : '请选择图像',  
                         'fileTypeExts'    : '*.gif; *.jpg; *.png',     
                         'fileObjName'     : 'file',
@@ -417,7 +269,7 @@
                         'method'          : 'Post',
                         'wmode'           : 'transparent',
                         'formData'       : {
-				'urlfrom' : 'Article',
+				'urlfrom' : 'Member',
                         },
                         'onUploadSuccess' : function(file,data,response) {  
                          if(response){ 
@@ -425,13 +277,12 @@
                                 $("#upload_org_code_img").attr("src",obj.src);  
                                 $("#file_upload_image").attr("value",obj.src);
                                 $("input[name='imgUrl']").attr("value",obj.src)
-                                $("input[name='showpic']").attr("value",'')
-                                $("#upload_org_code_img").show(); 
+                                $("#upload_org_code_img").show();  
                             } 
                         }
                     });     
-            });
-</script>
+            });  
+        </script>
 
 
 
@@ -494,17 +345,12 @@
         <p class="te-al-ce"><a href="<?php echo url('Comments/index'); ?>" target='rightContent'><span>点击查看</span></a></p>
     </div>
 </div>
-<script type="text/javascript" src="http://localhost/nxipp/public/admin/plugins/jquery-1.8.3.min.js"></script>
-<script src="http://localhost/nxipp/public/admin/plugins/layer/layer.min.js"></script>
 <script type="text/javascript">
     function closes(){
         is_close = 1;
         document.getElementById('ordfoo').style.display = 'none';
     }
     
-    $('clear_cache').on('click',function(){
-        confirm('确定要删除全站缓存吗？');
-    })
 </script>
 
 </body>

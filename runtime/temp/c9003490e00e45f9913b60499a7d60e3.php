@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:6:{s:51:"E:\www\web\nxipp.\template/admin\rule\addrules.html";i:1503560340;s:51:"E:\www\web\nxipp.\template/admin\Layout\common.html";i:1502168098;s:51:"E:\www\web\nxipp.\template/admin\Public\header.html";i:1503941668;s:48:"E:\www\web\nxipp.\template/admin\Public\nav.html";i:1506071735;s:49:"E:\www\web\nxipp.\template/admin\Public\menu.html";i:1506072849;s:51:"E:\www\web\nxipp.\template/admin\Public\footer.html";i:1506069188;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:6:{s:50:"E:\www\web\nxipp.\template/admin\part\addpart.html";i:1503481179;s:51:"E:\www\web\nxipp.\template/admin\Layout\common.html";i:1502168098;s:51:"E:\www\web\nxipp.\template/admin\Public\header.html";i:1503941668;s:48:"E:\www\web\nxipp.\template/admin\Public\nav.html";i:1506242403;s:49:"E:\www\web\nxipp.\template/admin\Public\menu.html";i:1506072849;s:51:"E:\www\web\nxipp.\template/admin\Public\footer.html";i:1506242424;}*/ ?>
 <!--载入头部-->
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -174,56 +174,33 @@
 <!--内容主体 START-->
 
 <div id="dcMain">
-     <div id="urHere">管理中心<b>></b><strong>批量添加规则</strong> </div>
+     <div id="urHere">管理中心<b>></b><strong>添加角色</strong> </div>
      <div class="mainBox" style="height:auto!important;height:550px;min-height:550px;">
-         <h3><a href="<?php echo url('Rule/index'); ?>" class="actionBtn">规则管理</a>批量添加规则</h3>
-          <form id="formaddRules"   enctype="multipart/form-data">
+         <h3><a href="<?php echo url('Part/index'); ?>" class="actionBtn">角色管理</a>添加角色</h3>
+          <form id="formaddPart"   enctype="multipart/form-data">
                <table width="100%" border="0" cellpadding="8" cellspacing="0" class="tableBasic">
                    <tr>
-                      <td width="90" align="right">对应名称</td>
-                      <td><textarea id="name" name="title" class="inpMain" cols="80" rows='6' placeholder="无需填写,名称自动生成" style="border:1px solid #0077B5;" ></textarea></td>
+                      <td width="120" align="right">角色名称</td>
+                      <td><input type="text" name="title" size="20" class="inpMain" /></td>
                    </tr>
                    <tr>
-                       <td width="90" align="right">应用规则</td>
+                       <td width="120" align="right">赋权的栏目及操作</td>
+                       <td><?php if(is_array($arlist) || $arlist instanceof \think\Collection): $i = 0; $__LIST__ = $arlist;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$vo): $mod = ($i % 2 );++$i;?>
+                              <input type="checkbox" name="rules[]" value="<?php echo $vo['id']; ?>"/><?php echo $vo['title']; ?>（<?php echo $vo['name']; ?>）&nbsp;
+                           <?php endforeach; endif; else: echo "" ;endif; ?>
+                       <span style="color: red;margin-left: 20px">角色具有访问选中栏目或对栏目内容进行操作的权限</span>
+                       </td>
+                   </tr>                 
+                   <tr>
+                       <td width="120" align="right">角色状态</td>
                        <td>
-                           <table width="100%" border="0" cellpadding="0" cellspacing="0" class="tableBasic">
-                                <tr>
-                                    <td width="20%"><textarea id="content" name="content" class="inpMain" cols="38" rows='12' placeholder="无需填写，复选框选中后自动添加" style="border:1px solid #0077B5;" ></textarea></td>
-                                    <td>
-                                        <div style="line-height:25px;height:25px;border:1px solid #0077B5;padding-left:5px;"><input type="checkbox" name="allchecked" />&nbsp;全选 / 取消选中 </div>
-                                        <?php if(is_array($columnData) || $columnData instanceof \think\Collection): $i = 0; $__LIST__ = $columnData;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$vo): $mod = ($i % 2 );++$i;?>
-                                         <div style="line-height:35px;height:35px;border:1px solid #0077B5;padding-left:5px;" class="cb">
-                                           <?php echo $vo['name']; ?> &nbsp;&nbsp;&nbsp;|—&nbsp;&nbsp;
-                                             <?php $data = explode(",",$vo['functionName']); foreach($data as $datalist){ echo '<input name="function[]" type="checkbox" value="'.$datalist.'" cname="'.$vo['controllerName'].'">'.$datalist.'&nbsp;&nbsp;&nbsp;'; } ?>
-                                          </div>
-                                        <?php endforeach; endif; else: echo "" ;endif; ?>
-                                    </td>
-                               </tr>
-                           </table>
-                        </td>
-
-                   </tr>
-                   <tr>
-                      <td width="90" align="right">类 型</td>
-                      <td>
-                          <select name="type">
-                            <option value="1">正常</option>
-                          </select>
-                      </td>
-                   </tr>
-                   <tr>
-                      <td width="90" align="right">状 态</td>
-                      <td><select name="status">
+                           <select name="status">
                             <option value="nal">-请选择-</option>   
                             <option value="1">正常</option>
                             <option value="0">禁用</option> 
                           </select>
-                      </td>
+                       </td>
                    </tr>
-                   <tr>
-                       <td width="90" align="right">自定义规则</td>
-                       <td><input type="text" name="condition" size="30" class="inpMain" /></td>
-                   </tr>                 
                    <tr>
                        <td></td>
                        <td>
@@ -241,9 +218,9 @@
         <script src="http://localhost/nxipp/public/admin/plugins/layer/layer.min.js"></script>
         <script type="text/javascript">
             $(function(){
-                $("#formaddRules").submit(function(){
-                    var datas = $("#formaddRules").serialize();
-                    $.post('<?php echo url("Rule/addRules"); ?>',datas,function(data){
+                $("#formaddPart").submit(function(){
+                    var datas = $("#formaddPart").serialize();
+                    $.post('<?php echo url("Part/addPart"); ?>',datas,function(data){
                         if (data.status) {
                             layer.msg(data.msg, {icon: 1,time: 1500},function(){
                                 window.location.href = data.url;
@@ -256,58 +233,7 @@
                     //阻止表单刷新提
                     return false;
                 });
-                
-              $("input[name='function[]']").click(function(){
-                  var auth = '';
-                  $("input[name='function[]']:checked").each(function(){
-                        var fname = $(this).attr('value');
-                        var cname = $(this).attr('cname');
-                        auth+=cname+ '-'+fname+'|';
-                  });
-                  if(null!= auth && ""!=auth){
-                    $.post('<?php echo url("Rule/translateName"); ?>',{auth:auth},function(data){
-                          if (data.status) {
-                            $('#name').val(data.msg); 
-                          }else {
-                            $('#name').val('没查到对应的名称'); 
-                          }
-                      },'json');
-                  }else{
-                      $('#name').val(''); 
-                  }
-                  $('#content').val(auth);
-              });
-              
-             $("input[name='allchecked']") .click(
-                function(){  /*全选*/
-                    if(this.checked){
-                        var auth = '';
-                        $("input[name='function[]']").each(function() {
-                            $(this).attr('checked', true);
-                            var fname = $(this).attr('value');
-                            var cname = $(this).attr('cname');
-                            auth+=cname+ '-'+fname+'|';        
-                       });
-                       if(null!= auth && ""!=auth){
-                           $.post('<?php echo url("Rule/translateName"); ?>',{auth:auth},function(data){
-                                 if (data.status) {
-                                   $('#name').val(data.msg); 
-                                 }else {
-                                   $('#name').val('没查到对应的名称'); 
-                                 }
-                             },'json');
-                         }else{
-                             $('#name').val(''); 
-                         }
-                         $('#content').val(auth);
-                    }else{
-                       $("input[name='function[]']").attr('checked', false);
-                       $('#name').val('');
-                       $('#content').val('');
-                    }
-                 }
-              );          
-  });     
+            });
         </script>
 
 
@@ -371,17 +297,12 @@
         <p class="te-al-ce"><a href="<?php echo url('Comments/index'); ?>" target='rightContent'><span>点击查看</span></a></p>
     </div>
 </div>
-<script type="text/javascript" src="http://localhost/nxipp/public/admin/plugins/jquery-1.8.3.min.js"></script>
-<script src="http://localhost/nxipp/public/admin/plugins/layer/layer.min.js"></script>
 <script type="text/javascript">
     function closes(){
         is_close = 1;
         document.getElementById('ordfoo').style.display = 'none';
     }
     
-    $('clear_cache').on('click',function(){
-        confirm('确定要删除全站缓存吗？');
-    })
 </script>
 
 </body>

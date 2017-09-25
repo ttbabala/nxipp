@@ -2,12 +2,17 @@
 namespace app\admin\Controller;
 use app\common\Controller\Adminbase;
 use app\admin\Model\System as tSystem;
+use app\admin\Model\Single;
+use app\admin\Model\Article;
 use think\Request;
 use think\Db;
 class System extends Adminbase{
     public function index(){
         $Request = Request::instance();
         if($Request -> isAjax()){
+           if(input('radio')){
+               
+           }
            $st = new tSystem();
            $systemData = $st -> select();
            if(count($systemData)){  //更新
@@ -65,5 +70,22 @@ class System extends Adminbase{
            return json(['status'=>1,'msg'=>'清空成功^_^']); 
         }
         return json(['status'=>0,'msg'=>'清空失败哦^_^']); 
+    }
+    
+    public function selSingelorArticle(){
+        $type = input('type');
+        if($type == 'single'){
+            $single = new Single();
+            $singleData = $single -> order('id','asc') -> select();
+            $this -> assign('singleData',$singleData);
+            return $this -> fetch('selSingle');
+        }
+        if($type == 'article'){
+            $article = new Article();
+            $articleData = $article -> order('article_date','desc') -> select();
+            $this -> assign('articleData',$articleData);
+            return $this -> fetch('selArticle');
+        }
+        
     }
 }

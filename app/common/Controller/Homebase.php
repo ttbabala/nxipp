@@ -23,7 +23,7 @@ class Homebase extends Controller{
            }
         $data = $this -> getLanmuData();
         $st = new System();
-        $webname = $st -> column('webname');
+        $webname = $st -> column('web_title');
         $rootUrl = getRootUrl();
         $system = new System();
         $link[0] = $system -> column('link');
