@@ -6,6 +6,7 @@ use app\admin\Model\Article as tArticle;
 use app\admin\Model\Cats;
 use app\admin\Model\Comments;
 use app\admin\Model\User;
+use app\admin\Model\Votes;
 
 class Article extends Adminbase{
     public function articleList(){ 

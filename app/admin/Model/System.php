@@ -11,6 +11,7 @@ class System extends Model{
         $imgArray = [];
         $linkArray = [];
         $linkArrayimg = [];
+        $hdlinkArrayimg = [];
         if(!$data['webname']){
              exit(json_encode(array('status'=>0,'msg'=>'站点名称不能为空哦^_^'))); 
         }
@@ -22,16 +23,18 @@ class System extends Model{
         }
         if(!$data['senswords']){
              exit(json_encode(array('status'=>0,'msg'=>'屏蔽词汇不能为空哦^_^')));  
-        }
+        } 
         for($i=0;$i<5;$i++){            //处理幻灯图片路径
-                    if($data["imgUrl$i"] == 'null'){
-                        $imgArray[$i] == 'null';
-                    }
-                    if(strstr($data["imgUrl$i"],$_SERVER['HTTP_HOST'])){
-                        $imgArray[$i] = str_replace("\\","/",$data["imgUrl$i"]);
+                    if($data["imgUrl$i"] !== 'null'){
+                        if(strstr($data["imgUrl$i"],$_SERVER['HTTP_HOST'])){
+                            $hdlinkArrayimg[$i] = str_replace("\\","/",$data["imgUrl$i"]);
+                        }else{
+                            $hdlinkArrayimg[$i] = 'http://'.str_replace("\\","/",$_SERVER['HTTP_HOST'].$data["imgUrl$i"]); 
+                        }
                     }else{
-                       $imgArray[$i] = 'http://'.str_replace("\\","/",$_SERVER['HTTP_HOST'].$data["imgUrl$i"]); 
+                        $hdlinkArrayimg[$i] = $data["imgUrl$i"];
                     }
+                    $imgArray[$i] = $data["linkurl$i"].",".$data["linktitle$i"].",".$data["linkdate$i"].",".$hdlinkArrayimg[$i];
         }
         
         for($i=0;$i<4;$i++){            //处理友情链接logo图片路径      
@@ -42,11 +45,12 @@ class System extends Model{
                             $linkArrayimg[$i] = 'http://'.str_replace("\\","/",$_SERVER['HTTP_HOST'].$data["linkimg$i"]); 
                          }
                     }else{
-                        $linkArrayimg[$i] = $data["linkimg$i"];;
+                        $linkArrayimg[$i] = $data["linkimg$i"];
                     }
                     $linkArray[$i] = $data["linktxt$i"].",".$linkArrayimg[$i];
         }
         $linkStr = implode("|",$linkArray);
+        $imgStr = implode("|",$imgArray);
         $datas = [
           'webname' => $data['webname'],
           'com' => $data['com'],
@@ -55,7 +59,7 @@ class System extends Model{
           'opencomments' => $data['opencomments'],
           'senswords' => $data['senswords'],
           'filterips' => $data['filterIp'],
-          'huandengimg' => implode(",",$imgArray),
+          'huandengimg' => $imgStr,
           'link' => $linkStr
         ];
         if ($this -> save($datas,['id' => $id]) ) {
@@ -69,6 +73,9 @@ class System extends Model{
         //新增数据
         $data = input("post.");
         $imgArray = [];
+        $linkArray = [];
+        $linkArrayimg = [];
+        $hdlinkArrayimg = [];
         if(!$data['webname']){
              exit(json_encode(array('status'=>0,'msg'=>'站点名称不能为空哦^_^'))); 
         }
@@ -81,13 +88,33 @@ class System extends Model{
         if(!$data['senswords']){
              exit(json_encode(array('status'=>0,'msg'=>'屏蔽词汇不能为空哦^_^')));  
         }
-        for($i=0;$i<5;$i++){
-                 if($data["imgUrl$i"] !== ''){
-                     $imgArray[$i] = 'http://'.str_replace("\\","/",$_SERVER['HTTP_HOST'].$data["imgUrl$i"]);
-                 }else{
-                   $imgArray[$i] = 'null';  
-                 }
+        for($i=0;$i<5;$i++){            //处理幻灯图片路径
+                    if($data["imgUrl$i"] !== 'null'){
+                        if(strstr($data["imgUrl$i"],$_SERVER['HTTP_HOST'])){
+                            $hdlinkArrayimg[$i] = str_replace("\\","/",$data["imgUrl$i"]);
+                        }else{
+                            $hdlinkArrayimg[$i] = 'http://'.str_replace("\\","/",$_SERVER['HTTP_HOST'].$data["imgUrl$i"]); 
+                        }
+                    }else{
+                        $hdlinkArrayimg[$i] = $data["imgUrl$i"];
+                    }
+                    $imgArray[$i] = $data["linkurl$i"].",".$data["linktitle$i"].",".$data["linkdate$i"].",".$hdlinkArrayimg[$i];
         }
+        
+        for($i=0;$i<4;$i++){            //处理友情链接logo图片路径      
+                    if($data["linkimg$i"] !== 'null'){
+                         if(strstr($data["linkimg$i"],$_SERVER['HTTP_HOST'])){
+                            $linkArrayimg[$i] = str_replace("\\","/",$data["linkimg$i"]);
+                         }else{
+                            $linkArrayimg[$i] = 'http://'.str_replace("\\","/",$_SERVER['HTTP_HOST'].$data["linkimg$i"]); 
+                         }
+                    }else{
+                        $linkArrayimg[$i] = $data["linkimg$i"];
+                    }
+                    $linkArray[$i] = $data["linktxt$i"].",".$linkArrayimg[$i];
+        }
+        $linkStr = implode("|",$linkArray);
+        $imgStr = implode("|",$imgArray);
         $this -> data = [
           'webname' => $data['webname'],
           'com' => $data['com'],
@@ -96,8 +123,8 @@ class System extends Model{
           'opencomments' => $data['opencomments'],
           'senswords' => $data['senswords'],
           'filterips' => $data['filterIp'],
-          'huandengimg' => implode(",",$imgArray),
-          'link' => 'http://www.sohu.com/'
+          'huandengimg' => $imgStr,
+          'link' => $linkStr
         ];
         if($this -> save()){
                return true;

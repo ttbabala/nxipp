@@ -17,17 +17,16 @@
                                                         <li>
 				   				<div class="featured-post-slide">
 
-						   			<div class="post-background" style="background-image:url('{$vo}');;"></div>
+						   			<div class="post-background" style="background-image:url('{$vo[3]}')"></div>
 
 								   	<div class="overlay"></div>			   		
 
 								   	<div class="post-content">
 								   		<ul class="entry-meta">
-												<li>August 27, 2016</li>
-												<li><a href="#" class="author">Naruto Uzumaki</a></li>					
+												<li>{$vo[2]}</li>			
 											</ul>	
 
-								   		<h1 class="slide-title"><a href="single-standard.html" title="">Music Album Cover Designs for Inspiration</a></h1>
+								   		<h1 class="slide-title"><a href="{$vo[0]}" title="">{$vo[1]}</a></h1>
 						   			</div>
 
 				   				</div>
@@ -52,11 +51,15 @@
 
                           <div class="entry-meta">
                                   <span class="cat-links">
-                                        <?php $kwArray = explode(',',$vo['article_keywords']);
+                                        <!-- <?php $kwArray = explode(',',$vo['article_keywords']);
                                           foreach($kwArray as $keywords){ 
                                             echo "<a href='#'>".$keywords."</a>";
                                           }
-                                        ?>
+                                        ?> -->
+                                        <?php $kwArray = explode(',',$vo['article_keywords']); ?>
+                                        {volist name="kwArray" id="vk"}
+                                        <a href="{:url('Search/index')}?keywords={$vk}">{$vk}</a>
+                                        {/volist}
 
                                   </span>			
                           </div>

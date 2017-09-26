@@ -2,6 +2,8 @@
 namespace app\admin\Model;
 use think\Model;
 use think\Request;
+use think\Db;
+use app\admin\Model\Votes;
 
 class Article extends Model{
     protected $pk = 'aid';
@@ -22,9 +24,9 @@ class Article extends Model{
             exit(json_encode(array('status'=>0,'msg'=>'摘要必须填写^_^')));
         }
        $imgurl = 'http://'.str_replace("\\","/",$_SERVER['HTTP_HOST'].$data['imgUrl']);
-       $this ->data = ([
+       $datas = ([
             'article_author' => $data['article_author'],
-            'article_keywords' => $data['article_keywords'],
+            'article_keywords' => preg_replace("/(\n)|(\s)|(\t)|(\')|(')|(，)|(\.)/",',',$data['article_keywords']),    //正则替换中文字符为,
             'article_date' => date('Y-m-d H:i:s',time()),
             'article_date_gmt' => date('Y-m-d H:i:s',time()),
             'article_content'  => $data['article_content'],
@@ -37,9 +39,18 @@ class Article extends Model{
             'comment_count' => '20',
             'article_pid' => 1
         ]);
-        
-        if ($this -> save()) {
-            return true;
+        $aid = Db::connect('mysql://root:deze@127.0.0.1:3306/nxipp#utf8') -> name('article') ->insertGetId($datas);       //Db类操作，返回自增主键供Votes表使用
+
+        if ($aid > 0) {
+                $vt = new Votes();
+                $vt -> data = ([
+                  'id' => $aid,
+                  'likes' => 0,
+                  'unlikes' => 0
+                ]);
+                if($vt -> save()){  //向Votes表插入该ID的初始记录
+                    return true; 
+                }
         }
         return false;
     }
@@ -66,7 +77,7 @@ class Article extends Model{
         }
         $datas = [
             'article_author' => $data['article_author'],
-            'article_keywords' => $data['article_keywords'],
+            'article_keywords' => preg_replace("/(\n)|(\s)|(\t)|(\')|(')|(，)|(\.)/",',',$data['article_keywords']),    //正则替换中文字符为,
             'article_date_gmt' => date('Y-m-d H:i:s',time()),
             'article_content'  => $data['article_content'],
             'article_title' => $data['article_title'],
@@ -88,6 +99,8 @@ class Article extends Model{
     public function delData($aid){
         $ResNum = $this -> where('aid',$aid) -> delete();
         if( $ResNum == 1 ){
+            $vt = new Votes();
+            $vt -> where('id',$aid) -> delete();
             return true;
         }
         return false;

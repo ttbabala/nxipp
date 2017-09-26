@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:4:{s:48:"E:\www\web\nxipp.\template/home\index\index.html";i:1506422031;s:50:"E:\www\web\nxipp.\template/home\Layout\common.html";i:1505094327;s:50:"E:\www\web\nxipp.\template/home\Public\header.html";i:1506409492;s:50:"E:\www\web\nxipp.\template/home\Public\footer.html";i:1505906233;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:4:{s:48:"E:\www\web\nxipp.\template/home\single\page.html";i:1505896403;s:50:"E:\www\web\nxipp.\template/home\Layout\common.html";i:1505094327;s:50:"E:\www\web\nxipp.\template/home\Public\header.html";i:1505900478;s:50:"E:\www\web\nxipp.\template/home\Public\footer.html";i:1505906233;}*/ ?>
 <!--载入头部-->
 <!DOCTYPE html>
 <!--[if IE 8 ]><html class="no-js oldie ie8" lang="en"> <![endif]-->
@@ -52,7 +52,7 @@
    	<div class="row header-content">
 
    		<div class="logo">
-	         <a href='<?php echo url("Index/index"); ?>'>Author</a>
+	         <a href="index.html">Author</a>
 	      </div>
 
 	   	<nav id="main-nav-wrap">
@@ -77,10 +77,10 @@
 
 			<div class="search-wrap">
 				
-				<form role="search" method="get" class="search-form" action="<?php echo url('Search/index'); ?>">
+				<form role="search" method="get" class="search-form" action="#">
 					<label>
-						<span class="hide-content">立即搜索：</span>
-						<input type="search" class="search-field" name="keywords" title="搜索：" autocomplete="off">
+						<span class="hide-content">Search for:</span>
+						<input type="search" class="search-field" placeholder="Type Your Keywords" value="" name="s" title="Search for:" autocomplete="off">
 					</label>
 					<input type="submit" class="search-submit" value="Search">
 				</form>
@@ -104,108 +104,57 @@
 
 
 <!--内容主体 START-->
-   <!-- masonry
+ <!-- content
    ================================================== -->
-   <section id="bricks">
-
-   	<div class="row masonry">
-
-   		<!-- brick-wrapper -->
-         <div class="bricks-wrapper">
-
-         	<div class="grid-sizer"></div>
-
-         	<div class="brick entry featured-grid animate-this">
-         		<div class="entry-content">
-         			<div id="featured-post-slider" class="flexslider">
-			   			<ul class="slides">
-                                                    <?php if(is_array($hdData) || $hdData instanceof \think\Collection): $k = 0; $__LIST__ = $hdData;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$vo): $mod = ($k % 2 );++$k;?>
-                                                        <li>
-				   				<div class="featured-post-slide">
-
-						   			<div class="post-background" style="background-image:url('<?php echo $vo[3]; ?>')"></div>
-
-								   	<div class="overlay"></div>			   		
-
-								   	<div class="post-content">
-								   		<ul class="entry-meta">
-												<li><?php echo $vo[2]; ?></li>			
-											</ul>	
-
-								   		<h1 class="slide-title"><a href="<?php echo $vo[0]; ?>" title=""><?php echo $vo[1]; ?></a></h1>
-						   			</div>
-
-				   				</div>
-				   			</li> <!-- end slide -->
-                                                      <?php endforeach; endif; else: echo "" ;endif; ?>
-
-				   		</ul> <!-- end slides -->
-				   	</div> <!-- end featured-post-slider -->        			
-         		</div> <!-- end entry content -->         		
-         	</div>
-         <?php if(is_array($articleData) || $articleData instanceof \think\Collection): $i = 0; $__LIST__ = $articleData;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$vo): $mod = ($i % 2 );++$i;?>
-            <article class="brick entry format-standard animate-this">
-
-                 <div class="entry-thumb">
-                    <a href="<?php echo url('Single/index',array('aid' => $vo['aid'])); ?>" class="thumb-link">
-                            <img src="<?php echo $vo['article_photo']; ?>" alt="building">             
-                    </a>
-                 </div>
-
-                 <div class="entry-text">
-                  <div class="entry-header">
-
-                          <div class="entry-meta">
-                                  <span class="cat-links">
-                                        <!-- <?php $kwArray = explode(',',$vo['article_keywords']);
-                                          foreach($kwArray as $keywords){ 
-                                            echo "<a href='#'>".$keywords."</a>";
-                                          }
-                                        ?> -->
-                                        <?php $kwArray = explode(',',$vo['article_keywords']); if(is_array($kwArray) || $kwArray instanceof \think\Collection): $i = 0; $__LIST__ = $kwArray;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$vk): $mod = ($i % 2 );++$i;?>
-                                        <a href="<?php echo url('Search/index'); ?>?keywords=<?php echo $vk; ?>"><?php echo $vk; ?></a>
-                                        <?php endforeach; endif; else: echo "" ;endif; ?>
-
-                                  </span>			
-                          </div>
-
-                      <h1 class="entry-title"><a href="<?php echo url('Single/index',array('aid' => $vo['aid'])); ?>"><?php echo $vo['article_title']; ?></a></h1>
-
-                  </div>
-                                                  <div class="entry-excerpt">
-                                                          <?php echo $vo['article_excerpt']; ?> 
-                                                  </div>
-                 </div>
-
-             </article> <!-- end article -->
-           <?php endforeach; endif; else: echo "" ;endif; ?>
-                
-         </div> <!-- end brick-wrapper --> 
-
-   	</div> <!-- end row -->
-
+   <section id="content-wrap" class="blog-single">
    	<div class="row">
-   		
-   		<nav class="pagination">
-		      <!--<span class="page-numbers prev inactive">Prev</span>
-		   	<span class="page-numbers current">1</span>
-		   	<a href="#" class="page-numbers">2</a>
-		      <a href="#" class="page-numbers">3</a>
-		      <a href="#" class="page-numbers">4</a>
-		      <a href="#" class="page-numbers">5</a>
-		      <a href="#" class="page-numbers">6</a>
-		      <a href="#" class="page-numbers">7</a>
-		      <a href="#" class="page-numbers">8</a>
-		      <a href="#" class="page-numbers">9</a>
-		   	<a href="#" class="page-numbers next">Next</a> -->
-                      <?php echo $page; ?>
-	      </nav>
+   		<div class="col-twelve">
 
-   	</div>
+   			<article class="format-standard">  
 
-   </section> <!-- end bricks -->
+					<div class="primary-content">
 
-   
+						<h1 class="page-title"><?php echo $singleData['singlename']; ?>（<?php echo $singleData['aliasname']; ?>）</h1>	
+
+						<ul class="entry-meta">
+							<li class="date"><?php echo $singleData['createtime']; ?></li>				
+						</ul>						
+
+                                                <p><?php echo $singleData['content']; ?></p>
+	
+                                                <div class="bdsharebuttonbox">  
+                                                    <a href="#" class="bds_more" data-cmd="more"></a>  
+                                                    <a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a>  
+                                                    <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>  
+                                                    <a href="#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博"></a>  
+                                                    <a href="#" class="bds_renren" data-cmd="renren" title="分享到人人网"></a>  
+                                                    <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>  
+                                                </div>  
+                                                <script>  
+                                                        window._bd_share_config={  
+                                                                "common":{  
+                                                                    "bdPopTitle":"您的自定义pop窗口标题",  
+                                                                    "bdSnsKey":{},  
+                                                                    "bdText":"此处填写自定义的分享内容",   
+                                                                    "bdMini":"2",  
+                                                                    "bdMiniList":false,  
+                                                                    "bdPic":"http://localhost/centlight/public/attachment/201410/24/14/5449ef39574f5_282x220.jpg", /* 此处填写要分享图片地址 */  
+                                                                    "bdStyle":"0",  
+                                                                    "bdSize":"16"  
+                                                                    },  
+                                                                "share":{}  
+                                                        };  
+                                                        with(document)0[  
+                                                                        (getElementsByTagName('head')[0]||body).  
+                                                                        appendChild(createElement('script')).  
+                                                                        src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)  
+                                                        ];  
+                                                </script>  
+					</div> <!-- end entry-primary -->		  			   
+
+   </section> <!-- end content -->
+
+
 
 
 <!--载入底部-->

@@ -2078,7 +2078,7 @@ header .logo a {
 }
 
 .search-wrap .search-form::after {
-	content: "Press Enter to begin your search.";
+	content: "请按下回车键立即开始搜索.";
 	display: block;
 	letter-spacing: 0.6px;
 	font-size: 1.6rem;

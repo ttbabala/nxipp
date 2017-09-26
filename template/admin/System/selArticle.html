@@ -1,7 +1,7 @@
 {__NOLAYOUT__}
 <!DOCTYPE html>
 <head>
-<title>会员注册</title>
+<title>选择文章</title>
 <link rel="stylesheet" href="__admin__/css/public.css">
 <script type="text/javascript" src="__admin__/js/jquery.min.js"></script>
 </head>
@@ -10,7 +10,7 @@
    <!-- 当前位置 -->
     <div class="mainBox" style="height:auto!important;height:250px;min-height:250px;">
         <div id="list">
-            <form name="action" id="formaction" method="post" action="#">
+            <form id="formaction" method="post">
                 <table width="100%" border="0" cellpadding="8" cellspacing="0" class="tableBasic">
                  <tr>
                       <th width="15%" align="center" style="font-weight:bold">选择</th>
@@ -20,14 +20,18 @@
                  </tr>
                  {volist name='articleData' id='vo'}
                  <tr>
-                      <td align="center"><input style="width: 20px;height: 20px;" type="radio" name="radio" class="idDisplay" value="{$vo['aid']}" /></td>
+                      <td align="center"><input style="width: 20px;height: 20px;" type="radio" name="sel" class="idDisplay" value="{$vo['aid']}" /></td>
                       <td align="left">{$vo['aid']}</td>
                       <td align="left">{$vo['article_title']}</td>
                       <td align="left">{$vo['article_author']}</td>
                  </tr>
                  {/volist}
                 </table>
-                <div style="margin-top:10px;"><input name="submit" class="btn" type="submit" value="生成链接" /></div>
+                <div style="margin-top:10px;">
+                    <input type="hidden" name="seltype" value="article" />
+                    <input type="hidden" name="hid" value="{$hid}"/>
+                    <input name="submit" class="btn" type="submit" value="生成链接" />
+                </div>
            </form>
         </div>
     </div>
@@ -38,15 +42,14 @@
         <script type="text/javascript">
             $(function(){
                 $("#formaction").submit(function(){
-                    var datas = $("#formaction").serialize();
-                    //layer.msg(datas, {icon: 2,time: 50000});
-                    $.post('{:url("System/index")}',datas,function(data){
+                    var datas = $("#formaction").serialize(); 
+                    $.post('{:url("System/autolink")}',datas,function(data){
                         if (data.status) {
-                            layer.msg(data.msg, {icon: 1,time: 1500},function(){
-                                window.location.href = data.url;
-                            });
+                            layer.msg(data.msg, {icon: 1,time: 1500});
+                            window.parent.location.reload();
                         }else {
                             layer.msg(data.msg, {icon: 2,time: 1500});
+                            window.parent.location.reload();
                         }
                     },'json');
                     //阻止表单刷新提交

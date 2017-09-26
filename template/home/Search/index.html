@@ -1,0 +1,74 @@
+   <!-- page header
+   ================================================== -->
+   <section id="page-header">
+   	<div class="row current-cat">
+   		<div class="col-full">
+                    <div style="background-color:#000;color:#fff">|&nbsp;关于“{$keywords}”的搜索结果&nbsp;|</div>
+   		</div>   		
+   	</div>
+   </section>
+
+<!-- masonry
+   ================================================== -->
+   <section id="bricks" class="with-top-sep">
+
+   	<div class="row masonry">
+
+   		<!-- brick-wrapper -->
+         <div class="bricks-wrapper">
+
+         	<div class="grid-sizer"></div>
+         {if condition="$countNum eq 0"}
+         <div style="text-align: center;font-weight:bold;">^_^ 抱歉，貌似什么也没有找到</div>
+         {else /}
+         {volist name="atlist" id="vo"}
+            <article class="brick entry format-standard animate-this">
+
+                 <div class="entry-thumb">
+                    <a href="{:url('Single/index',array('aid' => $vo['aid']))}" class="thumb-link">
+                            <img src="{$vo['article_photo']}" alt="building">             
+                    </a>
+                 </div>
+
+                 <div class="entry-text">
+                  <div class="entry-header">
+
+                          <div class="entry-meta">
+                                  <span class="cat-links">
+                                        <?php $kwArray = explode(',',$vo['article_keywords']);
+                                          foreach($kwArray as $keywords){ 
+                                            echo "<a href='#'>".$keywords."</a>";
+                                          }
+                                        ?>
+
+                                  </span>			
+                          </div>
+
+                      <h1 class="entry-title"><a href="{:url('Single/index',array('aid' => $vo['aid']))}">{$vo['article_title']}</a></h1>
+
+                  </div>
+                                                  <div class="entry-excerpt">
+                                                          {$vo['article_excerpt']} 
+                                                  </div>
+                 </div>
+
+             </article> <!-- end article -->
+           {/volist}
+           {/if}
+                
+         </div> <!-- end brick-wrapper --> 
+
+   	</div> <!-- end row -->
+        {if condition="$countNum neq 0"}
+            <div class="row">
+
+                    <nav class="pagination">
+                          {$page}
+                  </nav>
+
+            </div>
+        {/if}
+
+   </section> <!-- end bricks -->
+
+   

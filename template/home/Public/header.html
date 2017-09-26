@@ -50,7 +50,7 @@
    	<div class="row header-content">
 
    		<div class="logo">
-	         <a href="index.html">Author</a>
+	         <a href='{:url("Index/index")}'>Author</a>
 	      </div>
 
 	   	<nav id="main-nav-wrap">
@@ -75,10 +75,10 @@
 
 			<div class="search-wrap">
 				
-				<form role="search" method="get" class="search-form" action="#">
+				<form role="search" method="get" class="search-form" action="{:url('Search/index')}">
 					<label>
-						<span class="hide-content">Search for:</span>
-						<input type="search" class="search-field" placeholder="Type Your Keywords" value="" name="s" title="Search for:" autocomplete="off">
+						<span class="hide-content">立即搜索：</span>
+						<input type="search" class="search-field" name="keywords" title="搜索：" autocomplete="off">
 					</label>
 					<input type="submit" class="search-submit" value="Search">
 				</form>

@@ -160,7 +160,7 @@
 	      e.stopPropagation();
 	   });
 
-	   searchField.attr({placeholder: 'Type Your Keywords', autocomplete: 'off'});
+	   searchField.attr({placeholder: '请输入要搜索的关键词', autocomplete: 'off'});
 
    };
 	 

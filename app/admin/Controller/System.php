@@ -10,15 +10,12 @@ class System extends Adminbase{
     public function index(){
         $Request = Request::instance();
         if($Request -> isAjax()){
-           if(input('radio')){
-               
-           }
            $st = new tSystem();
            $systemData = $st -> select();
            if(count($systemData)){  //更新
               $id = input("isup");
               $Result = $st -> upData($id); 
-              if($Result == 1){
+              if($Result){
                     return json(['status'=>1,'msg'=>'更新成功^_^','url'=>url('System/index')]); 
               }
               //var_dump($Result);exit();
@@ -36,8 +33,13 @@ class System extends Adminbase{
         $systemData = $st -> find();
         if(count($systemData) == 1){
             if(isset($systemData["huandengimg"])){
-                $hdarray = explode(",",$systemData["huandengimg"]);
-                $this -> assign('hdarray',$hdarray);
+                $hdarray1 = explode("|",$systemData["huandengimg"]);
+                 for($i=0;$i<count($hdarray1);$i++){    
+                   $hdarray2[$i] = explode(",",$hdarray1[$i]);  //再得到每一项中的值
+                   $hdarrayStr[$i] = implode(",",$hdarray2[$i]); //数组转字符串
+                   $hdarray3[$i] = explode(",",$hdarrayStr[$i]); //再转成最终的数组
+                }
+                $this -> assign('hdarray',$hdarray3);
             }
             if(isset($systemData["link"])){
                $linka1 = explode("|",$systemData["link"]);  //先拆分成多个项
@@ -55,6 +57,8 @@ class System extends Adminbase{
             $this -> assign('hdarray',$hdarray);
             $this -> assign('linkarray',$linkarray);
         }
+        $this -> assign('alinkUrl',url('Home/Single/index'));
+        $this -> assign('slinkUrl',url('Home/Single/page'));
         return $this ->fetch();
     }
     
@@ -74,18 +78,55 @@ class System extends Adminbase{
     
     public function selSingelorArticle(){
         $type = input('type');
+        $hid = input('hid');
         if($type == 'single'){
             $single = new Single();
             $singleData = $single -> order('id','asc') -> select();
+            $this -> assign('hid',$hid);
             $this -> assign('singleData',$singleData);
             return $this -> fetch('selSingle');
         }
-        if($type == 'article'){
+        else if($type == 'article'){
             $article = new Article();
             $articleData = $article -> order('article_date','desc') -> select();
+            $this -> assign('hid',$hid);
             $this -> assign('articleData',$articleData);
             return $this -> fetch('selArticle');
         }
         
     }
+    
+    public function autolink(){
+            $Request = Request::instance();
+            if($Request ->isAjax()){
+                $datas = input('post.');
+                if($datas['seltype'] == 'article'){             //选择文章作为幻灯链接
+                 $predis = new \Predis\Client();            //实例化Redis
+                 $aid = $datas['sel'];                      //文章aid
+                 $hid = $datas['hid'];                      //幻灯id
+                 if( $predis -> hexists('hd:'.$hid,'sid') ){           //判断sid字段是否存在
+                     $predis -> hdel('hd:'.$hid,'sid');             //删除sid字段
+                 } 
+                 $redisResult = $predis->hset('hd:'.$hid,'aid',$aid);   //哪个幻灯对应哪篇文章 hd:1 aid
+                 if($redisResult == 1 || $redisResult == 0){            //1为插入 0为更新
+                     return json(['status'=>1,'msg'=>'链接生成成功^_^']); 
+                 }
+               }
+                if($datas['seltype'] == 'single'){             //选择单页作为幻灯链接
+                 $predis = new \Predis\Client();            //实例化Redis
+                 $sid = $datas['sel'];                      //单页sid
+                 $hid = $datas['hid'];                      //幻灯id
+                 if( $predis -> hexists('hd:'.$hid,'aid') ){           //判断aid字段是否存在
+                     $predis -> hdel('hd:'.$hid,'aid');             //删除aid字段
+                 } 
+                 $redisResult = $predis->hset('hd:'.$hid,'sid',$sid);   //哪个幻灯对应哪则单页 hd:1 sid
+                 if($redisResult == 1 || $redisResult == 0){         //1为插入 0为更新
+                     return json(['status'=>1,'msg'=>'链接生成成功^_^']); 
+                 }
+               }
+            }
+           
+    }
+    
+    
 }

@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:6:{s:50:"E:\www\web\nxipp.\template/admin\system\index.html";i:1506304863;s:51:"E:\www\web\nxipp.\template/admin\Layout\common.html";i:1502168098;s:51:"E:\www\web\nxipp.\template/admin\Public\header.html";i:1503941668;s:48:"E:\www\web\nxipp.\template/admin\Public\nav.html";i:1506242403;s:49:"E:\www\web\nxipp.\template/admin\Public\menu.html";i:1506072849;s:51:"E:\www\web\nxipp.\template/admin\Public\footer.html";i:1506242424;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:6:{s:50:"E:\www\web\nxipp.\template/admin\system\index.html";i:1506403503;s:51:"E:\www\web\nxipp.\template/admin\Layout\common.html";i:1502168098;s:51:"E:\www\web\nxipp.\template/admin\Public\header.html";i:1503941668;s:48:"E:\www\web\nxipp.\template/admin\Public\nav.html";i:1506242403;s:49:"E:\www\web\nxipp.\template/admin\Public\menu.html";i:1506072849;s:51:"E:\www\web\nxipp.\template/admin\Public\footer.html";i:1506242424;}*/ ?>
 <!--载入头部-->
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -221,18 +221,18 @@
                        <td width="90" align="right">首页幻灯片设置</td>
                        <td>
                           <?php if(is_array($hdarray) || $hdarray instanceof \think\Collection): $k = 0; $__LIST__ = $hdarray;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$vo): $mod = ($k % 2 );++$k;?>
-                          <div id="file_upload_image<?php echo $k-1; ?>" style="margin-bottom: 15px"><img id="upload_org_code_img<?php echo $k-1; ?>" class="img" width="80px" height="80px" src="<?php echo $vo; ?>" style="<?php echo !empty($vo) && $vo!=='null'?'':'display:none;'; ?>margin-top: 15px;" /></div>
+                          <div id="file_upload_image<?php echo $k-1; ?>" style="margin-bottom: 15px"><img id="upload_org_code_img<?php echo $k-1; ?>" class="img" width="80px" height="80px" src="<?php echo $vo[3]; ?>" style="<?php echo !empty($vo[3]) && $vo[3]!=='null'?'':'display:none;'; ?>margin-top: 15px;" /></div>
                                 <div class="uploadify<?php echo $k-1; ?>" style="border-bottom: 1px dotted #778899">
                                 <input class="uploadify" id="uploadify<?php echo $k-1; ?>" type="file" multiple="true" value="" class='uploadify-button' />
                                 <div style="margin-bottom:15px"><a href="javascript:$('#uploadify<?php echo $k-1; ?>').uploadify('upload')" >现在上传</a> |
                                     <a href="javascript:$('#uploadify<?php echo $k-1; ?>').uploadify('cancel')" >取消上传</a>
                                 <span style="color: red;margin-left: 20px">支持.gif .jpg .png图像格式，单张图片大小不能超过2M</span></div>
-                                <div style="margin-bottom:5px;">标题：<input type="text" name="" value="" size="50" class="inpMain" style="border-bottom: 1px dotted #C4C4C4;"/></div>
-                                <div style="margin-bottom:5px;">链接：<input type="text" name="" value="" size="40" class="inpMain" style="border-bottom: 1px dotted #C4C4C4;"/>
-                                    &nbsp;<input style="width: 20px;height: 20px;" type="radio" class="radio" name="autolink" size="5" class="idDisplay" value="article"/>选择作品自动生成链接
-                                    &nbsp;<input style="width: 20px;height: 20px;" type="radio" class="radio" name="autolink" size="5" class="idDisplay" value="single"/>选择单页自动生成链接
+                                <div style="margin-bottom:5px;">标题：<input type="text" name="linktitle<?php echo $k-1; ?>" value="<?php echo $vo[1]; ?>" size="50" class="inpMain" style="border-bottom: 1px dotted #C4C4C4;"/></div>
+                                <div style="margin-bottom:5px;">链接：<input type="text" name="linkurl<?php echo $k-1; ?>" value="<?php $predis = new \Predis\Client(); $sid = $predis->hget('hd:'.($k-1),'sid'); $aid = $predis->hget('hd:'.($k-1),'aid'); if($aid == '')echo '';else echo substr($alinkUrl,0,-5).'/aid/'.$aid.'.html'; if($sid == '')echo '';else echo substr($slinkUrl,0,-5).'/id/'.$sid.'.html'; ?>" size="40" class="inpMain" style="border-bottom: 1px dotted #C4C4C4;"/>
+                                    &nbsp;<input style="width: 20px;height: 20px;" type="radio" class="radio" name="autolink" size="5" class="idDisplay" value="article" hid="<?php echo $k-1; ?>"/>选择作品自动生成链接
+                                    &nbsp;<input style="width: 20px;height: 20px;" type="radio" class="radio" name="autolink" size="5" class="idDisplay" value="single" hid="<?php echo $k-1; ?>"/>选择单页自动生成链接
                                 </div>
-                                <div style="margin-bottom:5px;">时间：<input type="text" name="" value="" size="20" class="inpMain" style="border-bottom: 1px dotted #C4C4C4;"/></div>
+                                <div style="margin-bottom:5px;">时间：<input type="text" name="linkdate<?php echo $k-1; ?>" value="<?php echo $vo[2]; ?>" size="20" class="inpMain" style="border-bottom: 1px dotted #C4C4C4;"/></div>
                                 </div>
                            <?php endforeach; endif; else: echo "" ;endif; ?>
                           <div id="displayMsg"></div>
@@ -261,9 +261,9 @@
                    <tr>
                        <td></td>
                        <td>
-                           <input type="hidden" name="isup" value="<?php if(isset($systemData['id'])): ?><?php echo $systemData['id']; endif; ?>" />
+                           <input type="hidden" name="isup" value="<?php if(isset($systemData['id'])) echo $systemData['id']; ?>" />
                            <?php if(is_array($hdarray) || $hdarray instanceof \think\Collection): $k = 0; $__LIST__ = $hdarray;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$vo): $mod = ($k % 2 );++$k;?>
-                           <input type="hidden" name="imgUrl<?php echo $k-1; ?>" value="<?php echo $vo; ?>" />
+                           <input type="hidden" name="imgUrl<?php echo $k-1; ?>" value="<?php echo $vo[3]; ?>" />
                            <?php endforeach; endif; else: echo "" ;endif; if(is_array($linkarray) || $linkarray instanceof \think\Collection): $k = 0; $__LIST__ = $linkarray;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$vo): $mod = ($k % 2 );++$k;?>
                            <input type="hidden" name="linkimg<?php echo $k-1; ?>" value=<?php echo $vo[1]; ?> />
                            <?php endforeach; endif; else: echo "" ;endif; ?>
@@ -279,11 +279,10 @@
         <script type="text/javascript" src="http://localhost/nxipp/public/admin/plugins/uploadify/js/jquery.uploadify.min.js"></script> 
         <script src="http://localhost/nxipp/public/admin/plugins/layer/layer.min.js"></script>
         <script type="text/javascript">
-            var articleUrl = "<?php echo url('System/selSingelorArticle',['type','article']); ?>";
-            var singleUrl = "<?php echo url('System/selSingelorArticle',['type','single']); ?>";
+
             $(function(){
                 $("#formaddSystem").submit(function(){
-                    var datas = $("#formaddSystem").serialize();
+                    var datas = $("#formaddSystem").serialize();                
                     //layer.msg(datas, {icon: 2,time: 50000});
                     $.post('<?php echo url("System/index"); ?>',datas,function(data){
                         if (data.status) {
@@ -367,7 +366,6 @@
                         'onUploadSuccess' : function(file,data,response) {  
                          if(response){ 
                                 var obj =JSON.parse(data);
-                                console.log(obj.src);
                                 $('#upload_org_code_logo'+i).attr("src",obj.src);  
                                 $('#file_upload_logo'+i).attr("value",obj.src);
                                 $('input[name=linkimg'+i+']').val(obj.src);
@@ -401,9 +399,10 @@
             
             $(function(){
                $('.radio').on('click',function(){
-                   var articleUrl = "<?php echo url('System/selSingelorArticle'); ?>?type=article";
-                   var singleUrl = "<?php echo url('System/selSingelorArticle'); ?>?type=singleUrl";
                    var type = $(this).attr('value');
+                   var hid = $(this).attr('hid');
+                   var articleUrl = "<?php echo url('System/selSingelorArticle'); ?>?type=article&hid="+hid;
+                   var singleUrl = "<?php echo url('System/selSingelorArticle'); ?>?type=single&hid="+hid;
                    if( type=='article' ){
                         layer.open({  
                             type: 2,  
@@ -416,12 +415,15 @@
                         }); 
                    }
                    else if( type='single' ){
-                       layer.open({
-                            type: 1,
-                            skin: 'layui-layer-rim', //加上边框
-                            area: ['420px', '240px'], //宽高
-                            content: singleUrl,
-                       });
+                        layer.open({  
+                            type: 2,  
+                            title: '选择单页',  
+                            maxmin: true,  
+                            skin: 'layui-layer-lan',  
+                            shadeClose: true, //点击遮罩关闭层  
+                            area : ['400px' , '380px'],  
+                            content:singleUrl
+                        }); 
                    }
                })
             });
