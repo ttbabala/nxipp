@@ -64,4 +64,5 @@ class Index extends Adminbase{
        
         return $this -> fetch('index');
     }
+    
 }

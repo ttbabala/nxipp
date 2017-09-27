@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:4:{s:49:"E:\www\web\nxipp.\template/home\single\index.html";i:1505790959;s:50:"E:\www\web\nxipp.\template/home\Layout\common.html";i:1505094327;s:50:"E:\www\web\nxipp.\template/home\Public\header.html";i:1506409492;s:50:"E:\www\web\nxipp.\template/home\Public\footer.html";i:1505906233;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:4:{s:49:"E:\www\web\nxipp.\template/home\single\index.html";i:1506504847;s:50:"E:\www\web\nxipp.\template/home\Layout\common.html";i:1505094327;s:50:"E:\www\web\nxipp.\template/home\Public\header.html";i:1506409492;s:50:"E:\www\web\nxipp.\template/home\Public\footer.html";i:1505906233;}*/ ?>
 <!--载入头部-->
 <!DOCTYPE html>
 <!--[if IE 8 ]><html class="no-js oldie ie8" lang="en"> <![endif]-->
@@ -112,20 +112,20 @@
 
    			<article class="format-standard">  
 
-   				<div class="content-media">
-						<div class="post-thumb">
-							<img src="<?php echo $articleData['article_photo']; ?>"> 
-						</div>  
-					</div>
-
 					<div class="primary-content">
 
 						<h1 class="page-title"><?php echo $articleData['article_title']; ?></h1>	
 
 						<ul class="entry-meta">
+                                                        <li class="date">栏目：<?php echo $current; ?></li>
 							<li class="date"><?php echo $articleData['article_date']; ?></li>
-                                                        <li class="date"><?php echo $articleData['article_author']; ?></li>	
-							<li class="cat"><?php $keywordsArray = explode(',',$articleData['article_keywords']); for($i=0;$i<count($keywordsArray);$i++){ echo "<a href='#'>$keywordsArray[$i]</a>";}?></li>				
+                                                        <li class="date"><?php echo $articleData['article_author']; ?></li>
+                                                        <li class="date">浏览量：<?php echo $viewcount; ?></li>
+							<li class="cat">
+                                                        <?php $kwArray = explode(',',$articleData['article_keywords']); if(is_array($kwArray) || $kwArray instanceof \think\Collection): $i = 0; $__LIST__ = $kwArray;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$vk): $mod = ($i % 2 );++$i;?>
+                                                            <a href="<?php echo url('Search/index'); ?>?keywords=<?php echo $vk; ?>"><?php echo $vk; ?></a>
+                                                        <?php endforeach; endif; else: echo "" ;endif; ?>
+                                                        </li>				
 						</ul>						
 
 						<p class="lead"><?php echo $articleData['article_excerpt']; ?></p> 
@@ -236,40 +236,45 @@
 	                        <p><?php echo $vo['ctext']; ?></p>                        
 	                     </div>
 	             </div>
-                      <?php if($ReplyNums > 0): ?>
-                      <ul class="children" style="display:none" id="<?php echo $vo['cid']; ?>">
-                        <?php if(is_array($commentsData[$i-1]['reply']) || $commentsData[$i-1]['reply'] instanceof \think\Collection): if( count($commentsData[$i-1]['reply'])==0 ) : echo "" ;else: foreach($commentsData[$i-1]['reply'] as $k=>$rp): ?>
-                        <li class="depth-2">
-                            
-                           <div class="avatar-son">
-                              <img width="30" height="30" style="margin-left:120px;border-radius:50%;-webkit-border-radius:50%;-moz-border-radius:50%;" src="<?php echo $fromUserHp[$i-1][$k][0]; ?>" alt="">
-                           </div>
+                    <?php if($ReplyNums > 0): ?> <!-- 回复数大于0-->
+                            <ul class="children" style="display:none" id="<?php echo $vo['cid']; ?>">
+                              <?php if(isset($commentsData[$i-1]['reply'])): if(is_array($commentsData[$i-1]['reply']) || $commentsData[$i-1]['reply'] instanceof \think\Collection): if( count($commentsData[$i-1]['reply'])==0 ) : echo "" ;else: foreach($commentsData[$i-1]['reply'] as $k=>$rp): ?>
+                                <li class="depth-2">
 
-                           <div class="comment-content">
+                                   <div class="avatar-son">
+                                      <img width="30" height="30" style="margin-left:120px;border-radius:50%;-webkit-border-radius:50%;-moz-border-radius:50%;" src="<?php echo $fromUserHp[$i-1][$k][0]; ?>" alt="">
+                                   </div>
 
-	                           <div class="comment-info">
-	                              <cite><?php echo $fromUserName[$i-1][$k][0]; ?></cite>
+                                   <div class="comment-content">
 
-	                              <div class="comment-meta">
-	                                 <time class="comment-time" datetime="2014-07-12T25:05"><?php echo $rp['replyTime']; ?></time>
-	                                 <span class="sep">/</span><a class="reply" href="#">回复</a>
-	                              </div>
-	                           </div>
+                                           <div class="comment-info">
+                                              <cite><?php echo $fromUserName[$i-1][$k][0]; ?></cite>
 
-	                           <div class="comment-text">
-	                              <p><?php echo $rp['reply_text']; ?></p>
-	                           </div>
+                                              <div class="comment-meta">
+                                                 <time class="comment-time" datetime="2014-07-12T25:05"><?php echo $rp['replyTime']; ?></time>
+                                                 <span class="sep">/</span><a class="reply" href="#">回复</a>
+                                              </div>
+                                           </div>
 
-                           </div>
-                        </li>
-                        <?php endforeach; endif; else: echo "" ;endif; ?>
-                    </ul>
+                                           <div class="comment-text">
+                                              <p><?php echo $rp['reply_text']; ?></p>
+                                           </div>
+                                   </div>
+                                </li>
+                                <?php endforeach; endif; else: echo "" ;endif; endif; ?>
+                          </ul>
                     <?php endif; ?>
                   </li>
                   <?php endforeach; endif; else: echo "" ;endif; ?>
 
                </ol> <!-- Commentlist End -->					
-                <?php endif; ?>
+                <?php endif; if($commentsNums > 0): ?>
+                        <div class="row">
+                         <nav class="pagination">
+                                <?php echo $page; ?>
+                         </nav>
+                        </div>
+                        <?php endif; ?>
                <!-- respond -->
                <div class="respond">
 
@@ -278,7 +283,7 @@
                   <form id="contactForm" enctype="multipart/form-data">
   					   <fieldset>
                      <div class="message form-field">
-                        <textarea name="cMessage" id="cMessage" class="full-width" placeholder="Your Message" ></textarea>
+                        <textarea name="cMessage" id="cMessage" class="full-width" placeholder="在这发布你的留言" ></textarea>
                      </div>
                      <input type='hidden' name='aid' value="<?php echo $aid; ?>" />
                      <button type="submit" class="submit button-primary">立即评论</button>
@@ -301,9 +306,8 @@
                     var datas = $("#contactForm").serialize();
                     $.post('<?php echo url("Comments/addComments"); ?>',datas,function(data){
                        if (data.status) {
-                           layer.msg(data.msg, {icon: 1,time: 1500},function(){
-                              window.location.reload();
-                           });
+                           layer.msg(data.msg, {icon: 1,time: 1500});
+                           window.location.reload();
                        }else {
                            layer.msg(data.msg, {icon: 2,time: 1500});
                         }

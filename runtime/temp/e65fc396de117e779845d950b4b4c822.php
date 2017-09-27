@@ -1,23 +1,18 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:48:"E:\www\web\nxipp.\template/home\login\index.html";i:1506494984;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:48:"E:\www\web\nxipp.\template/home\reply\index.html";i:1506505184;}*/ ?>
 
 <!DOCTYPE html>
 <head>
-<title>会员登陆</title>
+<title>回复评论</title>
 <link rel="stylesheet" href="http://localhost/nxipp/public/home/css/public.css">
 <script type="text/javascript" src="http://localhost/nxipp/public/home/js/jquery.min.js"></script>
 </head>
 <body>
 <div id="signup-modal">
-  <form name="loginForm" id="loginForm" enctype="multipart/form-data" >
+  <form id="replyForm" enctype="multipart/form-data" >
       <table class="tableBasic" style="font-size:14px">
           <tr>
-              <td align="right" width="25%">用户名：</td>
-              <td width="60%"><input name="username" type="text" class="inpMain" /></td>
-              <td><span style="color: red;margin-left: 0px">*</span></td>
-          </tr>
-          <tr>
-              <td align="right" width="25%">密  码：</td>
-              <td width="60%"><input name="password" type="password" size="35px" class="inpMain" /></td>
+              <td align="right" width="25%">评论内容：</td>
+              <td width="60%"><textarea style="padding:5px;" name="reply_text" rows="8" cols="35" placeholder="回复内容不超过100个中文字符"></textarea></td>
               <td><span style="color: red;margin-left: 0px">*</span></td>
           </tr>
           <tr>
@@ -28,8 +23,10 @@
           <tr>
               <td align="right" width="25%"></td>
               <td width="60%">
-                  <input type="hidden" name="ip" value="<?php echo $MemberIp; ?>"/>
-                  <input type="submit" name="submit" class="btn" value="马上登陆" /></td>
+                  <input type="hidden" name="mid" value="<?php echo $mid; ?>" />
+                  <input type="hidden" name="to_mid" value="<?php echo $to_mid; ?>" />
+                  <input type="hidden" name="cid" value="<?php echo $cid; ?>" />
+                  <input type="submit" name="submit" class="btn" value="马上回复" /></td>
               <td></td>
           </tr>
       </table>
@@ -45,9 +42,9 @@
      });
      
      $(function(){
-                $("#loginForm").submit(function(){
-                    var datas = $("#loginForm").serialize();
-                    $.post('<?php echo url("Login/index"); ?>',datas,function(data){
+                $("#replyForm").submit(function(){
+                    var datas = $("#replyForm").serialize();
+                    $.post('<?php echo url("Reply/index"); ?>',datas,function(data){
                        if (data.status) {
                            layer.msg(data.msg, {icon: 1,time: 1500},function(){
                                layer.close();

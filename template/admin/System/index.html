@@ -6,23 +6,23 @@
           <form id="formaddSystem"   enctype="multipart/form-data">
                <table width="100%" border="0" cellpadding="8" cellspacing="0" class="tableBasic">
                    <tr>
-                       <td width="90" align="right">站点名称</td>
+                       <td width="120" align="right">站点名称</td>
                        <td><input type="text" name="webname" size="30" class="inpMain" value="{if condition="isset($systemData['webname'])"}{$systemData['webname']}{/if}"/></td>
                    </tr>
                    <tr>
-                       <td width="90" align="right">站点域名</td>
+                       <td width="10" align="right">站点域名</td>
                        <td><input type="text" name="com" size="30" class="inpMain" value="{if condition="isset($systemData['com'])"}{$systemData['com']}{/if}"/></td>
                    </tr>
                    <tr>
-                       <td width="90" align="right">站点标题(Title)</td>
+                       <td width="120" align="right">站点标题(Title)</td>
                        <td><input type="text" name="web_title" size="45" class="inpMain" value="{if condition="isset($systemData['web_title'])"}{$systemData['web_title']}{/if}"/></td>
                    </tr>
                    <tr>
-                       <td width="90" align="right">站点描述(Descrition)</td>
+                       <td width="120" align="right">站点描述(Descrition)</td>
                        <td><textarea name="web_description" rows="5" cols="50" class="inpMain">{if condition="isset($systemData['web_description'])"}{$systemData['web_description']}{/if}</textarea></td>
                    </tr>
                    <tr>
-                       <td width="90" align="right">是否开启评论</td>
+                       <td width="120" align="right">是否开启评论审核</td>
                        <td><select name="opencomments" id="commentsOn">
                             <option value="1">开启</option>
                             <option value="0">不开启</option>
@@ -30,21 +30,21 @@
                        <span style="color: red;margin-left: 20px">默认为开启</span></td>
                    </tr>
                    <tr>
-                      <td width="90" align="right">屏蔽词汇</td>
+                      <td width="120" align="right">屏蔽词汇</td>
                       <td>
                           <textarea name="senswords" rows="5" cols="50" class="inpMain">{if condition="isset($systemData['senswords'])"}{$systemData['senswords']}{/if}</textarea>
                           <span style="color: red;margin-left: 20px">词汇间用"|"分隔</span>
                       </td>
                    </tr>
                    <tr>
-                      <td width="90" align="right" >ip黑名单</td>
+                      <td width="120" align="right" >ip黑名单</td>
                       <td>
                           <textarea name="filterIp" id='filterIp' rows="5" cols="30" class="inpMain">{if condition="isset($systemData['filterips'])"}{$systemData['filterips']}{/if}</textarea>
                           <span style="color: red;margin-left: 20px">ip间用"|"分隔</span>
                       </td>
                    </tr>
                    <tr>
-                       <td width="90" align="right">首页幻灯片设置</td>
+                       <td width="120" align="right">首页幻灯片设置</td>
                        <td>
                           {volist name="hdarray" id="vo" key="k"}
                           <div id="file_upload_image{$k-1}" style="margin-bottom: 15px"><img id="upload_org_code_img{$k-1}" class="img" width="80px" height="80px" src="{$vo[3]}" style="{$vo[3] !== 'null'?'':'display:none;'}margin-top: 15px;" /></div>
@@ -65,7 +65,7 @@
                       </td>
                    </tr>
                    <tr>
-                       <td width="90" align="right">友情链接</td>
+                       <td width="120" align="right">友情链接</td>
                        <td><!-- <div id="file_upload_logo"><img id="upload_org_code_logo" style="display: none;margin-bottom: 10px;" /></div>
                           <div class="uploadifylogo">
                                 <input id="uploadifylogo" type="file" multiple="true" value="" />

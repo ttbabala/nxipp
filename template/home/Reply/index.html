@@ -47,8 +47,8 @@
                        if (data.status) {
                            layer.msg(data.msg, {icon: 1,time: 1500},function(){
                                layer.close();
-                               window.location.reload();
                            });
+                           window.parent.location.reload();
                        }else {
                            layer.msg(data.msg, {icon: 2,time: 1500});
                        }

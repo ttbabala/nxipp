@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:6:{s:50:"E:\www\web\nxipp.\template/admin\system\index.html";i:1506403503;s:51:"E:\www\web\nxipp.\template/admin\Layout\common.html";i:1502168098;s:51:"E:\www\web\nxipp.\template/admin\Public\header.html";i:1503941668;s:48:"E:\www\web\nxipp.\template/admin\Public\nav.html";i:1506242403;s:49:"E:\www\web\nxipp.\template/admin\Public\menu.html";i:1506072849;s:51:"E:\www\web\nxipp.\template/admin\Public\footer.html";i:1506242424;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:6:{s:50:"E:\www\web\nxipp.\template/admin\system\index.html";i:1506496091;s:51:"E:\www\web\nxipp.\template/admin\Layout\common.html";i:1502168098;s:51:"E:\www\web\nxipp.\template/admin\Public\header.html";i:1503941668;s:48:"E:\www\web\nxipp.\template/admin\Public\nav.html";i:1506242403;s:49:"E:\www\web\nxipp.\template/admin\Public\menu.html";i:1506072849;s:51:"E:\www\web\nxipp.\template/admin\Public\footer.html";i:1506242424;}*/ ?>
 <!--载入头部-->
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -180,23 +180,23 @@
           <form id="formaddSystem"   enctype="multipart/form-data">
                <table width="100%" border="0" cellpadding="8" cellspacing="0" class="tableBasic">
                    <tr>
-                       <td width="90" align="right">站点名称</td>
+                       <td width="120" align="right">站点名称</td>
                        <td><input type="text" name="webname" size="30" class="inpMain" value="<?php if(isset($systemData['webname'])): ?><?php echo $systemData['webname']; endif; ?>"/></td>
                    </tr>
                    <tr>
-                       <td width="90" align="right">站点域名</td>
+                       <td width="10" align="right">站点域名</td>
                        <td><input type="text" name="com" size="30" class="inpMain" value="<?php if(isset($systemData['com'])): ?><?php echo $systemData['com']; endif; ?>"/></td>
                    </tr>
                    <tr>
-                       <td width="90" align="right">站点标题(Title)</td>
+                       <td width="120" align="right">站点标题(Title)</td>
                        <td><input type="text" name="web_title" size="45" class="inpMain" value="<?php if(isset($systemData['web_title'])): ?><?php echo $systemData['web_title']; endif; ?>"/></td>
                    </tr>
                    <tr>
-                       <td width="90" align="right">站点描述(Descrition)</td>
+                       <td width="120" align="right">站点描述(Descrition)</td>
                        <td><textarea name="web_description" rows="5" cols="50" class="inpMain"><?php if(isset($systemData['web_description'])): ?><?php echo $systemData['web_description']; endif; ?></textarea></td>
                    </tr>
                    <tr>
-                       <td width="90" align="right">是否开启评论</td>
+                       <td width="120" align="right">是否开启评论审核</td>
                        <td><select name="opencomments" id="commentsOn">
                             <option value="1">开启</option>
                             <option value="0">不开启</option>
@@ -204,21 +204,21 @@
                        <span style="color: red;margin-left: 20px">默认为开启</span></td>
                    </tr>
                    <tr>
-                      <td width="90" align="right">屏蔽词汇</td>
+                      <td width="120" align="right">屏蔽词汇</td>
                       <td>
                           <textarea name="senswords" rows="5" cols="50" class="inpMain"><?php if(isset($systemData['senswords'])): ?><?php echo $systemData['senswords']; endif; ?></textarea>
                           <span style="color: red;margin-left: 20px">词汇间用"|"分隔</span>
                       </td>
                    </tr>
                    <tr>
-                      <td width="90" align="right" >ip黑名单</td>
+                      <td width="120" align="right" >ip黑名单</td>
                       <td>
                           <textarea name="filterIp" id='filterIp' rows="5" cols="30" class="inpMain"><?php if(isset($systemData['filterips'])): ?><?php echo $systemData['filterips']; endif; ?></textarea>
                           <span style="color: red;margin-left: 20px">ip间用"|"分隔</span>
                       </td>
                    </tr>
                    <tr>
-                       <td width="90" align="right">首页幻灯片设置</td>
+                       <td width="120" align="right">首页幻灯片设置</td>
                        <td>
                           <?php if(is_array($hdarray) || $hdarray instanceof \think\Collection): $k = 0; $__LIST__ = $hdarray;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$vo): $mod = ($k % 2 );++$k;?>
                           <div id="file_upload_image<?php echo $k-1; ?>" style="margin-bottom: 15px"><img id="upload_org_code_img<?php echo $k-1; ?>" class="img" width="80px" height="80px" src="<?php echo $vo[3]; ?>" style="<?php echo !empty($vo[3]) && $vo[3]!=='null'?'':'display:none;'; ?>margin-top: 15px;" /></div>
@@ -239,7 +239,7 @@
                       </td>
                    </tr>
                    <tr>
-                       <td width="90" align="right">友情链接</td>
+                       <td width="120" align="right">友情链接</td>
                        <td><!-- <div id="file_upload_logo"><img id="upload_org_code_logo" style="display: none;margin-bottom: 10px;" /></div>
                           <div class="uploadifylogo">
                                 <input id="uploadifylogo" type="file" multiple="true" value="" />

@@ -37,7 +37,8 @@ class Article extends Model{
             'cid' => $data['article_cat'],
             'article_photo' => $imgurl,
             'comment_count' => '20',
-            'article_pid' => 1
+            'article_pid' => 1,
+            'viewcount' => 0
         ]);
         $aid = Db::connect('mysql://root:deze@127.0.0.1:3306/nxipp#utf8') -> name('article') ->insertGetId($datas);       //Db类操作，返回自增主键供Votes表使用
 
