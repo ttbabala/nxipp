@@ -1,6 +1,7 @@
 <?php
 namespace app\home\Model;
 use think\Model;
+use app\admin\Model\System;
 
 class Comments extends Model{
     protected $pk = 'cid';
@@ -8,7 +9,8 @@ class Comments extends Model{
     public function addData($mid){
         $membersId = $mid;
         $datas = input('post.');
-        $senswords =  Model('System') -> column('senswords');
+        $st = new System();
+        $senswords =  $st -> column('senswords');
         $sensStr= implode('|',$senswords);
         $sensArr = explode('|',$sensStr);
         if(isset($datas) /*&& empty($datas) == false*/){

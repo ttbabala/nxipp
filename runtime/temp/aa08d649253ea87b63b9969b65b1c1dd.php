@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:4:{s:48:"E:\www\web\nxipp.\template/home\index\index.html";i:1506422031;s:50:"E:\www\web\nxipp.\template/home\Layout\common.html";i:1505094327;s:50:"E:\www\web\nxipp.\template/home\Public\header.html";i:1506409492;s:50:"E:\www\web\nxipp.\template/home\Public\footer.html";i:1505906233;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:4:{s:48:"E:\www\web\nxipp.\template/home\index\index.html";i:1506422031;s:50:"E:\www\web\nxipp.\template/home\Layout\common.html";i:1505094327;s:50:"E:\www\web\nxipp.\template/home\Public\header.html";i:1506409492;s:50:"E:\www\web\nxipp.\template/home\Public\footer.html";i:1506572262;}*/ ?>
 <!--载入头部-->
 <!DOCTYPE html>
 <!--[if IE 8 ]><html class="no-js oldie ie8" lang="en"> <![endif]-->
@@ -312,6 +312,7 @@
        var UserRegisterUrl = "<?php echo url('Register/index'); ?>";
        var UserLoginUrl = "<?php echo url('Login/index'); ?>";
        var UserReplyUrl = "<?php echo url('Reply/index'); ?>"; 
+       var UserReply2Url = "<?php echo url('Reply2/index'); ?>";
          $(function(){
              $('.register').on('click',function(){
                  layer.open({  
@@ -353,6 +354,24 @@
                      shadeClose: true, //点击遮罩关闭层  
                      area : ['400px' , '280px'],  
                      content:UserReplyUrl+'?mid='+mid+'&cid='+cid //弹框显示的url  
+                 }); 
+             });
+         });
+         
+         $(function(){
+             $('.reply2').on('click',function(){
+                 var mname = $(this).attr('value');
+                 var mid = $(this).attr('mid');
+                 var cid = $(this).attr('cid');
+                 var rid = $(this).attr('rid');
+                 layer.open({  
+                     type: 2,  
+                     title: '@&nbsp;'+mname+'&nbsp;的回复',  
+                     maxmin: true,  
+                     skin: 'layui-layer-lan',  
+                     shadeClose: true, //点击遮罩关闭层  
+                     area : ['400px' , '280px'],  
+                     content:UserReply2Url+'?mid='+mid+'&cid='+cid+'&rid='+rid //弹框显示的url  
                  }); 
              });
          });

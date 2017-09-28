@@ -9,6 +9,7 @@ use app\admin\Model\Members;
 use app\home\Model\Votes;
 use app\admin\Model\Cats;
 use app\admin\Model\System;
+use app\home\Model\Reply_relation;
 use think\Db;
 use PDO;
 //use think\Log;
@@ -48,7 +49,7 @@ class Single extends Homebase{
         }
         $cm = new Comments();
         $rc = new Reply();
-        $st = new System();
+        $st = new System();  
         $opencomments = $st -> column('opencomments')[0];
         if($opencomments){  //是否开启了评论审核 1为开启，0为关闭
             $commentsData = $cm -> where('aid',$aid) -> where('review',1) -> order('date','asc') -> paginate(10); //每篇文章有几条评论+
@@ -56,8 +57,10 @@ class Single extends Homebase{
             $commentsData = $cm -> where('aid',$aid) -> order('date','asc') -> paginate(10); //每篇文章有几条评论+ 
         }
         if(count($commentsData) > 0){       //评论数大于0
+            $ReplyRelationNum = [];
             $mb = new Members();
             $rc = new Reply();
+            $rpl = new Reply_relation();
             for($i=0;$i<count($commentsData);$i++){
                 $commentsData[$i]['mname'] = $mb -> where('mid',$commentsData[$i]['mid']) -> column('mname');
                 $commentsData[$i]['headpic'] = $mb -> where('mid',$commentsData[$i]['mid']) -> column('headpic');
@@ -71,7 +74,14 @@ class Single extends Homebase{
                         for($k=0;$k<count($commentsData[$i]['reply']);$k++)
                         {
                            $fromUserName[$i][$k] = $mb -> where('mid',$commentsData[$i]['reply'][$k]['fromUserid']) -> column('mname');//获取回复留言的会员姓名
-                           $fromUserHp[$i][$k] = $mb -> where('mid',$commentsData[$i]['reply'][$k]['fromUserid']) -> column('headpic');//获取回复留言的会员头像 
+                           $fromUserHp[$i][$k] = $mb -> where('mid',$commentsData[$i]['reply'][$k]['fromUserid']) -> column('headpic');//获取回复留言的会员头像
+                           $replyRelation[$i][$k] = $rpl -> where('rid',$commentsData[$i]['reply'][$k]['rid']) -> order('replytime','desc') -> select();
+                           $replyRelation[$i]['nums'] = count($rpl -> where('rid',$commentsData[$i]['reply'][$k]['rid']) -> order('replytime','desc') -> select());
+                           if(count($replyRelation[$i][$k]) == 0){ 
+                               array_push($ReplyRelationNum,0);
+                           }else{
+                               array_push($ReplyRelationNum,count($replyRelation[$i][$k]));
+                           }
                         } 
                     }                   
                 }        
@@ -82,6 +92,7 @@ class Single extends Homebase{
             }
             if($sum > 0){        //回复数大于0
               $this -> assign('ReplyNums',1);  //前台开通回复调用
+              $this -> assign('replyRelation',$replyRelation); 
               $this -> assign('fromUserName',$fromUserName);
               $this -> assign('fromUserHp',$fromUserHp);
             }else{
@@ -89,6 +100,7 @@ class Single extends Homebase{
             }
             $page = $commentsData -> render();
             $this -> assign('page',$page);
+            $this -> assign('ReplyRelationNum',$ReplyRelationNum);
             $this -> assign('commentsData',$commentsData); 
             $this -> assign('commentsNums',count($commentsData));
 

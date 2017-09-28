@@ -4,8 +4,8 @@ use think\Model;
 use think\Session;
 use app\admin\Model\System;
 
-class Reply_comments extends Model{
-    protected $pk = 'rid';
+class Reply_relation extends Model{
+    protected $pk = 'rrid';
     
     public function addData(){
         $datas = input('post.');
@@ -24,13 +24,13 @@ class Reply_comments extends Model{
             }
         }
         $this -> data=([
-                'cid' => $datas['cid'], //2
-                'fromUserid' => $datas['mid'], //14
-                'fromUserip' => getIP(), //127.0.0.1
-                'toUserid' => $datas['to_mid'], //13
-                'reply_text' => censor($datas['reply_text'],$sensArr),
-                'toUserip' => '193.215.20.52',
-                'replyTime' => date('Y-m-d H:i:s',time()),
+                'cid' => $datas['cid'], 
+                'rid' => $datas['rid'],
+                'fromUserid' => $datas['mid'], 
+                'replytext' => censor($datas['reply_text'],$sensArr),
+                'replytime' => date('Y-m-d H:i:s',time()),
+                'isshow' => 1,
+                'review' => 2
         ]);
        if($this -> save()){
              return true;
@@ -38,4 +38,3 @@ class Reply_comments extends Model{
        return false;
     }
 }
-

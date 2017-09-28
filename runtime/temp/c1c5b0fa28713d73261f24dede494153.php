@@ -1,8 +1,8 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:48:"E:\www\web\nxipp.\template/home\reply\index.html";i:1506590488;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:49:"E:\www\web\nxipp.\template/home\reply2\index.html";i:1506570591;}*/ ?>
 
 <!DOCTYPE html>
 <head>
-<title>回复评论</title>
+<title>回复评论的回复</title>
 <link rel="stylesheet" href="http://localhost/nxipp/public/home/css/public.css">
 <script type="text/javascript" src="http://localhost/nxipp/public/home/js/jquery.min.js"></script>
 </head>
@@ -11,7 +11,7 @@
   <form id="replyForm" enctype="multipart/form-data" >
       <table class="tableBasic" style="font-size:14px">
           <tr>
-              <td align="right" width="25%">评论内容：</td>
+              <td align="right" width="25%">回复内容：</td>
               <td width="60%"><textarea style="padding:5px;" name="reply_text" rows="8" cols="35" placeholder="回复内容不超过100个中文字符"></textarea></td>
               <td><span style="color: red;margin-left: 0px">*</span></td>
           </tr>
@@ -24,7 +24,7 @@
               <td align="right" width="25%"></td>
               <td width="60%">
                   <input type="hidden" name="mid" value="<?php echo $mid; ?>" />
-                  <input type="hidden" name="to_mid" value="<?php echo $to_mid; ?>" />
+                  <input type="hidden" name="rid" value="<?php echo $rid; ?>" />
                   <input type="hidden" name="cid" value="<?php echo $cid; ?>" />
                   <input type="submit" name="submit" class="btn" value="马上回复" /></td>
               <td></td>
@@ -44,7 +44,7 @@
      $(function(){
                 $("#replyForm").submit(function(){
                     var datas = $("#replyForm").serialize();
-                    $.post('<?php echo url("Reply/index"); ?>',datas,function(data){
+                    $.post('<?php echo url("Reply2/index"); ?>',datas,function(data){
                        if (data.status) {
                            layer.msg(data.msg, {icon: 1,time: 1500},function(){
                                layer.close();

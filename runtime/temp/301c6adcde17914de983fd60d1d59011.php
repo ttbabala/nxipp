@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:4:{s:49:"E:\www\web\nxipp.\template/home\single\index.html";i:1506504847;s:50:"E:\www\web\nxipp.\template/home\Layout\common.html";i:1505094327;s:50:"E:\www\web\nxipp.\template/home\Public\header.html";i:1506409492;s:50:"E:\www\web\nxipp.\template/home\Public\footer.html";i:1505906233;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:4:{s:49:"E:\www\web\nxipp.\template/home\single\index.html";i:1506588880;s:50:"E:\www\web\nxipp.\template/home\Layout\common.html";i:1505094327;s:50:"E:\www\web\nxipp.\template/home\Public\header.html";i:1506409492;s:50:"E:\www\web\nxipp.\template/home\Public\footer.html";i:1506590408;}*/ ?>
 <!--载入头部-->
 <!DOCTYPE html>
 <!--[if IE 8 ]><html class="no-js oldie ie8" lang="en"> <![endif]-->
@@ -222,7 +222,6 @@
                      </div>
 
                      <div class="comment-content">
-
 	                     <div class="comment-info">
 	                        <cite><?php echo $vo['mname'][0]; ?></cite>
 
@@ -252,7 +251,7 @@
 
                                               <div class="comment-meta">
                                                  <time class="comment-time" datetime="2014-07-12T25:05"><?php echo $rp['replyTime']; ?></time>
-                                                 <span class="sep">/</span><a class="reply" href="#">回复</a>
+                                                 <span class="sep">/</span><a href="javascript:;" style="color:#ff0202" class="subreplyView" rid="<?php echo $rp['rid']; ?>"><?php echo $ReplyRelationNum[$k]; ?></a>&nbsp;<a class="reply2" href="javascript:;" value="<?php echo $fromUserName[$i-1][$k][0]; ?>" mid="<?php echo $vo['mid']; ?>" cid="<?php echo $rp['cid']; ?>" rid="<?php echo $rp['rid']; ?>">回复</a>
                                               </div>
                                            </div>
 
@@ -260,6 +259,35 @@
                                               <p><?php echo $rp['reply_text']; ?></p>
                                            </div>
                                    </div>
+                                    <?php if($ReplyRelationNum[$k] > 0): ?> <!-- 回复数大于0-->
+                                    <!--回复的回复-->
+                                        <ul class="children" style="display:none" id="sub<?php echo $rp['rid']; ?>">
+                                            <?php if(count($replyRelation[$i-1][$k]) > 0){ if(is_array($replyRelation[$i-1][$k]) || $replyRelation[$i-1][$k] instanceof \think\Collection): if( count($replyRelation[$i-1][$k])==0 ) : echo "" ;else: foreach($replyRelation[$i-1][$k] as $j=>$rr): ?>
+                                                <li class="depth-2">
+
+                                                   <div class="avatar-son">
+                                                      <img width="30" height="30" style="margin-left:150px;border-radius:50%;-webkit-border-radius:50%;-moz-border-radius:50%;" src="<?php echo $fromUserHp[$i-1][$k][0]; ?>" alt="">
+                                                   </div>
+
+                                                   <div class="comment-content">
+
+                                                           <div class="comment-info">
+                                                              <cite></cite>
+
+                                                              <div class="comment-meta">
+                                                                 <time class="comment-time" datetime="2014-07-12T25:05"><?php echo $rr['replytime']; ?></time>
+                                                                 <!--<span class="sep">/</span><a href="javascript:;" style="color:#ff0202" class="replyView" rid="">0</a>&nbsp;<a class="reply2" href="javascript:;" value="<?php echo $fromUserName[$i-1][$k][0]; ?>" mid="<?php echo $vo['mid']; ?>" cid="<?php echo $rp['cid']; ?>" rid="<?php echo $rp['rid']; ?>">回复</a> -->
+                                                              </div>
+                                                           </div>
+
+                                                           <div class="comment-text">
+                                                              <p><?php echo $rr['replytext']; ?></p>
+                                                           </div>
+                                                   </div>                   
+                                                </li>
+                                                <?php endforeach; endif; else: echo "" ;endif; }?>
+                                        </ul>  
+                                    <?php endif; ?>
                                 </li>
                                 <?php endforeach; endif; else: echo "" ;endif; endif; ?>
                           </ul>
@@ -323,11 +351,22 @@
                     var id = $(this).attr('cid');
                     if($('#'+id).css("display")=="none"){
                       $('#'+id).show();
-                    }else{
+                    }else{ 
                       $('#'+id).hide();
                     }
                 });
-        });  
+        });
+        
+        $(function(){
+                $(".subreplyView").on('click',function(){
+                    var rid = $(this).attr('rid');
+                    if($('#sub'+rid).css("display")=="none"){
+                      $('#sub'+rid).show();
+                    }else{ 
+                      $('#sub'+rid).hide();
+                    }
+                });
+        });
   </script>
   <script type='text/javascript'>  
         $(function(){
@@ -474,6 +513,7 @@
        var UserRegisterUrl = "<?php echo url('Register/index'); ?>";
        var UserLoginUrl = "<?php echo url('Login/index'); ?>";
        var UserReplyUrl = "<?php echo url('Reply/index'); ?>"; 
+       var UserReply2Url = "<?php echo url('Reply2/index'); ?>";
          $(function(){
              $('.register').on('click',function(){
                  layer.open({  
@@ -515,6 +555,24 @@
                      shadeClose: true, //点击遮罩关闭层  
                      area : ['400px' , '280px'],  
                      content:UserReplyUrl+'?mid='+mid+'&cid='+cid //弹框显示的url  
+                 }); 
+             });
+         });
+         
+         $(function(){
+             $('.reply2').on('click',function(){
+                 var mname = $(this).attr('value');
+                 var mid = $(this).attr('mid');
+                 var cid = $(this).attr('cid');
+                 var rid = $(this).attr('rid');
+                 layer.open({  
+                     type: 2,  
+                     title: '@&nbsp;'+mname+'&nbsp;的回复',  
+                     maxmin: true,  
+                     skin: 'layui-layer-lan',  
+                     shadeClose: true, //点击遮罩关闭层  
+                     area : ['400px' , '280px'],  
+                     content:UserReply2Url+'?mid='+mid+'&cid='+cid+'&rid='+rid //弹框显示的url  
                  }); 
              });
          });

@@ -101,6 +101,7 @@
        var UserRegisterUrl = "{:url('Register/index')}";
        var UserLoginUrl = "{:url('Login/index')}";
        var UserReplyUrl = "{:url('Reply/index')}"; 
+       var UserReply2Url = "{:url('Reply2/index')}";
          $(function(){
              $('.register').on('click',function(){
                  layer.open({  
@@ -142,6 +143,24 @@
                      shadeClose: true, //点击遮罩关闭层  
                      area : ['400px' , '280px'],  
                      content:UserReplyUrl+'?mid='+mid+'&cid='+cid //弹框显示的url  
+                 }); 
+             });
+         });
+         
+         $(function(){
+             $('.reply2').on('click',function(){
+                 var mname = $(this).attr('value');
+                 var mid = $(this).attr('mid');
+                 var cid = $(this).attr('cid');
+                 var rid = $(this).attr('rid');
+                 layer.open({  
+                     type: 2,  
+                     title: '@&nbsp;'+mname+'&nbsp;的回复',  
+                     maxmin: true,  
+                     skin: 'layui-layer-lan',  
+                     shadeClose: true, //点击遮罩关闭层  
+                     area : ['400px' , '280px'],  
+                     content:UserReply2Url+'?mid='+mid+'&cid='+cid+'&rid='+rid //弹框显示的url  
                  }); 
              });
          });

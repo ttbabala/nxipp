@@ -117,7 +117,6 @@
                      </div>
 
                      <div class="comment-content">
-
 	                     <div class="comment-info">
 	                        <cite>{$vo['mname'][0]}</cite>
 
@@ -148,7 +147,7 @@
 
                                               <div class="comment-meta">
                                                  <time class="comment-time" datetime="2014-07-12T25:05">{$rp['replyTime']}</time>
-                                                 <span class="sep">/</span><a class="reply" href="#">回复</a>
+                                                 <span class="sep">/</span><a href="javascript:;" style="color:#ff0202" class="subreplyView" rid="{$rp['rid']}">{$ReplyRelationNum[$k]}</a>&nbsp;<a class="reply2" href="javascript:;" value="{$fromUserName[$i-1][$k][0]}" mid="{$vo['mid']}" cid="{$rp['cid']}" rid="{$rp['rid']}">回复</a>
                                               </div>
                                            </div>
 
@@ -156,6 +155,37 @@
                                               <p>{$rp['reply_text']}</p>
                                            </div>
                                    </div>
+                                    {if condition="$ReplyRelationNum[$k] gt 0 "} <!-- 回复数大于0-->
+                                    <!--回复的回复-->
+                                        <ul class="children" style="display:none" id="sub{$rp['rid']}">
+                                            <?php if(count($replyRelation[$i-1][$k]) > 0){ ?>
+                                                {foreach name="$replyRelation[$i-1][$k]" id="rr" key="j"}
+                                                <li class="depth-2">
+
+                                                   <div class="avatar-son">
+                                                      <img width="30" height="30" style="margin-left:150px;border-radius:50%;-webkit-border-radius:50%;-moz-border-radius:50%;" src="{$fromUserHp[$i-1][$k][0]}" alt="">
+                                                   </div>
+
+                                                   <div class="comment-content">
+
+                                                           <div class="comment-info">
+                                                              <cite></cite>
+
+                                                              <div class="comment-meta">
+                                                                 <time class="comment-time" datetime="2014-07-12T25:05">{$rr['replytime']}</time>
+                                                                 <!--<span class="sep">/</span><a href="javascript:;" style="color:#ff0202" class="replyView" rid="">0</a>&nbsp;<a class="reply2" href="javascript:;" value="{$fromUserName[$i-1][$k][0]}" mid="{$vo['mid']}" cid="{$rp['cid']}" rid="{$rp['rid']}">回复</a> -->
+                                                              </div>
+                                                           </div>
+
+                                                           <div class="comment-text">
+                                                              <p>{$rr['replytext']}</p>
+                                                           </div>
+                                                   </div>                   
+                                                </li>
+                                                {/foreach}
+                                            <?php }?>
+                                        </ul>  
+                                    {/if}
                                 </li>
                                 {/foreach}
                                {/if}
@@ -221,11 +251,22 @@
                     var id = $(this).attr('cid');
                     if($('#'+id).css("display")=="none"){
                       $('#'+id).show();
-                    }else{
+                    }else{ 
                       $('#'+id).hide();
                     }
                 });
-        });  
+        });
+        
+        $(function(){
+                $(".subreplyView").on('click',function(){
+                    var rid = $(this).attr('rid');
+                    if($('#sub'+rid).css("display")=="none"){
+                      $('#sub'+rid).show();
+                    }else{ 
+                      $('#sub'+rid).hide();
+                    }
+                });
+        });
   </script>
   <script type='text/javascript'>  
         $(function(){

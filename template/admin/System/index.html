@@ -24,8 +24,12 @@
                    <tr>
                        <td width="120" align="right">是否开启评论审核</td>
                        <td><select name="opencomments" id="commentsOn">
-                            <option value="1">开启</option>
+                            {if condition="$systemData['opencomments'] eq 1"}<option value="1" checked="checked">开启</option>
                             <option value="0">不开启</option>
+                            {/if}
+                            {if condition="$systemData['opencomments'] eq 0"}<option value="0" checked="checked">不开启</option>
+                            <option value="1">开启</option>
+                            {/if}
                            </select>
                        <span style="color: red;margin-left: 20px">默认为开启</span></td>
                    </tr>

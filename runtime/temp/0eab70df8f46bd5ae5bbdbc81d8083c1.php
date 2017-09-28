@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:6:{s:50:"E:\www\web\nxipp.\template/admin\system\index.html";i:1506496091;s:51:"E:\www\web\nxipp.\template/admin\Layout\common.html";i:1502168098;s:51:"E:\www\web\nxipp.\template/admin\Public\header.html";i:1503941668;s:48:"E:\www\web\nxipp.\template/admin\Public\nav.html";i:1506242403;s:49:"E:\www\web\nxipp.\template/admin\Public\menu.html";i:1506072849;s:51:"E:\www\web\nxipp.\template/admin\Public\footer.html";i:1506242424;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:6:{s:50:"E:\www\web\nxipp.\template/admin\system\index.html";i:1506591453;s:51:"E:\www\web\nxipp.\template/admin\Layout\common.html";i:1502168098;s:51:"E:\www\web\nxipp.\template/admin\Public\header.html";i:1503941668;s:48:"E:\www\web\nxipp.\template/admin\Public\nav.html";i:1506242403;s:49:"E:\www\web\nxipp.\template/admin\Public\menu.html";i:1506072849;s:51:"E:\www\web\nxipp.\template/admin\Public\footer.html";i:1506242424;}*/ ?>
 <!--载入头部-->
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -198,8 +198,11 @@
                    <tr>
                        <td width="120" align="right">是否开启评论审核</td>
                        <td><select name="opencomments" id="commentsOn">
-                            <option value="1">开启</option>
+                            <?php if($systemData['opencomments'] == 1): ?><option value="1" checked="checked">开启</option>
                             <option value="0">不开启</option>
+                            <?php endif; if($systemData['opencomments'] == 0): ?><option value="0" checked="checked">不开启</option>
+                            <option value="1">开启</option>
+                            <?php endif; ?>
                            </select>
                        <span style="color: red;margin-left: 20px">默认为开启</span></td>
                    </tr>
