@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:4:{s:48:"E:\www\web\nxipp.\template/home\index\index.html";i:1506422031;s:50:"E:\www\web\nxipp.\template/home\Layout\common.html";i:1505094327;s:50:"E:\www\web\nxipp.\template/home\Public\header.html";i:1506409492;s:50:"E:\www\web\nxipp.\template/home\Public\footer.html";i:1506590408;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:4:{s:51:"E:\www\web\nxipp.\template/home\category\index.html";i:1505884467;s:50:"E:\www\web\nxipp.\template/home\Layout\common.html";i:1505094327;s:50:"E:\www\web\nxipp.\template/home\Public\header.html";i:1506409492;s:50:"E:\www\web\nxipp.\template/home\Public\footer.html";i:1506590408;}*/ ?>
 <!--载入头部-->
 <!DOCTYPE html>
 <!--[if IE 8 ]><html class="no-js oldie ie8" lang="en"> <![endif]-->
@@ -104,9 +104,19 @@
 
 
 <!--内容主体 START-->
-   <!-- masonry
+   <!-- page header
    ================================================== -->
-   <section id="bricks">
+   <section id="page-header">
+   	<div class="row current-cat">
+   		<div class="col-full">
+                    <div style="background-color:#000;color:#fff">|<?php if($pname == 'no'): ?>&nbsp;<?php else: ?>&nbsp;<?php echo $pname; ?> -> <?php endif; ?><?php echo $cname; ?>&nbsp;|</div>
+   		</div>   		
+   	</div>
+   </section>
+
+<!-- masonry
+   ================================================== -->
+   <section id="bricks" class="with-top-sep">
 
    	<div class="row masonry">
 
@@ -115,34 +125,6 @@
 
          	<div class="grid-sizer"></div>
 
-         	<div class="brick entry featured-grid animate-this">
-         		<div class="entry-content">
-         			<div id="featured-post-slider" class="flexslider">
-			   			<ul class="slides">
-                                                    <?php if(is_array($hdData) || $hdData instanceof \think\Collection): $k = 0; $__LIST__ = $hdData;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$vo): $mod = ($k % 2 );++$k;?>
-                                                        <li>
-				   				<div class="featured-post-slide">
-
-						   			<div class="post-background" style="background-image:url('<?php echo $vo[3]; ?>')"></div>
-
-								   	<div class="overlay"></div>			   		
-
-								   	<div class="post-content">
-								   		<ul class="entry-meta">
-												<li><?php echo $vo[2]; ?></li>			
-											</ul>	
-
-								   		<h1 class="slide-title"><a href="<?php echo $vo[0]; ?>" title=""><?php echo $vo[1]; ?></a></h1>
-						   			</div>
-
-				   				</div>
-				   			</li> <!-- end slide -->
-                                                      <?php endforeach; endif; else: echo "" ;endif; ?>
-
-				   		</ul> <!-- end slides -->
-				   	</div> <!-- end featured-post-slider -->        			
-         		</div> <!-- end entry content -->         		
-         	</div>
          <?php if(is_array($articleData) || $articleData instanceof \think\Collection): $i = 0; $__LIST__ = $articleData;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$vo): $mod = ($i % 2 );++$i;?>
             <article class="brick entry format-standard animate-this">
 
@@ -157,14 +139,11 @@
 
                           <div class="entry-meta">
                                   <span class="cat-links">
-                                        <!-- <?php $kwArray = explode(',',$vo['article_keywords']);
+                                        <?php $kwArray = explode(',',$vo['article_keywords']);
                                           foreach($kwArray as $keywords){ 
                                             echo "<a href='#'>".$keywords."</a>";
                                           }
-                                        ?> -->
-                                        <?php $kwArray = explode(',',$vo['article_keywords']); if(is_array($kwArray) || $kwArray instanceof \think\Collection): $i = 0; $__LIST__ = $kwArray;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$vk): $mod = ($i % 2 );++$i;?>
-                                        <a href="<?php echo url('Search/index'); ?>?keywords=<?php echo $vk; ?>"><?php echo $vk; ?></a>
-                                        <?php endforeach; endif; else: echo "" ;endif; ?>
+                                        ?>
 
                                   </span>			
                           </div>

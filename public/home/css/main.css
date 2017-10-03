@@ -1626,12 +1626,26 @@ header .logo a {
 	header .logo {
 		left: 45px;
 	}
+        
+        header .logo a {
+		width: 200px;
+		height: 40px;
+                background: url("../images/logo.png") no-repeat center;
+                background-size: 200px 40px;
+	}
 
 }
 
 @media only screen and (max-width:600px) {
 	header .logo {
 		left: 35px;
+	}
+        
+        header .logo a {
+		width: 180px;
+		height: 36px;
+                background: url("../images/logo.png") no-repeat center;
+                background-size: 180px 36px;
 	}
 
 }
@@ -1642,9 +1656,10 @@ header .logo a {
 	}
 
 	header .logo a {
-		width: 54px;
-		height: 54px;
-		background-size: 54px 54px;
+		width: 160px;
+		height: 32px;
+                background: url("../images/logo.png") no-repeat center;
+                background-size:160px 32px;
 	}
 
 }
@@ -1690,6 +1705,7 @@ header .logo a {
 	.triggers {
 		right: 30px;
 	}
+
 
 }
 

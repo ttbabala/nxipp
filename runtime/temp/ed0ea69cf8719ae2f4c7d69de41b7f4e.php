@@ -1,0 +1,121 @@
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:51:"E:\www\web\nxipp.\template/home\register\index.html";i:1506062129;}*/ ?>
+
+<!DOCTYPE html>
+<head>
+<title>会员注册</title>
+<link rel="stylesheet" href="http://localhost/nxipp/public/home/css/public.css">
+<link href="http://localhost/nxipp/public/home/plugins/uploadify/css/uploadify.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="http://localhost/nxipp/public/home/js/jquery.min.js"></script>
+</head>
+<body>
+<div id="signup-modal">
+  <form name="registerForm" id="registerForm" enctype="multipart/form-data" >
+      <table class="tableBasic" style="font-size:14px">
+          <tr >
+              <td align="right" width="25%">用户名：</td>
+              <td width="60%"><input name="username" type="text" class="inpMain" /></td>
+              <td><span style="color: red;margin-left: 0px">*</span></td>
+          </tr>
+          <tr>
+              <td align="right" width="25%">Email：</td>
+              <td width="60%"><input name="email" type="text" class="inpMain" /></td>
+              <td><span style="color: red;margin-left: 0px">*</span></td>
+          </tr>
+          <tr>
+              <td align="right" width="25%">密  码：</td>
+              <td width="60%"><input name="password" type="password" size="35px" class="inpMain" /></td>
+              <td><span style="color: red;margin-left: 0px">*</span></td>
+          </tr>
+          <tr>
+              <td align="right" width="25%">确认密码：</td>
+              <td width="60%"><input name="confirm_password" type="password" size="35px" class="inpMain" /></td>
+              <td><span style="color: red;margin-left: 0px">*</span></td>
+          </tr>
+          <tr>
+              <td align="right" width="25%">上传头像：</td>
+              <td width="60%" height="40px">
+                 <div id="file_upload_image"><img id="upload_org_code_img" width="80px" height="80px" style="display: none;margin-bottom: 10px;" /></div>
+                          <div class="uploadify">
+                                <input id="uploadify" type="file" multiple="true" value="" class='uploadify-button' />
+                                <a href="javascript:$('#uploadify').uploadify('upload')" style="font-size:12px;color:#000;text-decoration:none;">现在上传</a> |
+                                <a href="javascript:$('#uploadify').uploadify('cancel')" style="font-size:12px;color:#000;text-decoration:none;">取消上传</a> 
+                                <pre><span style="color:red;font-size:11px;">支持.gif .jpg .png图像格式，文件大小不超过2M</span></pre>                          </div>
+                 <div id="displayMsg"></div>
+              </td>
+              <td></td>
+          </tr>
+          <tr>
+              <td align="right" width="25%">验证码：</td>
+              <td width="60%" height="40px"><input name="code" type="text" size="5px" class="inpMain" /><img title="点击刷新验证码" src="<?php echo url('Register/get_captcha'); ?>" style="vertical-align:middle;" class="code-img" /></td>
+              <td><span style='color: red;margin-left: 0px'>*</span></td>
+          </tr>
+          <tr>
+              <td align="right" width="25%"></td>
+              <td width="60%">
+                  <input type="hidden" name="ip" value="<?php echo $MemberIp; ?>" />
+                  <input type="hidden" name="headimgUrl" value="" />
+                  <input type="submit" name="submit" class="btn" value="马上注册" /></td>
+              <td></td>
+          </tr>
+      </table>
+  </form>
+</div>
+  <script type="text/javascript" src="http://localhost/nxipp/public/home/plugins/jquery-1.8.3.min.js"></script>
+  <script src="http://localhost/nxipp/public/home/plugins/layer/layer.min.js"></script>
+  <script type="text/javascript" src="http://localhost/nxipp/public/home/plugins/uploadify/js/jquery.uploadify.min.js"></script>
+  <script type="text/javascript">
+     $(function(){
+         $(".code-img").on('click',function(){
+             this.src = '<?php echo url("Register/get_captcha"); ?>?d='+Math.random();
+         });
+     });
+     
+     $(function(){
+                $("#registerForm").submit(function(){
+                    var datas = $("#registerForm").serialize();
+                    $.post('<?php echo url("Register/index"); ?>',datas,function(data){
+                       if (data.status) {
+                           layer.msg(data.msg, {icon: 1,time: 1500},function(){
+                               window.location.href = data.url;
+                           });
+                       }else {
+                           layer.msg(data.msg, {icon: 2,time: 1500});
+                       }
+
+                    },'json');
+                    //阻止表单刷新提
+                    return false;
+                });
+    });
+    
+    $(function(){
+                    //swfobject.embedSWF('http://localhost/nxipp/public/home/plugins/uploadify/swf/uploadify.swf', "sd_file", "120", "30", "#666");
+                    $("#uploadify").uploadify({
+                        'swf'           :  'http://localhost/nxipp/public/home/plugins/uploadify/swf/uploadify.swf',
+                        'uploader'        : '<?php echo url("api/Image/upload"); ?>',
+                        'buttonText'      : '选择头像',  
+                        'fileTypeDesc'    : '请选择图像',  
+                        'fileTypeExts'    : '*.gif; *.jpg; *.png',     
+                        'fileObjName'     : 'file',
+                        'width'           : 80,
+                        'height'          : 25,
+                        'auto'            : false,
+                        'method'          : 'Post',
+                        'wmode'           : 'transparent',
+                        'formData'       : {
+				'urlfrom' : 'Member',
+                        },
+                        'onUploadSuccess' : function(file,data,response) {  
+                         if(response){ 
+                                var obj =JSON.parse(data);
+                                $("#upload_org_code_img").attr("src",obj.src);  
+                                $("#file_upload_image").attr("value",obj.src);
+                                $("input[name='headimgUrl']").attr("value",obj.src)
+                                $("#upload_org_code_img").show();  
+                            } 
+                        }
+                    });     
+    });
+</script>
+</body>
+</html>

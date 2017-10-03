@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:4:{s:49:"E:\www\web\nxipp.\template/home\single\index.html";i:1506588880;s:50:"E:\www\web\nxipp.\template/home\Layout\common.html";i:1505094327;s:50:"E:\www\web\nxipp.\template/home\Public\header.html";i:1506409492;s:50:"E:\www\web\nxipp.\template/home\Public\footer.html";i:1506590408;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:4:{s:49:"E:\www\web\nxipp.\template/home\single\index.html";i:1507025010;s:50:"E:\www\web\nxipp.\template/home\Layout\common.html";i:1505094327;s:50:"E:\www\web\nxipp.\template/home\Public\header.html";i:1507027352;s:50:"E:\www\web\nxipp.\template/home\Public\footer.html";i:1506590408;}*/ ?>
 <!--载入头部-->
 <!DOCTYPE html>
 <!--[if IE 8 ]><html class="no-js oldie ie8" lang="en"> <![endif]-->
@@ -91,7 +91,7 @@
 			<div class="triggers">
 				<a class="search-trigger" href="#"><i class="fa fa-search"></i></a>
 				<a class="menu-toggle" href="#"><span>Menu</span></a> &nbsp; 
-                                <?php if($mid == ''): ?><a href="javascript:;" class="register">注册</a> | <a href="javascript:;" class="login">登陆</a>
+                                <?php if($mid == ''): ?><a class="register" href="javascript:;"><span>注册<span></a> | <a href="javascript:;" class="login"><span>登陆</span></a>
                                 <?php else: ?>
                                 <span style="font-size:14px;">Hi，<img width="30" height="30" class="avatar" src="<?php echo $headpic; ?>" alt="" style="border-radius:50%;-webkit-border-radius:50%;-moz-border-radius:50%;">
                                     &nbsp;<?php echo $mname; ?>&nbsp;，欢迎登陆！&nbsp;<a href="javascript:;" class="logout">注销</a></span>
@@ -133,7 +133,7 @@
                                                 <p><?php echo $articleData['article_content']; ?></p>
 	
 						<p class="tags">
-		  			     	<span>如果你喜欢这篇文章，快为它点赞:</span>
+		  			     	<span>如果你喜欢这篇文章，快为它点赞或是分享给其他人:</span>
 		  				  	<div class="digg"> 
                                                             <div id="dig_up" class="digup" aid="<?php echo $articleData['aid']; ?>">
                                                                     <span id="num_up"><?php echo $voteData['likes']; ?></span>
@@ -146,7 +146,7 @@
                                                                 <div id="bar_down" class="bar"><span style="width:<?php echo $voteData['unlike_percent']; ?>"></span><i></i></div>
                                                             </div>
                                                             <div id="msg"></div>
-                                                       </div>
+                                                        </div>
                                                 </p>
                                                 <div class="bdsharebuttonbox">  
                                                     <a href="#" class="bds_more" data-cmd="more"></a>  
@@ -156,15 +156,18 @@
                                                     <a href="#" class="bds_renren" data-cmd="renren" title="分享到人人网"></a>  
                                                     <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>  
                                                 </div>  
-                                                <script>  
+                                                <script type='text/javascript'>
+                                                    var sharePhotoUrl = "<?php echo $articleData['article_photo']; ?>";
+                                                    var shareTitle = "<?php echo $articleData['article_title']; ?>";
+                                                    var shareContent = "<?php echo $articleData['article_content']; ?>";
                                                         window._bd_share_config={  
                                                                 "common":{  
-                                                                    "bdPopTitle":"您的自定义pop窗口标题",  
+                                                                    "bdPopTitle":"shareTitle",  
                                                                     "bdSnsKey":{},  
-                                                                    "bdText":"此处填写自定义的分享内容",   
+                                                                    "bdText":"shareContent",   
                                                                     "bdMini":"2",  
                                                                     "bdMiniList":false,  
-                                                                    "bdPic":"http://localhost/centlight/public/attachment/201410/24/14/5449ef39574f5_282x220.jpg", /* 此处填写要分享图片地址 */  
+                                                                    "bdPic":"articlePhotoUrl", /* 此处填写要分享图片地址 */  
                                                                     "bdStyle":"0",  
                                                                     "bdSize":"16"  
                                                                     },  
@@ -311,7 +314,7 @@
                   <form id="contactForm" enctype="multipart/form-data">
   					   <fieldset>
                      <div class="message form-field">
-                        <textarea name="cMessage" id="cMessage" class="full-width" placeholder="在这发布你的留言" ></textarea>
+                        <textarea name="cMessage" id="cMessage" class="full-width" placeholder="登陆后，在这里发布你的评论" ></textarea>
                      </div>
                      <input type='hidden' name='aid' value="<?php echo $aid; ?>" />
                      <button type="submit" class="submit button-primary">立即评论</button>

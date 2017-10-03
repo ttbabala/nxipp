@@ -89,7 +89,7 @@
 			<div class="triggers">
 				<a class="search-trigger" href="#"><i class="fa fa-search"></i></a>
 				<a class="menu-toggle" href="#"><span>Menu</span></a> &nbsp; 
-                                {if condition="$mid eq ''"}<a href="javascript:;" class="register">注册</a> | <a href="javascript:;" class="login">登陆</a>
+                                {if condition="$mid eq ''"}<a class="register" href="javascript:;"><span>注册<span></a> | <a href="javascript:;" class="login"><span>登陆</span></a>
                                 {else /}
                                 <span style="font-size:14px;">Hi，<img width="30" height="30" class="avatar" src="{$headpic}" alt="" style="border-radius:50%;-webkit-border-radius:50%;-moz-border-radius:50%;">
                                     &nbsp;{$mname}&nbsp;，欢迎登陆！&nbsp;<a href="javascript:;" class="logout">注销</a></span>

@@ -1,4 +1,4 @@
-.digg{width:420px; height:120px; margin:80px auto 20px auto; position:relative}
+.digg{width:450px; height:120px; float:left; margin:-20px auto 20px auto; position:relative}
 #dig_up,#dig_down{width:200px; height:48px; margin:10px; position:relative; border:1px solid #d3d3d3; padding-left:42px; cursor:pointer}
 .digup{background:url(../images/diggs.png) no-repeat 4px 2px;}
 .digup_on{background:url(../images/diggs.png) no-repeat 4px -49px;}
@@ -9,7 +9,7 @@
 #dig_down p{height:24px; line-height:24px; color:#f30}
 .bar{width:100px; height:12px; line-height:12px; border:1px solid #f0f0f0; position:relative; text-align:center}
 .bar span{display:block; height:12px; }
-.bar i{position:absolute; top:0; left:104px;}
-#bar_up span{background:#360}
-#bar_down span{background:#f60}
+.bar i{position:absolute; top:0; left:104px; margin-top:-42px; font-size:11px;}
+#bar_up span{background:#360;margin-top:-30px;}
+#bar_down span{background:#f60;margin-top:-30px;}
 #msg{position:absolute; right:20px; top:40px; font-size:18px; color:#f00}
